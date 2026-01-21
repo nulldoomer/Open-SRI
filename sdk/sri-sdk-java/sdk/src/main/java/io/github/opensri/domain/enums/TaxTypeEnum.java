@@ -1,5 +1,13 @@
 package io.github.opensri.domain.enums;
 
+import lombok.Getter;
+
+
+/**
+ * Enum del tipo de impuesto a retener, con base en la tabla de la
+ * documentación del SRI Nro. 19
+ */
+@Getter
 public enum TaxTypeEnum {
     RENTA("1", "Renta"),
     IVA("2", "IVA"),

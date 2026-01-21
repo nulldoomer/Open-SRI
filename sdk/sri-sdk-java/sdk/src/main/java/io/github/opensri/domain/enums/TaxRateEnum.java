@@ -2,6 +2,10 @@ package io.github.opensri.domain.enums;
 
 import lombok.Getter;
 
+/**
+ * Enum del tipo de la tarifa del iva que se va a usar, con base en la tabla de
+ * la documentación del SRI Nro. 17
+ */
 @Getter
 public enum TaxRateEnum {
     PORCENTAJE_0("0", "0%"),

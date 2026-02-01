@@ -56,6 +56,15 @@ public record ElectronicDocument(
         List<TotalTaxes> totalTaxes,
 
         // Detalle de retencion (si aplica)
+
+        /*
+        ========================================================================
+        ========================================================================
+        TODO: Habilitar cuando aplique, luego de crear el MVP con la
+              facturacion electronica.
+        ========================================================================
+        ========================================================================
+         */
 //        List<Retention> retentionDetails,
         // Lista de items facturados
         List<InvoiceItem> invoiceItems

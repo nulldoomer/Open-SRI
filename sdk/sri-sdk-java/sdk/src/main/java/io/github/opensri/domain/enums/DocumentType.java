@@ -10,25 +10,25 @@ import java.util.Arrays;
  */
 @Getter
 public enum DocumentType {
-    FACTURA("01", "Factura"),
-    LIQUIDACION_COMPRA("03", "Liquidación de Compra de Bienes" +
+    FACTURA(1, "Factura"),
+    LIQUIDACION_COMPRA(3, "Liquidación de Compra de Bienes" +
             " y Prestación de Servicios"),
-    NOTA_CREDITO("04", "Nota de Crédito"),
-    NOTA_DEBITO("05", "Nota de Débito"),
-    GUIA_REMISION("06", "Guía de Remisión"),
-    COMPROBANTE_RETENCION("07", "Comprobante de Retención");
+    NOTA_CREDITO(4,"Nota de Crédito"),
+    NOTA_DEBITO(5, "Nota de Débito"),
+    GUIA_REMISION(6, "Guía de Remisión"),
+    COMPROBANTE_RETENCION(7, "Comprobante de Retención");
 
-    private String code;
+    private int code;
     private String description;
 
-    DocumentType(String code, String description) {
+    DocumentType(int code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public static DocumentType fromCode(String code) {
+    public static DocumentType fromCode(int code) {
         return Arrays.stream(values()).filter(
-                        v-> v.code.equals(code)
+                        v-> v.code == code
                 ).findFirst()
                 .orElseThrow(
                         ()-> new IllegalArgumentException(

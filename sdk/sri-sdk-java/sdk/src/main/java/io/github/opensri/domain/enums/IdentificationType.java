@@ -10,24 +10,24 @@ import java.util.Arrays;
  */
 @Getter
 public enum IdentificationType {
-    RUC("04","RUC"),
-    CEDULA("05", "CÉDULA"),
-    PASAPORTE("06","PASAPORTE"),
-    VENTA_CONSUMIDOR_FINAL("07","VENTA CONSUMIDOR FINAL"),
-    IDENTIFICATION_DEL_EXTERIOR("08","IDENTIFICATION DEL " +
+    RUC(4,"RUC"),
+    CEDULA(5, "CÉDULA"),
+    PASAPORTE(6,"PASAPORTE"),
+    VENTA_CONSUMIDOR_FINAL(7,"VENTA CONSUMIDOR FINAL"),
+    IDENTIFICATION_DEL_EXTERIOR(8,"IDENTIFICATION DEL " +
             "EXTERIOR");
 
-    private String code;
+    private int code;
     private String description;
 
-    IdentificationType(String code, String description){
+    IdentificationType(int code, String description){
         this.code = code;
         this.description = description;
     }
 
-    public static IdentificationType fromCode(String code){
+    public static IdentificationType fromCode(int code){
         return Arrays.stream(values()).filter(
-                v-> v.code.equals(code)
+                v-> v.code == code
         ).findFirst()
                 .orElseThrow(
                 ()-> new IllegalArgumentException(

@@ -11,22 +11,22 @@ import java.util.Arrays;
  */
 @Getter
 public enum TaxType {
-    RENTA("1", "Renta"),
-    IVA("2", "IVA"),
-    ISD("6", "ISD");
+    RENTA(1, "Renta"),
+    IVA(2, "IVA"),
+    ISD(6, "ISD");
 
-    private final String code;
+    private final int code;
     private final String description;
 
 
-    TaxType(String code, String description) {
+    TaxType(int code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public static TaxType fromCode(String code) {
+    public static TaxType fromCode(int code) {
         return Arrays.stream(values()).filter(
-                        v-> v.code.equals(code)
+                        v-> v.code == code
                 ).findFirst()
                 .orElseThrow(
                         ()-> new IllegalArgumentException(

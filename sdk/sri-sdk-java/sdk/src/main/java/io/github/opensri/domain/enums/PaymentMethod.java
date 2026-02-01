@@ -1,7 +1,10 @@
 package io.github.opensri.domain.enums;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public enum PaymentMethod {
     SIN_SISTEMA_FINANCIERO(1,"Sin utilización del sistema" +
             " financiero"),

@@ -4,6 +4,11 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * Enum del tipo de pago del cliente, con base en la tabla de la documentación
+ * del SRI Nro. 24, actualmente no se encuentra en la documentación oficial,
+ * se encuentra aparte.
+ */
 @Getter
 public enum PaymentMethod {
     SIN_SISTEMA_FINANCIERO(1,"Sin utilización del sistema" +

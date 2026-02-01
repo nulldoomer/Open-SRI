@@ -4,6 +4,10 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * Enum del ambiente del web service del SRI, con base en la tabla de la
+ * documentación del SRI Nro. 4
+ */
 @Getter
 public enum Environment {
     PRUEBAS(1,"Ambiente de pruebas"),

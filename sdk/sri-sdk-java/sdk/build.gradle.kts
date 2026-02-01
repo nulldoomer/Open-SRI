@@ -26,8 +26,6 @@ dependencies {
     // Testing
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    // Source: https://mvnrepository.com/artifact/ec.com.cognoware/sri-common
-    implementation("ec.com.cognoware:sri-common:1.0.10")
     // Source: https://mvnrepository.com/artifact/org.projectlombok/lombok
     implementation("org.projectlombok:lombok:1.18.42")
 }

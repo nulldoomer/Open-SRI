@@ -9,7 +9,7 @@ import java.util.Arrays;
  * tabla de la documentación del SRI Nro. 6
  */
 @Getter
-public enum IdentificationTypeEnum {
+public enum IdentificationType {
     RUC("04","RUC"),
     CEDULA("05", "CÉDULA"),
     PASAPORTE("06","PASAPORTE"),
@@ -20,12 +20,12 @@ public enum IdentificationTypeEnum {
     private String code;
     private String description;
 
-    IdentificationTypeEnum(String code, String description){
+    IdentificationType(String code, String description){
         this.code = code;
         this.description = description;
     }
 
-    public static IdentificationTypeEnum fromCode(String code){
+    public static IdentificationType fromCode(String code){
         return Arrays.stream(values()).filter(
                 v-> v.code.equals(code)
         ).findFirst()

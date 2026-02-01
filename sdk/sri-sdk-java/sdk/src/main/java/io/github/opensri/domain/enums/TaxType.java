@@ -10,7 +10,7 @@ import java.util.Arrays;
  * documentación del SRI Nro. 19
  */
 @Getter
-public enum TaxTypeEnum {
+public enum TaxType {
     RENTA("1", "Renta"),
     IVA("2", "IVA"),
     ISD("6", "ISD");
@@ -19,12 +19,12 @@ public enum TaxTypeEnum {
     private final String description;
 
 
-    TaxTypeEnum(String code, String description) {
+    TaxType(String code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public static TaxTypeEnum fromCode(String code) {
+    public static TaxType fromCode(String code) {
         return Arrays.stream(values()).filter(
                         v-> v.code.equals(code)
                 ).findFirst()

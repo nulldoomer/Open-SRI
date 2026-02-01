@@ -9,7 +9,7 @@ import java.util.Arrays;
  * la documentación del SRI Nro. 17
  */
 @Getter
-public enum TaxRateEnum {
+public enum TaxRate {
     PORCENTAJE_0("0", "0%"),
     PORCENTAJE_12("2", "12%"),
     PORCENTAJE_14("3", "14%"),
@@ -23,12 +23,12 @@ public enum TaxRateEnum {
     private final String code;
     private final String description;
 
-    TaxRateEnum(String code, String description) {
+    TaxRate(String code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public static TaxRateEnum fromCode(String code) {
+    public static TaxRate fromCode(String code) {
         return Arrays.stream(values()).filter(
                         v-> v.code.equals(code)
                 ).findFirst()

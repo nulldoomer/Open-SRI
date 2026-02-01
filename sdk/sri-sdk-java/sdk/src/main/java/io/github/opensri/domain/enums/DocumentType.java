@@ -9,7 +9,7 @@ import java.util.Arrays;
  * del SRI Nro. 3
  */
 @Getter
-public enum DocumentTypeEnum {
+public enum DocumentType {
     FACTURA("01", "Factura"),
     LIQUIDACION_COMPRA("03", "Liquidación de Compra de Bienes" +
             " y Prestación de Servicios"),
@@ -21,12 +21,12 @@ public enum DocumentTypeEnum {
     private String code;
     private String description;
 
-    DocumentTypeEnum(String code, String description) {
+    DocumentType(String code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public static DocumentTypeEnum fromCode(String code) {
+    public static DocumentType fromCode(String code) {
         return Arrays.stream(values()).filter(
                         v-> v.code.equals(code)
                 ).findFirst()

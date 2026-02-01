@@ -2,7 +2,7 @@ package io.github.opensri.domain.enums;
 
 import java.util.Arrays;
 
-public enum PaymentMethodEnum {
+public enum PaymentMethod {
     SIN_SISTEMA_FINANCIERO("1","Sin utilización del sistema" +
             " financiero"),
     COMPENSACION_DE_DEUDAS("15","Compensacion de deudas"),
@@ -17,12 +17,12 @@ public enum PaymentMethodEnum {
     private String code;
     private String description;
 
-    PaymentMethodEnum(String code, String description){
+    PaymentMethod(String code, String description){
         this.code = code;
         this.description = description;
     }
 
-    public static PaymentMethodEnum fromCode(String code){
+    public static PaymentMethod fromCode(String code){
         return Arrays.stream(values()).filter(
                 v->v.code.equals(code)
         ).findFirst().orElseThrow(

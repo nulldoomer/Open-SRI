@@ -2,6 +2,8 @@ package io.github.opensri.domain.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * Enum del tipo de documento a emitir, con base en la tabla de la documentación
  * del SRI Nro. 3
@@ -24,12 +26,13 @@ public enum DocumentTypeEnum {
         this.description = description;
     }
 
-    public static DocumentTypeEnum findByCode(String code) {
-        for (DocumentTypeEnum documentTypeEnum : DocumentTypeEnum.values()) {
-            if (documentTypeEnum.getCode().equals(code)) {
-                return documentTypeEnum;
-            }
-        }
-        return null;
+    public static DocumentTypeEnum fromCode(String code) {
+        return Arrays.stream(values()).filter(
+                        v-> v.code.equals(code)
+                ).findFirst()
+                .orElseThrow(
+                        ()-> new IllegalArgumentException(
+                                "No such DocumentTypeEnum code " + code)
+                );
     }
 }

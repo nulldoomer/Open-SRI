@@ -2,6 +2,8 @@ package io.github.opensri.domain.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * Enum del tipo de la tarifa del iva que se va a usar, con base en la tabla de
  * la documentación del SRI Nro. 17
@@ -26,12 +28,13 @@ public enum TaxRateEnum {
         this.description = description;
     }
 
-    public static TaxRateEnum findByCode(String code) {
-        for (TaxRateEnum taxRateEnum : TaxRateEnum.values()) {
-            if (taxRateEnum.getCode().equals(code)) {
-                return taxRateEnum;
-            }
-        }
-        return null;
+    public static TaxRateEnum fromCode(String code) {
+        return Arrays.stream(values()).filter(
+                        v-> v.code.equals(code)
+                ).findFirst()
+                .orElseThrow(
+                        ()-> new IllegalArgumentException(
+                                "No such TaxRateEnum code " + code)
+                );
     }
 }

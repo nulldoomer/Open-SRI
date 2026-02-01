@@ -2,6 +2,8 @@ package io.github.opensri.domain.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 
 /**
  * Enum del tipo de impuesto a retener, con base en la tabla de la
@@ -22,12 +24,13 @@ public enum TaxTypeEnum {
         this.description = description;
     }
 
-    public static TaxTypeEnum findByCode(String code) {
-        for (TaxTypeEnum taxTypeEnum: TaxTypeEnum.values()) {
-            if(taxTypeEnum.code.equals(code)) {
-                return taxTypeEnum;
-            }
-        }
-        return null;
+    public static TaxTypeEnum fromCode(String code) {
+        return Arrays.stream(values()).filter(
+                        v-> v.code.equals(code)
+                ).findFirst()
+                .orElseThrow(
+                        ()-> new IllegalArgumentException(
+                                "No such TaxTypeEnum code " + code)
+                );
     }
 }

@@ -54,9 +54,9 @@ public record ElectronicDocument(
         // Valor total retenido (IVA + RENTA)
         BigDecimal totalWithholdingValue,
         List<TotalTaxes> totalTaxes,
-        
+
         // Detalle de retencion (si aplica)
-        List<Retention> retentionDetails,
+//        List<Retention> retentionDetails,
         // Lista de items facturados
         List<InvoiceItem> invoiceItems
 ) {

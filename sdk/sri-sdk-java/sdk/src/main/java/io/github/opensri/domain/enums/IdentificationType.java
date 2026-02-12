@@ -1,14 +1,11 @@
 package io.github.opensri.domain.enums;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 
 /**
  * Enum del tipo de documento de identificación del cliente, con base en la
  * tabla de la documentación del SRI Nro. 6
  */
-@Getter
 public enum IdentificationType {
     RUC(4,"RUC"),
     CEDULA(5, "CÉDULA"),
@@ -16,6 +13,14 @@ public enum IdentificationType {
     VENTA_CONSUMIDOR_FINAL(7,"VENTA CONSUMIDOR FINAL"),
     IDENTIFICATION_DEL_EXTERIOR(8,"IDENTIFICATION DEL " +
             "EXTERIOR");
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     private int code;
     private String description;

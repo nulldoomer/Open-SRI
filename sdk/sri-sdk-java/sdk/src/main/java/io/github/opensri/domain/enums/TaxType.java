@@ -1,7 +1,5 @@
 package io.github.opensri.domain.enums;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 
 
@@ -9,7 +7,6 @@ import java.util.Arrays;
  * Enum del tipo de impuesto a retener, con base en la tabla de la
  * documentación del SRI Nro. 19
  */
-@Getter
 public enum TaxType {
     RENTA(1, "Renta"),
     IVA(2, "IVA"),
@@ -18,6 +15,13 @@ public enum TaxType {
     private final int code;
     private final String description;
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     TaxType(int code, String description) {
         this.code = code;

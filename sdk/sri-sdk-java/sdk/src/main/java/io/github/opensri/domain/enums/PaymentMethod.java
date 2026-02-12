@@ -1,7 +1,5 @@
 package io.github.opensri.domain.enums;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 
 /**
@@ -9,7 +7,6 @@ import java.util.Arrays;
  * del SRI Nro. 24, actualmente no se encuentra en la documentación oficial,
  * se encuentra aparte.
  */
-@Getter
 public enum PaymentMethod {
     SIN_SISTEMA_FINANCIERO(1,"Sin utilización del sistema" +
             " financiero"),
@@ -24,6 +21,14 @@ public enum PaymentMethod {
 
     private int code;
     private String description;
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     PaymentMethod(int code, String description){
         this.code = code;

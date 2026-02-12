@@ -1,14 +1,11 @@
 package io.github.opensri.domain.enums;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 
 /**
  * Enum del tipo de la tarifa del iva que se va a usar, con base en la tabla de
  * la documentación del SRI Nro. 17
  */
-@Getter
 public enum TaxRate {
     PORCENTAJE_0(0, "0%"),
     PORCENTAJE_12(2, "12%"),
@@ -22,6 +19,14 @@ public enum TaxRate {
 
     private final int code;
     private final String description;
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     TaxRate(int code, String description) {
         this.code = code;

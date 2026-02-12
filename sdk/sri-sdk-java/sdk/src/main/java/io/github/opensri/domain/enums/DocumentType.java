@@ -1,14 +1,11 @@
 package io.github.opensri.domain.enums;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 
 /**
  * Enum del tipo de documento a emitir, con base en la tabla de la documentación
  * del SRI Nro. 3
  */
-@Getter
 public enum DocumentType {
     FACTURA(1, "Factura"),
     LIQUIDACION_COMPRA(3, "Liquidación de Compra de Bienes" +
@@ -20,6 +17,14 @@ public enum DocumentType {
 
     private int code;
     private String description;
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     DocumentType(int code, String description) {
         this.code = code;

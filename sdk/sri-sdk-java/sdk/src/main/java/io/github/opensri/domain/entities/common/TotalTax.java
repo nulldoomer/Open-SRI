@@ -1,9 +1,8 @@
-package io.github.opensri.domain.entities;
+package io.github.opensri.domain.entities.common;
 
 import java.math.BigDecimal;
 
-public record TotalTaxes(
-
+public record TotalTax(
         // Tabla 16: Tipo de impuesto
         String code,
         // Tabla 17: Tarifa del IVA

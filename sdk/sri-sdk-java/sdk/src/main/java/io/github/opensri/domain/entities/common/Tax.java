@@ -1,4 +1,4 @@
-package io.github.opensri.domain.entities.invoice;
+package io.github.opensri.domain.entities.common;
 
 import java.math.BigDecimal;
 

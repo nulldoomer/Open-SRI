@@ -1,7 +1,9 @@
 package io.github.opensri.domain.entities.common;
 
 public record Issuer(
-        String identification,
-        String businessName
+        // Nombre del establecimiento
+        String socialReason,
+        // Ruc del emisor
+        String identification
 ) {
 }

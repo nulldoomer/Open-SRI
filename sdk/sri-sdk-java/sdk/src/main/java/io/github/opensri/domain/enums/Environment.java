@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public enum Environment {
     PRUEBAS(1,"Ambiente de pruebas"),
-    PRODUCCION(2,"Ambiente de produccion");
+    PRODUCCION(2,"Ambiente de producción");
 
     private int code;
     private String description;

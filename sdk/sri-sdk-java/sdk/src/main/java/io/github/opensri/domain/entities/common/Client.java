@@ -1,7 +1,9 @@
 package io.github.opensri.domain.entities.common;
 
+import io.github.opensri.domain.valueobjects.ClientIdentification;
+
 public record Client(
-        String identification,
+        ClientIdentification identification,
         String names
 ) {
 }

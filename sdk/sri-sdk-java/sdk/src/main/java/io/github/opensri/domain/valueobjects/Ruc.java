@@ -2,7 +2,7 @@ package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
 
-public record Ruc(String number) {
+public record Ruc(String number) implements ClientIdentification {
 
     public Ruc {
         Objects.requireNonNull(number,"RUC cannot be null");

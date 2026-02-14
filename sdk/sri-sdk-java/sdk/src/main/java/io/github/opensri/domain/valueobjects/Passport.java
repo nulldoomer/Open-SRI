@@ -2,7 +2,7 @@ package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
 
-public record Passport(String number) {
+public record Passport(String number) implements ClientIdentification {
     public Passport {
         Objects.requireNonNull(number);
 

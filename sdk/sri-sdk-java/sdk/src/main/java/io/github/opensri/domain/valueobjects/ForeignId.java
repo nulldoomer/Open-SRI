@@ -1,6 +1,6 @@
 package io.github.opensri.domain.valueobjects;
 
-public record ForeignId(String number) {
+public record ForeignId(String number) implements ClientIdentification {
 
     public ForeignId {
         if (number == null || number.isBlank()) {

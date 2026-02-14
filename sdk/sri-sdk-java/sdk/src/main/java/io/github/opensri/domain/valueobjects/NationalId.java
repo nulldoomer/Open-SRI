@@ -2,7 +2,7 @@ package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
 
-public record NationalId(String number) {
+public record NationalId(String number) implements ClientIdentification {
     public NationalId {
         Objects.requireNonNull(number,"National ID cannot be null");
 

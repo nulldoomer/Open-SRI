@@ -1,6 +1,15 @@
 package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
+/**
+ * Represents a national identification number.
+ *
+ * <p>This value object validates the identification number
+ * according to the official national checksum algorithm.
+ *
+ * <p>An instance of this class always contains a valid
+ * and properly formatted national ID.
+ */
 
 public record NationalId(String number) implements ClientIdentification {
     public NationalId {

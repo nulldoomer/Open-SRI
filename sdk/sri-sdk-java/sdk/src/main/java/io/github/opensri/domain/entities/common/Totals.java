@@ -3,6 +3,17 @@ package io.github.opensri.domain.entities.common;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Datos obligatorios de valores totales e impuestos totales
+ * @param totalValue
+ * @param totalTaxableValue
+ * @param totalTaxValue
+ * @param totalExemptValue
+ * @param totalDiscount
+ * @param totalTipValue
+ * @param totalWithholdingValue
+ * @param totalTaxes
+ */
 public record Totals(
         // Valor total final del comprobante
         BigDecimal totalValue,

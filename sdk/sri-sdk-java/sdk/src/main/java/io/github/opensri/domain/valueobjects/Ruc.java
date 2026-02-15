@@ -2,6 +2,15 @@ package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
 
+/**
+ * Represents a taxpayer identification number (RUC).
+ *
+ * <p>This value object validates the structure and format
+ * according to tax authority (SRI) rules.
+ *
+ * <p>Instances are immutable and guaranteed to contain
+ * a valid RUC number.
+ */
 public record Ruc(String number) implements ClientIdentification {
 
     public Ruc {

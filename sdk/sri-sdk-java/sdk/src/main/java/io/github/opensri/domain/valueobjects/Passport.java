@@ -1,6 +1,16 @@
 package io.github.opensri.domain.valueobjects;
 
 import java.util.Objects;
+/**
+ * Represents a passport identification number.
+ *
+ * <p>This value object ensures that the passport number
+ * is non-null, non-blank, and formatted according to
+ * general identification requirements.
+ *
+ * <p>Validation rules are intentionally flexible to
+ * support international formats.
+ */
 
 public record Passport(String number) implements ClientIdentification {
     public Passport {

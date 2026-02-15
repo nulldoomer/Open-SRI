@@ -6,6 +6,18 @@ import io.github.opensri.domain.entities.common.Tax;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Datos fiscales necesarios para los items del detalle de la factura
+ * @param mainCode
+ * @param auxCode
+ * @param description
+ * @param quantity
+ * @param unitPrice
+ * @param discount
+ * @param totalPriceWithoutTax
+ * @param additionalDetails
+ * @param taxes
+ */
 public record InvoiceItem(
         String mainCode,
         String auxCode,

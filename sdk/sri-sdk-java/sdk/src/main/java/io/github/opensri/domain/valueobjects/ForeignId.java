@@ -1,5 +1,14 @@
 package io.github.opensri.domain.valueobjects;
 
+/**
+ * Represents a foreign identification number.
+ *
+ * <p>This value object encapsulates identification
+ * values used for non-national clients in tax documents.
+ *
+ * <p>Instances are validated to ensure they meet
+ * the required structural constraints.
+ */
 public record ForeignId(String number) implements ClientIdentification {
 
     public ForeignId {

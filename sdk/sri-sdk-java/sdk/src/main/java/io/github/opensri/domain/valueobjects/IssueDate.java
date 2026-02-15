@@ -3,6 +3,14 @@ package io.github.opensri.domain.valueobjects;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Represents the issuance date of a tax document.
+ *
+ * <p>This value object ensures that the date is valid
+ * and formatted according to tax authority requirements.
+ *
+ * <p>Instances are immutable and validated at creation time.
+ */
 public record IssueDate (
         LocalDate date
 ){

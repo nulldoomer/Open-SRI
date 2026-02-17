@@ -11,6 +11,7 @@ import java.util.List;
  * Entidad que contiene todos los datos fiscales necesarios para realizar la
  * facturación electronica
  * @param issueDate
+ * @param establishmentDirection
  * @param taxInfo
  * @param documentNumber
  * @param client
@@ -20,6 +21,7 @@ import java.util.List;
 public record Invoice(
 
         IssueDate issueDate,
+        String establishmentDirection,
         TaxInfo taxInfo,
         String documentNumber,
         Client client,

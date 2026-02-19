@@ -1,6 +1,7 @@
 package io.github.opensri.domain.entities.invoice;
 
 import io.github.opensri.domain.entities.common.Client;
+import io.github.opensri.domain.entities.common.DocumentNumber;
 import io.github.opensri.domain.entities.common.Totals;
 import io.github.opensri.domain.entities.taxinfo.TaxInfo;
 import io.github.opensri.domain.valueobjects.IssueDate;
@@ -23,7 +24,7 @@ public record Invoice(
         IssueDate issueDate,
         String establishmentDirection,
         TaxInfo taxInfo,
-        String documentNumber,
+        DocumentNumber documentNumber,
         Client client,
         Totals totals,
         List <InvoiceItem> items

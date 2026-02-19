@@ -1,9 +1,7 @@
 package io.github.opensri.api.client;
 
 import io.github.opensri.domain.entities.profile.IssuerProfile;
-import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.Environment;
-import io.github.opensri.domain.valueobjects.Ruc;
 
 public final class OpenSRIClient {
 
@@ -14,7 +12,7 @@ public final class OpenSRIClient {
     private final IssuerProfile issuerProfile;
     private final int timeoutSeconds;
 
-    private OpenSRIClient(Environment environment,
+    public OpenSRIClient(Environment environment,
                           byte[] certificate,
                           String certificatePassword,
                           String certificateAlias,

@@ -9,10 +9,6 @@ import io.github.opensri.domain.entities.common.Issuer;
  * @param emissionType
  * @param issuer
  * @param accessKey
- * @param documentCode
- * @param establishment
- * @param emissionPoint
- * @param sequentialNumber
  * @param parentAddress
  */
 public record TaxInfo(
@@ -24,14 +20,6 @@ public record TaxInfo(
         Issuer issuer,
         // Clave de acceso generada automáticamente por el SDK
         String accessKey,
-        // Código del documento |Tabla Nro. 3 SRI | <codDoc>
-        String documentCode,
-        // Código del establecimiento
-        String establishment,
-        // Código del punto de emisión
-        String emissionPoint,
-        // Número secuencial de los documentos
-        String sequentialNumber,
         // Dirección de la Matriz del negocio
         String parentAddress
 ) {

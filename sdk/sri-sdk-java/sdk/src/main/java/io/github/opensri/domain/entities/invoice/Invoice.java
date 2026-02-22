@@ -29,7 +29,13 @@ public record Invoice(
         Totals totals,
         List <InvoiceItem> items
 ) {
-    public Invoice{
+
+    public Invoice {
         items = items == null ? List.of():List.copyOf(items);
     }
+
+//    public Totals getTotals(){
+//
+//        return Totals.from(this.items);
+//    }
 }

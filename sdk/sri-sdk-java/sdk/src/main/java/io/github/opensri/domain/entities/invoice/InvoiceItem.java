@@ -22,7 +22,7 @@ public record InvoiceItem(
         String mainCode,
         String auxCode,
         String description,
-        String quantity,
+        BigDecimal quantity,
         BigDecimal unitPrice,
         BigDecimal discount,
         BigDecimal totalPriceWithoutTax,

@@ -1,5 +1,7 @@
 package io.github.opensri.domain.entities.common;
 
+import io.github.opensri.domain.entities.invoice.InvoiceItem;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -34,4 +36,13 @@ public record Totals(
     public Totals{
         totalTaxes = totalTaxes == null ? List.of(): List.copyOf(totalTaxes);
     }
+
+//    public static Totals from(List<InvoiceItem> items) {
+//
+//        if( items == null || items.isEmpty()){
+//            throw new IllegalArgumentException("items cannot be null or empty");
+//        }
+//
+//        totalValue = BigDecimal.ZERO;
+//    }
 }

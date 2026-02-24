@@ -5,7 +5,7 @@ import io.github.opensri.domain.entities.common.DocumentNumber;
 import io.github.opensri.domain.entities.common.Totals;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
-import io.github.opensri.domain.entities.taxinfo.TaxInfo;
+import io.github.opensri.domain.entities.common.TaxInfo;
 import io.github.opensri.domain.valueobjects.IssueDate;
 
 import java.util.ArrayList;

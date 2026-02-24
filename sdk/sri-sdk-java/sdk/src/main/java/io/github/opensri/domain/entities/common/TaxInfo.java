@@ -1,6 +1,4 @@
-package io.github.opensri.domain.entities.taxinfo;
-
-import io.github.opensri.domain.entities.common.Issuer;
+package io.github.opensri.domain.entities.common;
 
 /**
  * Información fiscal reutilizable que cubre todos los datos necesarios de

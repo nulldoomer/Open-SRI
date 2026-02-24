@@ -1,4 +1,4 @@
-package io.github.opensri.domain.entities.profile;
+package io.github.opensri.domain.entities.common;
 
 import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.valueobjects.Ruc;

@@ -4,7 +4,7 @@ import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
-import io.github.opensri.domain.entities.taxinfo.TaxInfo;
+import io.github.opensri.domain.entities.common.TaxInfo;
 import io.github.opensri.domain.valueobjects.ClientIdentification;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;

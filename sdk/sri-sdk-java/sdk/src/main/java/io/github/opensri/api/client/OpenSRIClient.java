@@ -1,6 +1,6 @@
 package io.github.opensri.api.client;
 
-import io.github.opensri.domain.entities.profile.IssuerProfile;
+import io.github.opensri.domain.entities.common.IssuerProfile;
 import io.github.opensri.domain.enums.Environment;
 
 public final class OpenSRIClient {

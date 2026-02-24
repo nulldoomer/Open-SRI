@@ -2,11 +2,10 @@ package io.github.opensri.builders;
 
 import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
 import io.github.opensri.api.client.OpenSRIClient;
-import io.github.opensri.domain.entities.profile.IssuerProfile;
+import io.github.opensri.domain.entities.common.IssuerProfile;
 import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.Ruc;
-import io.github.opensri.domain.valueobjects.SpecialTaxPayer;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

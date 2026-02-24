@@ -14,68 +14,49 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InvoiceBuilderTest {
     @Test
-    void builder(){
+    void should_build_invoice_and_calculate_totals_correctly() {
 
         // Arrange
+        Ruc ruc = new Ruc("1004456727001");
 
-        Ruc rucUnderTest = new Ruc("1004456727001");
-        Issuer issuerUnderTest = new Issuer(
+        Issuer issuer = new Issuer(
                 "Clínica",
-                rucUnderTest
-
+                ruc
         );
 
-        TaxInfo taxInfoUnderTest = new TaxInfo(
+        TaxInfo taxInfo = new TaxInfo(
                 1,
                 1,
-                issuerUnderTest,
+                issuer,
                 "2006201401179772773900110010010010320580103205813",
                 "Calle A 8392835"
         );
 
-        DocumentNumber documentNumberUnderTest = new DocumentNumber(
+        DocumentNumber documentNumber = new DocumentNumber(
                 "01",
                 "001",
                 "001",
                 "001032058"
         );
 
-        ClientIdentification clientIdentificationUnderTest =
+        ClientIdentification clientIdentification =
                 new NationalId("1004456727");
 
-        Client  clientUnderTest = new Client(
-                clientIdentificationUnderTest,
+        Client client = new Client(
+                clientIdentification,
                 "Won XD"
         );
 
-        Totals totalsUnderTest = new Totals(
-                new BigDecimal("115.00"), // totalValue
-                new BigDecimal("100.00"), // totalTaxableValue
-                new BigDecimal("15.00"),  // totalTaxValue
-                BigDecimal.ZERO,          // totalExemptValue
-                BigDecimal.ZERO,          // totalDiscount
-                BigDecimal.ZERO,          // totalTipValue
-                BigDecimal.ZERO,          // totalWithholdingValue
-                List.of(
-                        new TotalTax(
-                                "2",
-                                "2",
-                                "IVA 15%",
-                                new BigDecimal("15.00"),
-                                new BigDecimal("100.00"),
-                                new BigDecimal("15.00")
-                        )
-                )
-        );
-        InvoiceItem itemUnderTest = new InvoiceItem(
+        InvoiceItem item = new InvoiceItem(
                 "001",
                 "AUX-001",
                 "Consulta médica",
-                "2",
+                BigDecimal.valueOf(2),
                 new BigDecimal("50.00"),
                 BigDecimal.ZERO,
                 new BigDecimal("100.00"),
@@ -85,24 +66,36 @@ class InvoiceBuilderTest {
                                 "2",                      // código IVA
                                 "2",                      // código tarifa 15%
                                 new BigDecimal("15.00"),  // porcentaje
-                                new BigDecimal("100.00"), // base
-                                new BigDecimal("15.00")   // valor impuesto
+                                new BigDecimal("100.00")  // base
                         )
                 )
         );
 
-        Invoice invoiceUnderTest = InvoiceBuilder.builder()
+        // Act
+        Invoice invoice = InvoiceBuilder.builder()
                 .issueDate(IssueDate.now())
                 .establishmentDirection("CASA LOL")
-                .taxInfo(taxInfoUnderTest)
-                .documentNumber(documentNumberUnderTest)
-                .client(clientUnderTest)
-                .totals(totalsUnderTest)
-                .addItem(itemUnderTest)
-                .doneItems().build(); // ========= ACT ==============
+                .taxInfo(taxInfo)
+                .documentNumber(documentNumber)
+                .client(client)
+                .addItem(item)
+                .doneItems()
+                .build();
 
         // Assert
-        assertNotNull(invoiceUnderTest);
+        assertNotNull(invoice);
+        assertNotNull(invoice.totals());
 
+        // subtotal sin impuestos
+        assertEquals(new BigDecimal("100.00"),
+                invoice.totals().totalWithoutTaxes());
+
+        // impuesto calculado dinámicamente: 100 * 15 / 100 = 15
+        assertEquals(new BigDecimal("15.00"),
+                invoice.totals().totalTaxes().get(0).value());
+
+        // total final: 100 + 15
+        assertEquals(new BigDecimal("115.00"),
+                invoice.totals().totalValue());
     }
 }

@@ -34,8 +34,4 @@ public record Invoice(
         items = items == null ? List.of():List.copyOf(items);
     }
 
-//    public Totals getTotals(){
-//
-//        return Totals.from(this.items);
-//    }
 }

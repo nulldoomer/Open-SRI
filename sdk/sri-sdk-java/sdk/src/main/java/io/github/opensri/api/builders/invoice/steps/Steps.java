@@ -18,7 +18,6 @@ public final class Steps implements
         TaxInfoStep,
         DocumentNumberStep,
         ClientStep,
-        TotalsStep,
         FirstItemStep,
         ItemsStep,
         BuildStep {
@@ -28,7 +27,6 @@ public final class Steps implements
     private TaxInfo taxInfo;
     private DocumentNumber documentNumber;
     private Client client;
-    private Totals totals;
     private final List<InvoiceItem> items = new ArrayList<>();
 
     @Override
@@ -61,17 +59,11 @@ public final class Steps implements
         return this;
     }
 
-    @Override
-    public TotalsStep client(Client client) {
-        this.client = Objects.requireNonNull(client,
-                "Client is required");
-        return this;
-    }
 
     @Override
-    public FirstItemStep totals(Totals totals) {
-        this.totals = Objects.requireNonNull(totals,
-                "Totals are required");
+    public FirstItemStep client(Client client) {
+        this.client = Objects.requireNonNull(client,
+                "Client is required");
         return this;
     }
 
@@ -96,6 +88,8 @@ public final class Steps implements
         if (items.isEmpty()) {
             throw new IllegalStateException("Invoice must contain at least one item");
         }
+
+        Totals totals = Totals.from(items);
 
         return new Invoice(
                 issueDate,

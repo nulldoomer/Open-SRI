@@ -29,7 +29,7 @@ public record Tax(
     public BigDecimal value(){
         return taxableBase
                 .multiply(rate)
-                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)
-                .setScale(2, RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(100), SCALE, RoundingMode.HALF_UP)
+                .setScale(SCALE, RoundingMode.HALF_UP);
     }
 }

@@ -14,43 +14,58 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class InvoiceBuilderTest {
-    @Test
-    void should_build_invoice_and_calculate_totals_correctly() {
 
-        // Arrange
+    // =================== HELPERS =============================================
+
+    private TaxInfo dummyTaxInfo() {
         Ruc ruc = new Ruc("1004456727001");
-
-        Issuer issuer = new Issuer(
-                "Clínica",
-                ruc
-        );
-
-        TaxInfo taxInfo = new TaxInfo(
+        Issuer issuer = new Issuer("Clínica", ruc);
+        return new TaxInfo(
                 1,
                 issuer,
                 "2006201401179772773900110010010010320580103205813",
                 "Calle A 8392835"
         );
+    }
 
-        DocumentNumber documentNumber = new DocumentNumber(
+    private DocumentNumber dummyDoc() {
+        return new DocumentNumber(
                 "01",
                 "001",
                 "001",
                 "001032058"
         );
+    }
 
-        ClientIdentification clientIdentification =
-                new NationalId("1004456727");
+    private Client dummyClient() {
+        ClientIdentification id = new NationalId("1004456727");
+        return new Client(id, "Won XD");
+    }
 
-        Client client = new Client(
-                clientIdentification,
-                "Won XD"
-        );
+    private Invoice buildInvoice(InvoiceItem first, InvoiceItem... rest) {
+        var builder = InvoiceBuilder.builder()
+                .issueDate(IssueDate.now())
+                .establishmentDirection("CASA LOL")
+                .taxInfo(dummyTaxInfo())
+                .documentNumber(dummyDoc())
+                .client(dummyClient())
+                .addItem(first); // ItemStep garantizado
 
+        for (InvoiceItem item : rest) {
+            builder = builder.addItem(item);
+        }
+
+        return builder.doneItems().build();
+    }
+    // ============================ TESTS ======================================
+
+    @Test
+    void should_build_invoice_and_calculate_totals_correctly() {
+
+        // ------------------------ Arrange ------------------------------------
         InvoiceItem item = new InvoiceItem(
                 "001",
                 "AUX-001",
@@ -62,39 +77,120 @@ class InvoiceBuilderTest {
                 List.of(),
                 List.of(
                         new Tax(
-                                "2",                      // código IVA
-                                "2",                      // código tarifa 15%
-                                new BigDecimal("15.00"),  // porcentaje
-                                new BigDecimal("100.00")  // base
+                                "2",
+                                "2",
+                                new BigDecimal("15.00"),
+                                new BigDecimal("100.00")
                         )
                 )
         );
 
-        // Act
-        Invoice invoice = InvoiceBuilder.builder()
-                .issueDate(IssueDate.now())
-                .establishmentDirection("CASA LOL")
-                .taxInfo(taxInfo)
-                .documentNumber(documentNumber)
-                .client(client)
-                .addItem(item)
-                .doneItems()
-                .build();
+        // ------------------------------- Act ---------------------------------
+        Invoice invoice = buildInvoice(item);
 
-        // Assert
+
+        // ---------------------------- Assert ---------------------------------
         assertNotNull(invoice);
         assertNotNull(invoice.totals());
 
-        // subtotal sin impuestos
         assertEquals(new BigDecimal("100.00"),
                 invoice.totals().totalWithoutTaxes());
 
-        // impuesto calculado dinámicamente: 100 * 15 / 100 = 15
         assertEquals(new BigDecimal("15.00"),
-                invoice.totals().totalTaxes().get(0).value());
+                invoice.totals().totalTaxes().getFirst().value());
 
-        // total final: 100 + 15
         assertEquals(new BigDecimal("115.00"),
                 invoice.totals().totalValue());
+    }
+
+    @Test
+    void should_group_same_tax_and_separate_different_taxes() {
+
+
+        // ------------------------ Arrange ------------------------------------
+        InvoiceItem item1 = new InvoiceItem(
+                "001", "AUX-001", "Producto A",
+                BigDecimal.ONE,
+                new BigDecimal("100.00"),
+                BigDecimal.ZERO,
+                new BigDecimal("100.00"),
+                List.of(),
+                List.of(
+                        new Tax(
+                                "2",
+                                "2",
+                                new BigDecimal("15.00"),
+                                new BigDecimal("100.00")
+                        )
+                )
+        );
+
+        InvoiceItem item2 = new InvoiceItem(
+                "002", "AUX-002", "Producto B",
+                BigDecimal.ONE,
+                new BigDecimal("200.00"),
+                BigDecimal.ZERO,
+                new BigDecimal("200.00"),
+                List.of(),
+                List.of(
+                        new Tax(
+                                "2",
+                                "2",
+                                new BigDecimal("15.00"),
+                                new BigDecimal("200.00")
+                        )
+                )
+        );
+
+        InvoiceItem item3 = new InvoiceItem(
+                "003", "AUX-003", "Producto ICE",
+                BigDecimal.ONE,
+                new BigDecimal("50.00"),
+                BigDecimal.ZERO,
+                new BigDecimal("50.00"),
+                List.of(),
+                List.of(
+                        new Tax(
+                                "3",
+                        "0", new BigDecimal("10.00"),
+                                new BigDecimal("50.00")
+                        )
+                )
+        );
+
+        // ------------------------------- Act ---------------------------------
+        Invoice invoice = buildInvoice(item1, item2, item3);
+        Totals totals = invoice.totals();
+
+        // ---------------------------- Assert ---------------------------------
+
+
+        // Subtotal sin impuestos
+        assertEquals(new BigDecimal("350.00"), totals.totalWithoutTaxes());
+
+        // Total final: 350 + 45 (IVA) + 5 (ICE) = 400
+        assertEquals(new BigDecimal("400.00"), totals.totalValue());
+
+        // Deben agruparse en exactamente 2 tipos de impuesto
+        assertEquals(2, totals.totalTaxes().size());
+
+        // IVA agrupado: base 100 + 200 = 300, valor 15 + 30 = 45
+        TotalTax iva = totals.totalTaxes().stream()
+                .filter(t -> t.code().equals("2"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("IVA no encontrado"));
+
+        assertEquals(new BigDecimal("300.00"), iva.taxableBase());
+        assertEquals(new BigDecimal("45.00"),  iva.value());
+
+        // ICE separado: base 50, valor 50 * 10 / 100 = 5
+        TotalTax ice = totals.totalTaxes().stream()
+                .filter(t -> t.code().equals("3"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("ICE no encontrado"));
+
+
+        assertEquals(new BigDecimal("50.00"), ice.taxableBase());
+        assertEquals(new BigDecimal("5.00"),  ice.value());
     }
 }

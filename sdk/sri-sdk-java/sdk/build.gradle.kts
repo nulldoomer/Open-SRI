@@ -26,6 +26,10 @@ dependencies {
     // Testing
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    // XML serialization
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
+    runtimeOnly("org.glassfish.jaxb:jaxb-runtime:4.0.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

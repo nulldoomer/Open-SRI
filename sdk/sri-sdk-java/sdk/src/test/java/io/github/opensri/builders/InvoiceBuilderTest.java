@@ -26,7 +26,6 @@ class InvoiceBuilderTest {
         return new TaxInfo(
                 1,
                 issuer,
-                "2006201401179772773900110010010010320580103205813",
                 "Calle A 8392835"
         );
     }

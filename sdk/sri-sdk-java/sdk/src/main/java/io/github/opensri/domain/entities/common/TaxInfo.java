@@ -5,7 +5,6 @@ package io.github.opensri.domain.entities.common;
  * < infoFactura >
  * @param emissionType
  * @param issuer
- * @param accessKey
  * @param parentAddress
  */
 public record TaxInfo(
@@ -13,8 +12,6 @@ public record TaxInfo(
         Integer emissionType,
         // Información del remitente del documento electrónico
         Issuer issuer,
-        // Clave de acceso generada automáticamente por el SDK
-        String accessKey,
         // Dirección de la Matriz del negocio
         String parentAddress
 ) {

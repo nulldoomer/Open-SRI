@@ -7,15 +7,16 @@ import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class SRIAccessKeyGenerator implements AccessKeyGenerator {
+class SRIAccessKeyGenerator implements AccessKeyGenerator {
     @Override
     public String generate(IssueDate date, DocumentNumber documentNumber,
                            TaxInfo taxInfo, Environment environment) {
 
         // Separación de campos que conforman la clave de acceso del SRI
 
-        String issueDate = date.format();
+        String issueDate = date.format().replace("-","");
 
         // Tipo de comprobante | Tabla Nro. 3 SRI
         String documentCode = documentNumber.documentCode();
@@ -36,9 +37,7 @@ public class SRIAccessKeyGenerator implements AccessKeyGenerator {
 
         int digito = modulo11(keyWithoutDigit);
 
-        String finalKey = keyWithoutDigit + digito;
-
-        return finalKey;
+        return keyWithoutDigit + digito;
     }
 
     /**
@@ -51,8 +50,8 @@ public class SRIAccessKeyGenerator implements AccessKeyGenerator {
         String timeRandom = String.valueOf(System.currentTimeMillis());
         timeRandom = timeRandom.substring(timeRandom.length() - 5);
 
-        // Generación de un numero random de 3 dígitos
-        int normalRandom = new Random().nextInt(1000);
+        // Generación de un número random de 3 dígitos
+        int normalRandom = ThreadLocalRandom.current().nextInt(1000);
         String normalRandomString = String.format("%03d", normalRandom);
 
         // Combinación final del codeNumber

@@ -1,4 +1,4 @@
-package io.github.opensri.builders;
+package io.github.opensri.api.builders;
 
 import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
 import io.github.opensri.api.client.OpenSRIClient;

@@ -1,4 +1,4 @@
-package io.github.opensri.builders;
+package io.github.opensri.api.builders;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;

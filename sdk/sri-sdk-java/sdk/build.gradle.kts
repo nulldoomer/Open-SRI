@@ -26,6 +26,8 @@ dependencies {
     // Testing
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("net.jqwik:jqwik:1.8.4")
+    testImplementation("org.mockito:mockito-core:5.11.0")
 
     // XML serialization
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")

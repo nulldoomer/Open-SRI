@@ -6,29 +6,48 @@ import io.github.opensri.domain.entities.common.TaxInfo;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Genera la clave de acceso para documentos electrónicos del SRI.
+ *
+ * <p>La clave de acceso es un código de 49 dígitos que identifica unívocamente
+ * cada documento autorizado. Se construye concatenando campos del documento
+ * (fecha, tipo, RUC, ambiente, serie, secuencial) con un código numérico
+ * aleatorio de 8 dígitos generado por el SDK.
+ *
+ * <p>El dígito verificador se calcula aplicando el algoritmo módulo 11
+ * con factor inicial 7, según la especificación del SRI.
+ *
+ * <p>Implementa {@link AccessKeyGenerator}.
+ *
+ * @see AccessKeyGenerator
+ */
 class SRIAccessKeyGenerator implements AccessKeyGenerator {
+    /**
+     * Genera una clave de acceso de 49 dígitos para un documento electrónico.
+     *
+     * <p>La clave sigue el formato: fecha(8) + tipoDoc(2) + RUC(13) + ambiente(1)
+     * + serie(4) + secuencial(9) + códigoAleatorio(8) + tipoEmisión(1) + dígitoVerificador(1)
+     *
+     * @param date fecha de emisión del documento
+     * @param documentNumber número de documento con código, serie y secuencial
+     * @param taxInfo información tributaria del emisor
+     * @param environment ambiente del SRI (prueba o producción)
+     * @return clave de acceso completa con dígito verificador
+     */
     @Override
     public String generate(IssueDate date, DocumentNumber documentNumber,
                            TaxInfo taxInfo, Environment environment) {
 
-        // Separación de campos que conforman la clave de acceso del SRI
-
         String issueDate = date.format().replace("-","");
 
-        // Tipo de comprobante | Tabla Nro. 3 SRI
         String documentCode = documentNumber.documentCode();
         String rucNumber = taxInfo.issuer().ruc().number();
         String environmentType = String.valueOf(environment.getCode());
         String serie = documentNumber.establishment() + documentNumber.emissionPoint();
         String sequential = documentNumber.sequentialNumber();
 
-        /*
-         Código Numérico random, creado por el SDK (Algoritmo para crear un
-         número de 8 dígitos aleatorios, con baja probabilidad de similitud)
-         */
         String codeNumber = generateNumberCode();
         String emissionType = String.valueOf(taxInfo.emissionType());
 
@@ -40,21 +59,13 @@ class SRIAccessKeyGenerator implements AccessKeyGenerator {
         return keyWithoutDigit + digito;
     }
 
-    /**
-     *
-     * @return codeNumber
-     */
     private String generateNumberCode(){
-
-        // Últimos 5 dígitos del timestamp del sistema
         String timeRandom = String.valueOf(System.currentTimeMillis());
         timeRandom = timeRandom.substring(timeRandom.length() - 5);
 
-        // Generación de un número random de 3 dígitos
         int normalRandom = ThreadLocalRandom.current().nextInt(1000);
         String normalRandomString = String.format("%03d", normalRandom);
 
-        // Combinación final del codeNumber
         return timeRandom + normalRandomString;
     }
 
@@ -62,26 +73,15 @@ class SRIAccessKeyGenerator implements AccessKeyGenerator {
         int sum = 0;
         int factor = 7;
 
-        String[] digits = keyWithoutDigit.split("");
-
-        for( String digit : digits){
+        for (String digit : keyWithoutDigit.split("")) {
             sum += Integer.parseInt(digit) * factor;
-
-            factor = factor -1;
-
-            if(factor == 1)
-                factor = 7;
+            factor = (factor == 2) ? 7 : factor - 1;
         }
 
-        int verifierDigit = sum % 11;
+        int verifierDigit = 11 - (sum % 11);
 
-        verifierDigit = 11- verifierDigit;
-
-        if(verifierDigit == 11)
-            verifierDigit = 0;
-
-        if(verifierDigit == 10)
-            verifierDigit = 1;
+        if (verifierDigit >= 10)
+            verifierDigit = verifierDigit == 11 ? 0 : 1;
 
         return verifierDigit;
     }

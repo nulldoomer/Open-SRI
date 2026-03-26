@@ -19,7 +19,7 @@ class SRIAccessKeyGeneratorPropertyTest {
     // Feature: sri-sdk-completion
     // Property: Para cualquier combinación válida de inputs, la clave generada
     // tiene exactamente 49 dígitos numéricos.
-    // (Condición necesaria para que CheckAuthorizationUseCase la acepte — ver P10)
+    // (Condición necesaria para que CheckAuthorizationUseCase la acepte)
     // =========================================================================
 
     @Property(tries = 100)
@@ -64,9 +64,18 @@ class SRIAccessKeyGeneratorPropertyTest {
     ) {
         // Arrange
         IssueDate date = IssueDate.now();
-        DocumentNumber docNumber = new DocumentNumber("01", "001", "001", "000000001");
+
+        DocumentNumber docNumber = new DocumentNumber(
+                "01",
+                "001",
+                "001",
+                "001032058"
+        );
+
         Ruc ruc = new Ruc("1004456727001");
-        TaxInfo taxInfo = new TaxInfo(1, new Issuer("Test", ruc), "Dir");
+        Issuer issuer = new Issuer("Clinica", ruc);
+        TaxInfo taxInfo = new TaxInfo(1, issuer, "Calle A 8392835");
+
 
         // Act
         String key = generator.generate(date, docNumber, taxInfo, environment);

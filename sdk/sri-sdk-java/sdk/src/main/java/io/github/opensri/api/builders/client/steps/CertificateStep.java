@@ -1,5 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
 package io.github.opensri.api.builders.client.steps;
 
 public interface CertificateStep {
-    CertificatePasswordStep certificate(byte [] certificate);
+  CertificatePasswordStep certificate(byte[] certificate);
 }

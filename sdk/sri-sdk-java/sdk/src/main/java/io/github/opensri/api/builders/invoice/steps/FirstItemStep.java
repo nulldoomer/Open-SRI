@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
 package io.github.opensri.api.builders.invoice.steps;
 
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 
 public interface FirstItemStep {
-    ItemsStep addItem(InvoiceItem item);
+  ItemsStep addItem(InvoiceItem item);
 }

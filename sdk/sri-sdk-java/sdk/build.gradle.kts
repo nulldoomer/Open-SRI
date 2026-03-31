@@ -5,11 +5,32 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.2.1/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+// ====================================== PLUGINS =============================
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    java
+    id("com.diffplug.spotless") version "6.25.0"
 }
 
+spotless {
+    java {
+        target("src/**/*.java")
+        targetExclude("build/**/*.java")
+        targetExclude("src/test/**/*.java")
+        licenseHeader(
+            """// SPDX-License-Identifier: Apache-2.0
+            // Copyright (c) 2026 Nulldoomer
+
+            """
+        )
+
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}
+
+// ====================================== PLUGINS =============================
 group = "io.github.opensri"
 version = "0.1.0-SNAPSHOT"
 

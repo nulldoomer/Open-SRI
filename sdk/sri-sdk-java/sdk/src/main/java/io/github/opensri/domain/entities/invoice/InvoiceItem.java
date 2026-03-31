@@ -1,40 +1,39 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
 package io.github.opensri.domain.entities.invoice;
 
-
 import io.github.opensri.domain.entities.common.Tax;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Representa una línea de detalle dentro de la factura.
  *
- * <p>Contiene la información comercial y tributaria de un producto o servicio,
- * incluyendo cantidades, precios, descuentos, detalles adicionales e impuestos
- * aplicados sobre ese ítem específico.
+ * <p>Contiene la información comercial y tributaria de un producto o servicio, incluyendo
+ * cantidades, precios, descuentos, detalles adicionales e impuestos aplicados sobre ese ítem
+ * específico.
  *
- * <p>Las colecciones asociadas al detalle se almacenan como copias inmutables
- * para preservar la consistencia del documento una vez creado.
+ * <p>Las colecciones asociadas al detalle se almacenan como copias inmutables para preservar la
+ * consistencia del documento una vez creado.
  */
 public record InvoiceItem(
-        String mainCode,
-        String auxCode,
-        String description,
-        BigDecimal quantity,
-        BigDecimal unitPrice,
-        BigDecimal discount,
-        BigDecimal totalPriceWithoutTax,
-        List<AdditionalDetail> additionalDetails,
-        /*
-        Lista de impuestos a un producto, para cubrir casos en donde se cobre
-        el IVA y el producto aplique el ICE
-         */
-        List<Tax> taxes
+    String mainCode,
+    String auxCode,
+    String description,
+    BigDecimal quantity,
+    BigDecimal unitPrice,
+    BigDecimal discount,
+    BigDecimal totalPriceWithoutTax,
+    List<AdditionalDetail> additionalDetails,
+    /*
+    Lista de impuestos a un producto, para cubrir casos en donde se cobre
+    el IVA y el producto aplique el ICE
+     */
+    List<Tax> taxes) {
 
-) {
-    public InvoiceItem {
-        additionalDetails = additionalDetails == null ? List.of(): List.copyOf(additionalDetails);
-        taxes = taxes == null ? List.of(): List.copyOf(taxes);
-    }
+  public InvoiceItem {
+    additionalDetails = additionalDetails == null ? List.of() : List.copyOf(additionalDetails);
+    taxes = taxes == null ? List.of() : List.copyOf(taxes);
+  }
 }
-

@@ -27,11 +27,13 @@ public record Invoice(
         DocumentNumber documentNumber,
         Client client,
         Totals totals,
-        List <InvoiceItem> items
+        List <InvoiceItem> items,
+        List<AdditionalInfo> additionalInfo
 ) {
 
     public Invoice {
         items = items == null ? List.of():List.copyOf(items);
+        additionalInfo = additionalInfo == null ? List.of():List.copyOf(additionalInfo);
     }
 
 }

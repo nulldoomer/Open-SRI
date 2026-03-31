@@ -1,5 +1,7 @@
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.domain.enums.IdentificationType;
+
 import java.util.Objects;
 
 /**
@@ -139,5 +141,15 @@ public record Ruc(String number) implements ClientIdentification {
         if(establishmentCode.equals("000")){
             throw new IllegalArgumentException("Invalid establishment code in RUC");
         }
+    }
+
+    @Override
+    public IdentificationType identificationType() {
+        return IdentificationType.RUC;
+    }
+
+    @Override
+    public String value(){
+        return number;
     }
 }

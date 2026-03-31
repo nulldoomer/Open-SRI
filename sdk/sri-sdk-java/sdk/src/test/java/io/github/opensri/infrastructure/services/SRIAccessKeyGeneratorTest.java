@@ -43,12 +43,12 @@ class SRIAccessKeyGeneratorTest {
     }
 
     // =========================================================================
-    // HAPPY PATH — estructura de la clave
+    // HAPPY PATH
     // =========================================================================
 
     @Test
     void should_generate_key_of_exactly_49_chars_when_valid_inputs() {
-        // Arrange — fixtures del setUp
+        // Arrange
         setUp();
 
         // Act
@@ -60,7 +60,7 @@ class SRIAccessKeyGeneratorTest {
 
     @Test
     void should_generate_all_numeric_key_when_valid_inputs() {
-        // Arrange — fixtures del setUp
+        // Arrange
         setUp();
 
         // Act
@@ -86,7 +86,7 @@ class SRIAccessKeyGeneratorTest {
     }
 
     // =========================================================================
-    // AMBIENTE — código de entorno en la clave
+    // AMBIENTE
     // =========================================================================
 
     @Test

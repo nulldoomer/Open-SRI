@@ -1,5 +1,7 @@
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.domain.enums.IdentificationType;
+
 import java.util.Objects;
 /**
  * Represents a passport identification number.
@@ -27,5 +29,15 @@ public record Passport(String number) implements ClientIdentification {
         if (!number.chars().allMatch(Character::isLetterOrDigit)) {
             throw new IllegalArgumentException("Passport must be alphanumeric");
         }
+    }
+
+    @Override
+    public IdentificationType identificationType() {
+        return IdentificationType.PASAPORTE;
+    }
+
+    @Override
+    public String value() {
+        return number;
     }
 }

@@ -1,5 +1,7 @@
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.domain.enums.IdentificationType;
+
 /**
  * Represents a foreign identification number.
  *
@@ -23,5 +25,15 @@ public record ForeignId(String number) implements ClientIdentification {
         if (!number.chars().allMatch(Character::isLetterOrDigit)) {
             throw new IllegalArgumentException("Foreign ID must be alphanumeric");
         }
+    }
+
+    @Override
+    public IdentificationType identificationType() {
+        return IdentificationType.IDENTIFICATION_DEL_EXTERIOR;
+    }
+
+    @Override
+    public String value() {
+        return number;
     }
 }

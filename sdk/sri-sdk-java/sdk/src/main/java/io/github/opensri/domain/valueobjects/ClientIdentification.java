@@ -1,5 +1,7 @@
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.domain.enums.IdentificationType;
+
 /**
  * Represents a client identification used in electronic tax documents.
  *
@@ -24,4 +26,7 @@ package io.github.opensri.domain.valueobjects;
  */
 public sealed interface ClientIdentification
 permits Ruc, NationalId, Passport, ForeignId, FinalConsumer{
+
+    IdentificationType identificationType();
+    String value();
 }

@@ -2,6 +2,7 @@
 .gradle
 .kiro
 .vscode
-
+.opencode
+.agents
 # Ignore Gradle build output directory
 build

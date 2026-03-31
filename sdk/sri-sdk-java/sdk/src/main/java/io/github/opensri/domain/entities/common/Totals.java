@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Datos obligatorios de valores totales e impuestos totales
- * @param totalValue
- * @param totalWithoutTaxes
- * @param totalDiscount
- * @param totalTipValue
- * @param totalTaxes
+ * Agrupa los valores monetarios finales y el resumen de impuestos de un comprobante.
+ *
+ * <p>Centraliza los importes totales calculados a partir de los detalles del documento,
+ * incluyendo subtotales, descuentos, propina e impuestos acumulados por tipo y tarifa.
+ *
+ * @see TotalTax
  */
 public record Totals(
         // Valor total final del comprobante <importeTotal>
@@ -26,25 +26,23 @@ public record Totals(
         BigDecimal totalDiscount,
         // Valor de propina (Depende de las reglas del negocio)
         BigDecimal totalTipValue,
-        /**
-         * Colección que contiene el resumen agrupado de los impuestos generados
-         * en la factura.
-         *
-         * Cada elemento representa el total acumulado por cada combinación única de:
-         *
-         * - code
-         * - codeRate
-         *
-         * Estos valores se obtienen agrupando los impuestos previamente
-         * calculados en cada detalle (item) de la factura.
-         * < totalConImpuestos >
-         */
+        // Resumen acumulado de impuestos agrupados por tipo y tarifa <totalConImpuestos>
         List<TotalTax> totalTaxes
 ) {
     public Totals{
         totalTaxes = totalTaxes == null ? List.of(): List.copyOf(totalTaxes);
     }
 
+    /**
+     * Calcula los totales del comprobante a partir de sus detalles.
+     *
+     * <p>Agrupa los impuestos por combinación de código y tarifa, acumula sus bases imponibles
+     * y valores, y construye el importe total final considerando descuentos y propina.
+     *
+     * @param items detalles de la factura desde los que se obtienen subtotales e impuestos
+     * @return instancia con los valores monetarios agregados del comprobante
+     * @throws IllegalArgumentException si la lista de items es nula o está vacía
+     */
     public static Totals from(List<InvoiceItem> items) {
 
         if( items == null || items.isEmpty()){
@@ -104,7 +102,6 @@ public record Totals(
                     new TotalTax(
                             code,
                             rateCode,
-                            TaxRate.fromCode(Integer.parseInt(code)).getValue(),
                             acc.base(),
                             acc.value()
                     )

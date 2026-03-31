@@ -1,5 +1,7 @@
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.domain.enums.IdentificationType;
+
 import java.util.Objects;
 /**
  * Represents a national identification number.
@@ -75,5 +77,15 @@ public record NationalId(String number) implements ClientIdentification {
         if (calculated != verifier) {
             throw new IllegalArgumentException("Invalid national ID verifier digit");
         }
+    }
+
+    @Override
+    public IdentificationType identificationType() {
+        return IdentificationType.CEDULA;
+    }
+
+    @Override
+    public String value() {
+        return number;
     }
 }

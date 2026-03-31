@@ -40,7 +40,7 @@ class SRIAccessKeyGenerator implements AccessKeyGenerator {
     public String generate(IssueDate date, DocumentNumber documentNumber,
                            TaxInfo taxInfo, Environment environment) {
 
-        String issueDate = date.format().replace("-","");
+        String issueDate = date.format().replace("/","");
 
         String documentCode = documentNumber.documentCode();
         String rucNumber = taxInfo.issuer().ruc().number();

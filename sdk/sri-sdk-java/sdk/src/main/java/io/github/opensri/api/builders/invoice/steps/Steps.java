@@ -3,6 +3,7 @@ package io.github.opensri.api.builders.invoice.steps;
 import io.github.opensri.domain.entities.common.Client;
 import io.github.opensri.domain.entities.common.DocumentNumber;
 import io.github.opensri.domain.entities.common.Totals;
+import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.entities.common.TaxInfo;
@@ -20,6 +21,8 @@ public final class Steps implements
         ClientStep,
         FirstItemStep,
         ItemsStep,
+        FirstAdditionalInfoStep,
+        AdditionalInfoStep,
         BuildStep {
 
     private IssueDate issueDate;
@@ -28,6 +31,7 @@ public final class Steps implements
     private DocumentNumber documentNumber;
     private Client client;
     private final List<InvoiceItem> items = new ArrayList<>();
+    private final List<AdditionalInfo> additionalInfos = new ArrayList<>();
 
     @Override
     public EstablishmentDirectionStep issueDate(IssueDate issueDate) {
@@ -75,7 +79,7 @@ public final class Steps implements
     }
 
     @Override
-    public BuildStep doneItems() {
+    public FirstAdditionalInfoStep doneItems() {
         if (items.isEmpty()) {
             throw new IllegalStateException("Invoice must contain at least one item");
         }
@@ -98,7 +102,20 @@ public final class Steps implements
                 documentNumber,
                 client,
                 totals,
-                List.copyOf(items)
+                List.copyOf(items),
+                List.copyOf(additionalInfos)
         );
+    }
+
+    @Override
+    public BuildStep doneAdditionalInfo() {
+        return this;
+    }
+
+    @Override
+    public AdditionalInfoStep addInfo(AdditionalInfo info) {
+        this.additionalInfos.add(Objects.requireNonNull(info,
+                "AdditionalInfo is required"));
+        return this;
     }
 }

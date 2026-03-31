@@ -2,6 +2,7 @@ package io.github.opensri.api.builders;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;
+import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.entities.common.TaxInfo;
@@ -91,6 +92,7 @@ class InvoiceBuilderTest {
         // ---------------------------- Assert ---------------------------------
         assertNotNull(invoice);
         assertNotNull(invoice.totals());
+        assertTrue(invoice.additionalInfo().isEmpty());
 
         assertEquals(new BigDecimal("100.00"),
                 invoice.totals().totalWithoutTaxes());
@@ -191,5 +193,42 @@ class InvoiceBuilderTest {
 
         assertEquals(new BigDecimal("50.00"), ice.taxableBase());
         assertEquals(new BigDecimal("5.00"),  ice.value());
+    }
+
+    @Test
+    void should_build_invoice_with_optional_additional_info() {
+        InvoiceItem item = new InvoiceItem(
+                "001",
+                "AUX-001",
+                "Consulta médica",
+                BigDecimal.ONE,
+                new BigDecimal("50.00"),
+                BigDecimal.ZERO,
+                new BigDecimal("50.00"),
+                List.of(),
+                List.of(
+                        new Tax(
+                                "2",
+                                "2",
+                                new BigDecimal("15.00"),
+                                new BigDecimal("50.00")
+                        )
+                )
+        );
+
+        Invoice invoice = InvoiceBuilder.builder()
+                .issueDate(IssueDate.now())
+                .establishmentDirection("CASA LOL")
+                .taxInfo(dummyTaxInfo())
+                .documentNumber(dummyDoc())
+                .client(dummyClient())
+                .addItem(item)
+                .doneItems()
+                .addInfo(new AdditionalInfo("Impuesto ISD", "15.42x"))
+                .build();
+
+        assertEquals(1, invoice.additionalInfo().size());
+        assertEquals("Impuesto ISD", invoice.additionalInfo().getFirst().name());
+        assertEquals("15.42x", invoice.additionalInfo().getFirst().value());
     }
 }

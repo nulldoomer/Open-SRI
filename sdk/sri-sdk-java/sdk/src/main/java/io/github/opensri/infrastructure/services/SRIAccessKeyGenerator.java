@@ -9,32 +9,31 @@ import io.github.opensri.domain.valueobjects.IssueDate;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Genera la clave de acceso para documentos electrónicos del SRI.
+ * Generates SRI access keys for electronic tax documents.
  *
- * <p>La clave de acceso es un código de 49 dígitos que identifica unívocamente
- * cada documento autorizado. Se construye concatenando campos del documento
- * (fecha, tipo, RUC, ambiente, serie, secuencial) con un código numérico
- * aleatorio de 8 dígitos generado por el SDK.
+ * <p>The access key is a 49-digit identifier required by the SRI to uniquely
+ * recognize a document before reception and authorization. This implementation
+ * builds the key from document metadata, issuer tax information, environment,
+ * a generated numeric code, and the final modulo 11 verifier digit.
  *
- * <p>El dígito verificador se calcula aplicando el algoritmo módulo 11
- * con factor inicial 7, según la especificación del SRI.
- *
- * <p>Implementa {@link AccessKeyGenerator}.
+ * <p>It implements {@link AccessKeyGenerator} and encapsulates the concrete
+ * SRI-specific key generation algorithm used by the SDK.
  *
  * @see AccessKeyGenerator
  */
 class SRIAccessKeyGenerator implements AccessKeyGenerator {
     /**
-     * Genera una clave de acceso de 49 dígitos para un documento electrónico.
+     * Generates the complete access key for a document.
      *
-     * <p>La clave sigue el formato: fecha(8) + tipoDoc(2) + RUC(13) + ambiente(1)
-     * + serie(4) + secuencial(9) + códigoAleatorio(8) + tipoEmisión(1) + dígitoVerificador(1)
+     * <p>The resulting key follows the SRI composition order:
+     * issue date, document type, issuer RUC, environment, series, sequential number,
+     * generated numeric code, emission type, and verifier digit.
      *
-     * @param date fecha de emisión del documento
-     * @param documentNumber número de documento con código, serie y secuencial
-     * @param taxInfo información tributaria del emisor
-     * @param environment ambiente del SRI (prueba o producción)
-     * @return clave de acceso completa con dígito verificador
+     * @param date issue date of the document
+     * @param documentNumber document number containing type and sequence data
+     * @param taxInfo issuer tax information used in the access key structure
+     * @param environment target SRI environment
+     * @return complete 49-digit access key including verifier digit
      */
     @Override
     public String generate(IssueDate date, DocumentNumber documentNumber,

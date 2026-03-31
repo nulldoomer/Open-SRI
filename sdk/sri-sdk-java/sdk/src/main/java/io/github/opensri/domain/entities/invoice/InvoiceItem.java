@@ -7,16 +7,14 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Datos fiscales necesarios para los items del detalle de la factura
- * @param mainCode
- * @param auxCode
- * @param description
- * @param quantity
- * @param unitPrice
- * @param discount
- * @param totalPriceWithoutTax
- * @param additionalDetails
- * @param taxes
+ * Representa una línea de detalle dentro de la factura.
+ *
+ * <p>Contiene la información comercial y tributaria de un producto o servicio,
+ * incluyendo cantidades, precios, descuentos, detalles adicionales e impuestos
+ * aplicados sobre ese ítem específico.
+ *
+ * <p>Las colecciones asociadas al detalle se almacenan como copias inmutables
+ * para preservar la consistencia del documento una vez creado.
  */
 public record InvoiceItem(
         String mainCode,

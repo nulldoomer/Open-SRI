@@ -14,6 +14,8 @@ import java.util.Map;
  *
  * <p>Centraliza los importes totales calculados a partir de los detalles del documento,
  * incluyendo subtotales, descuentos, propina e impuestos acumulados por tipo y tarifa.
+ * Su objetivo es mantener en una sola estructura los valores que luego se reflejan
+ * en la sección de totales del XML del comprobante.
  *
  * @see TotalTax
  */
@@ -38,6 +40,8 @@ public record Totals(
      *
      * <p>Agrupa los impuestos por combinación de código y tarifa, acumula sus bases imponibles
      * y valores, y construye el importe total final considerando descuentos y propina.
+     * Este método evita que el código cliente tenga que repetir manualmente la lógica
+     * de agregación tributaria para cada factura.
      *
      * @param items detalles de la factura desde los que se obtienen subtotales e impuestos
      * @return instancia con los valores monetarios agregados del comprobante

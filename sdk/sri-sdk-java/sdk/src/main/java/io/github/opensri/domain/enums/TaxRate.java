@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**
- * Enum del tipo de la tarifa del iva que se va a usar, con base en la tabla de
- * la documentación del SRI Nro. 17
+ * Representa las tarifas de IVA y estados relacionados admitidos por el SRI.
+ *
+ * <p>Este catálogo corresponde a la tabla Nro. 17 de la documentación del SRI
+ * y define tanto el código tributario como el porcentaje monetario asociado
+ * cuando la tarifa representa un valor numérico aplicable.
  */
 public enum TaxRate {
     PORCENTAJE_0(0, "0%", BigDecimal.ZERO),
@@ -22,12 +25,28 @@ public enum TaxRate {
     private final String description;
     private final BigDecimal value;
 
+    /**
+     * Obtiene el código oficial de la tarifa según la tabla Nro. 17 del SRI.
+     *
+     * @return código tributario de la tarifa
+     */
     public int getCode() {return code;}
 
+    /**
+     * Obtiene la descripción legible de la tarifa o condición tributaria.
+     *
+     * @return descripción funcional de la tarifa
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Obtiene el porcentaje numérico asociado a la tarifa cuando aplica.
+     *
+     * @return porcentaje monetario de la tarifa, o {@code null} si la categoría no representa
+     *         un valor porcentual directo
+     */
     public BigDecimal getValue() {return value;}
 
     TaxRate(int code, String description, BigDecimal value) {
@@ -36,6 +55,13 @@ public enum TaxRate {
         this.value = value;
     }
 
+    /**
+     * Resuelve la tarifa de IVA correspondiente al código del SRI.
+     *
+     * @param code código de tarifa según la tabla Nro. 17 del SRI
+     * @return tarifa correspondiente al código indicado
+     * @throws IllegalArgumentException si el código no existe en el catálogo
+     */
     public static TaxRate fromCode(int code) {
         return Arrays.stream(values()).filter(
                         v-> v.code == code

@@ -1,6 +1,5 @@
 package io.github.opensri.domain.valueobjects;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,7 +12,8 @@ import java.util.Objects;
  * <p>This value object ensures that the date is valid
  * and formatted according to tax authority requirements.
  *
- * <p>Instances are immutable and validated at creation time.
+ * <p>Instances are immutable, validated at creation time, and guaranteed
+ * not to represent a future date.
  */
 public record IssueDate (
         LocalDate date
@@ -26,12 +26,22 @@ public record IssueDate (
         }
     }
 
+    /**
+     * Creates an {@code IssueDate} using the current system date.
+     *
+     * @return issue date representing today
+     */
     public static IssueDate now(){
         return new IssueDate(LocalDate.now());
     }
 
-    // Static factory method for input to create a date from a string
-
+    /**
+     * Creates an {@code IssueDate} from an ISO-like input string in {@code yyyy-MM-dd} format.
+     *
+     * @param value textual date representation to parse
+     * @return validated issue date built from the provided string
+     * @throws IllegalArgumentException if the input cannot be parsed or represents an invalid date
+     */
     public static IssueDate from(String value){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 .withResolverStyle(ResolverStyle.STRICT);
@@ -48,8 +58,11 @@ public record IssueDate (
     }
 
 
-    // Method to format the actual date
-
+    /**
+     * Formats the issue date using the SRI document representation.
+     *
+     * @return date formatted as {@code dd/MM/yyyy}
+     */
     public String format(){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

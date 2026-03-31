@@ -31,11 +31,21 @@ public record Passport(String number) implements ClientIdentification {
         }
     }
 
+    /**
+     * Returns the SRI identification type for passport documents.
+     *
+     * @return {@link IdentificationType#PASAPORTE}
+     */
     @Override
     public IdentificationType identificationType() {
         return IdentificationType.PASAPORTE;
     }
 
+    /**
+     * Returns the validated passport value.
+     *
+     * @return passport identification string
+     */
     @Override
     public String value() {
         return number;

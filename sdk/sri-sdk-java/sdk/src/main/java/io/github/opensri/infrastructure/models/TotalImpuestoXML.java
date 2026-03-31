@@ -5,6 +5,12 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 
+/**
+ * JAXB model for a grouped tax entry inside the invoice totals section.
+ *
+ * <p>This class maps the aggregated tax values that appear under the
+ * {@code totalConImpuestos} block of the invoice XML.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TotalImpuestoXML {
 
@@ -23,6 +29,12 @@ public class TotalImpuestoXML {
     // Constructor vacío para generar la instancia del contexto de JAXB
     public TotalImpuestoXML() {}
 
+    /**
+     * Creates the XML model for a grouped invoice tax total.
+     *
+     * @param totalTax domain aggregated tax entry to transform
+     * @return JAXB-ready XML model for the grouped tax total
+     */
     public static TotalImpuestoXML fromDomain(TotalTax totalTax){
         TotalImpuestoXML xml = new TotalImpuestoXML();
 

@@ -2,15 +2,12 @@ package io.github.opensri.domain.entities.common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
-
 /**
- * Datos obligatorios de impuestos con base a las tablas de la documentación
- * del SRI
- * @param code
- * @param rateCode
- * @param rate
- * @param taxableBase
+ * Representa un impuesto aplicado sobre una base imponible dentro de un detalle.
+ *
+ * <p>Modela la combinación entre el tipo de impuesto, la tarifa utilizada
+ * y la base imponible sobre la que debe calcularse el valor monetario del tributo
+ * conforme a las tablas del SRI.
  */
 public record Tax(
         // Tabla 16: Tipo de impuesto
@@ -25,7 +22,14 @@ public record Tax(
 
     private static final int SCALE = 2;
 
-    // Valor monetario del impuesto calculado
+    /**
+     * Calcula el valor monetario del impuesto a partir de su base imponible y tarifa.
+     *
+     * <p>El resultado se redondea a dos decimales con {@link RoundingMode#HALF_UP},
+     * siguiendo el formato monetario esperado por los comprobantes electrónicos.
+     *
+     * @return valor del impuesto calculado
+     */
     public BigDecimal value(){
         return taxableBase
                 .multiply(rate)

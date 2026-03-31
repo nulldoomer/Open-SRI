@@ -4,8 +4,10 @@ import java.util.Arrays;
 
 
 /**
- * Enum del tipo de impuesto a retener, con base en la tabla de la
- * documentación del SRI Nro. 19
+ * Representa los tipos de impuesto manejados por el SDK para procesos tributarios.
+ *
+ * <p>Este catálogo corresponde a la tabla Nro. 19 de la documentación del SRI
+ * y define los códigos oficiales utilizados para identificar cada clase de impuesto.
  */
 public enum TaxType {
     RENTA(1, "Renta"),
@@ -15,10 +17,20 @@ public enum TaxType {
     private final int code;
     private final String description;
 
+    /**
+     * Obtiene el código oficial del tipo de impuesto según la tabla Nro. 19 del SRI.
+     *
+     * @return código tributario del impuesto
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * Obtiene la descripción legible del tipo de impuesto.
+     *
+     * @return nombre funcional del impuesto
+     */
     public String getDescription() {
         return description;
     }
@@ -28,6 +40,13 @@ public enum TaxType {
         this.description = description;
     }
 
+    /**
+     * Resuelve el tipo de impuesto correspondiente al código del SRI.
+     *
+     * @param code código del impuesto según la tabla Nro. 19 del SRI
+     * @return tipo de impuesto asociado al código indicado
+     * @throws IllegalArgumentException si el código no existe en el catálogo
+     */
     public static TaxType fromCode(int code) {
         return Arrays.stream(values()).filter(
                         v-> v.code == code

@@ -3,9 +3,11 @@ package io.github.opensri.domain.enums;
 import java.util.Arrays;
 
 /**
- * Enum del tipo de pago del cliente, con base en la tabla de la documentación
- * del SRI Nro. 24, actualmente no se encuentra en la documentación oficial,
- * se encuentra aparte.
+ * Representa el medio de pago utilizado en la transacción.
+ *
+ * <p>Este catálogo corresponde a la tabla Nro. 24 de la documentación del SRI.
+ * Aunque actualmente no se encuentra integrada en el documento principal oficial,
+ * el SDK la conserva para mapear los códigos tributarios de formas de pago aceptadas.
  */
 public enum PaymentMethod {
     SIN_SISTEMA_FINANCIERO("01","Sin utilización del sistema" +
@@ -22,10 +24,20 @@ public enum PaymentMethod {
     private String code;
     private String description;
 
+    /**
+     * Obtiene el código oficial del medio de pago según la tabla Nro. 24 del SRI.
+     *
+     * @return código tributario del método de pago
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Obtiene la descripción legible del método de pago.
+     *
+     * @return nombre funcional de la forma de pago
+     */
     public String getDescription() {
         return description;
     }
@@ -35,6 +47,13 @@ public enum PaymentMethod {
         this.description = description;
     }
 
+    /**
+     * Resuelve el método de pago asociado al código del SRI.
+     *
+     * @param code código del método de pago según la tabla Nro. 24 del SRI
+     * @return método de pago correspondiente
+     * @throws IllegalArgumentException si el código no existe en el catálogo
+     */
     public static PaymentMethod fromCode(String code){
         return Arrays.stream(values()).filter(
                 v->v.code.equals(code)
@@ -43,4 +62,5 @@ public enum PaymentMethod {
                         "No such PaymentMethodEnum exists with code " + code
                 )
         );
-    }}
+    }
+}

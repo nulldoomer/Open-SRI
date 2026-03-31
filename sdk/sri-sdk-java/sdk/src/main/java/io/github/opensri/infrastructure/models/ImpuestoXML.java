@@ -5,6 +5,12 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 
+/**
+ * JAXB model for a tax entry attached to an invoice item.
+ *
+ * <p>This class maps the tax code, percentage code, rate, taxable base,
+ * and calculated value required by the {@code impuesto} element in the SRI schema.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ImpuestoXML {
 
@@ -25,6 +31,12 @@ public class ImpuestoXML {
 
     public ImpuestoXML() {}
 
+    /**
+     * Creates the XML model for an item-level tax.
+     *
+     * @param tax domain tax to transform
+     * @return JAXB-ready XML tax model
+     */
     public static ImpuestoXML fromDomain(Tax tax){
         ImpuestoXML xml = new ImpuestoXML();
 

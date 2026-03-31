@@ -27,6 +27,17 @@ import io.github.opensri.domain.enums.IdentificationType;
 public sealed interface ClientIdentification
 permits Ruc, NationalId, Passport, ForeignId, FinalConsumer{
 
+    /**
+     * Returns the SRI identification type associated with this value object.
+     *
+     * @return identification type code category required by the document schema
+     */
     IdentificationType identificationType();
+
+    /**
+     * Returns the serialized identification value that must appear in the document.
+     *
+     * @return normalized identification string represented by this value object
+     */
     String value();
 }

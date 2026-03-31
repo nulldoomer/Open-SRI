@@ -3,8 +3,11 @@ package io.github.opensri.domain.enums;
 import java.util.Arrays;
 
 /**
- * Enum del tipo de documento de identificación del cliente, con base en la
- * tabla de la documentación del SRI Nro. 6
+ * Representa el tipo de identificación tributaria del comprador.
+ *
+ * <p>Este catálogo corresponde a la tabla Nro. 6 de la documentación del SRI
+ * y define los códigos válidos para la etiqueta
+ * {@code tipoIdentificacionComprador} en los comprobantes electrónicos.
  */
 public enum IdentificationType {
     RUC("04","RUC"),
@@ -17,10 +20,20 @@ public enum IdentificationType {
     private String code;
     private String description;
 
+    /**
+     * Obtiene el código oficial del tipo de identificación según la tabla Nro. 6 del SRI.
+     *
+     * @return código tributario del tipo de identificación
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Obtiene la descripción legible del tipo de identificación.
+     *
+     * @return nombre funcional del tipo de identificación
+     */
     public String getDescription() {
         return description;
     }
@@ -30,6 +43,13 @@ public enum IdentificationType {
         this.description = description;
     }
 
+    /**
+     * Resuelve el tipo de identificación correspondiente al código del SRI.
+     *
+     * @param code código del tipo de identificación según la tabla Nro. 6 del SRI
+     * @return tipo de identificación asociado al código indicado
+     * @throws IllegalArgumentException si el código no existe en el catálogo
+     */
     public static IdentificationType fromCode(String code){
         return Arrays.stream(values()).filter(
                         v-> v.code.equals(code)
@@ -38,4 +58,5 @@ public enum IdentificationType {
                         ()-> new IllegalArgumentException(
                                 "No such IdentificationTypeEnum code " + code)
                 );
-    }}
+    }
+}

@@ -3,8 +3,11 @@ package io.github.opensri.domain.enums;
 import java.util.Arrays;
 
 /**
- * Enum del tipo de documento a emitir, con base en la tabla de la documentación
- * del SRI Nro. 3
+ * Representa el tipo de comprobante electrónico emitido por el SDK.
+ *
+ * <p>Este catálogo corresponde a la tabla Nro. 3 de la documentación del SRI
+ * y define el código oficial que debe incluirse en la numeración y en la clave
+ * de acceso del documento.
  */
 public enum DocumentType {
     FACTURA("01", "Factura"),
@@ -18,9 +21,20 @@ public enum DocumentType {
     private String code;
     private String description;
 
+    /**
+     * Obtiene el código oficial del tipo de documento según la tabla Nro. 3 del SRI.
+     *
+     * @return código tributario del tipo de comprobante
+     */
     public String getCode() {
         return code;
     }
+
+    /**
+     * Obtiene la descripción legible del tipo de comprobante.
+     *
+     * @return nombre funcional del documento
+     */
     public String getDescription() {
         return description;
     }
@@ -30,6 +44,13 @@ public enum DocumentType {
         this.description = description;
     }
 
+    /**
+     * Resuelve el tipo de documento asociado al código del SRI.
+     *
+     * @param code código del comprobante según la tabla Nro. 3 del SRI
+     * @return tipo de documento correspondiente
+     * @throws IllegalArgumentException si el código no existe en el catálogo
+     */
     public static DocumentType fromCode(String code) {
         return Arrays.stream(values()).filter(
                         v-> v.code.equals(code)
@@ -38,4 +59,5 @@ public enum DocumentType {
                         ()-> new IllegalArgumentException(
                                 "No such DocumentTypeEnum code " + code)
                 );
-    }}
+    }
+}

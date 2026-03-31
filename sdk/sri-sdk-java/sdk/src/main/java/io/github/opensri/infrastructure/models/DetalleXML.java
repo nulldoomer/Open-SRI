@@ -8,6 +8,12 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 
 import java.util.List;
 
+/**
+ * JAXB model for an invoice line item in the SRI XML schema.
+ *
+ * <p>This class maps the commercial values, tax data, and optional additional details
+ * of a single {@code detalle} element inside the invoice document.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DetalleXML {
 
@@ -40,6 +46,12 @@ public class DetalleXML {
     // Constructor vacío para generar la instancia del contexto de JAXB
     public DetalleXML() {}
 
+    /**
+     * Creates the XML model for a single invoice item.
+     *
+     * @param invoiceItem domain invoice item to transform
+     * @return JAXB-ready XML model for the provided detail line
+     */
     public static DetalleXML fromDomain(InvoiceItem invoiceItem) {
 
         DetalleXML xml = new DetalleXML();

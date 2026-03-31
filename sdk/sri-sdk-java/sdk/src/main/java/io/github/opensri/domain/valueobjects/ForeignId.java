@@ -9,7 +9,8 @@ import io.github.opensri.domain.enums.IdentificationType;
  * values used for non-national clients in tax documents.
  *
  * <p>Instances are validated to ensure they meet
- * the required structural constraints.
+ * the required structural constraints while remaining flexible enough
+ * for foreign identification formats.
  */
 public record ForeignId(String number) implements ClientIdentification {
 
@@ -27,11 +28,21 @@ public record ForeignId(String number) implements ClientIdentification {
         }
     }
 
+    /**
+     * Returns the SRI identification type used for foreign identifications.
+     *
+     * @return {@link IdentificationType#IDENTIFICATION_DEL_EXTERIOR}
+     */
     @Override
     public IdentificationType identificationType() {
         return IdentificationType.IDENTIFICATION_DEL_EXTERIOR;
     }
 
+    /**
+     * Returns the validated foreign identification value.
+     *
+     * @return normalized foreign identification string
+     */
     @Override
     public String value() {
         return number;

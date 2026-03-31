@@ -9,6 +9,12 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 
 import java.util.List;
 
+/**
+ * JAXB model for the {@code infoFactura} section of the invoice XML.
+ *
+ * <p>This class maps buyer data, establishment information, invoice totals,
+ * and grouped tax totals into the structure required by the SRI invoice schema.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InfoFacturaXML {
 
@@ -56,6 +62,13 @@ public class InfoFacturaXML {
     // Constructor vacío para generar la instancia del contexto de JAXB
     public InfoFacturaXML() {}
 
+    /**
+     * Creates the XML model for the invoice information section.
+     *
+     * @param invoice domain invoice containing buyer, totals, and issue data
+     * @param profile issuer profile used to complete fiscal configuration fields
+     * @return JAXB-ready model for the {@code infoFactura} block
+     */
     public static InfoFacturaXML fromDomain(Invoice invoice, IssuerProfile profile){
         InfoFacturaXML xml = new InfoFacturaXML();
 

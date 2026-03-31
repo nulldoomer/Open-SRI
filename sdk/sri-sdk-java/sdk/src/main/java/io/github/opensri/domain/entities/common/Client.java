@@ -3,9 +3,12 @@ package io.github.opensri.domain.entities.common;
 import io.github.opensri.domain.valueobjects.ClientIdentification;
 
 /**
- * Datos fiscales obligatorios al cliente que se factura
- * @param identification
- * @param names
+ * Representa al comprador registrado en un comprobante electrónico.
+ *
+ * <p>Agrupa la identificación fiscal del cliente y el nombre que debe
+ * constar en la factura u otro documento tributario emitido por el SDK.
+ *
+ * @see io.github.opensri.domain.valueobjects.ClientIdentification
  */
 public record Client(
         ClientIdentification identification,

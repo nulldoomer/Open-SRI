@@ -11,7 +11,8 @@ import java.util.Objects;
  * according to tax authority (SRI) rules.
  *
  * <p>Instances are immutable and guaranteed to contain
- * a valid RUC number.
+ * a valid RUC number, including province, verifier digit,
+ * and establishment code constraints.
  */
 public record Ruc(String number) implements ClientIdentification {
 
@@ -143,11 +144,21 @@ public record Ruc(String number) implements ClientIdentification {
         }
     }
 
+    /**
+     * Returns the SRI identification type for taxpayer registry numbers.
+     *
+     * @return {@link IdentificationType#RUC}
+     */
     @Override
     public IdentificationType identificationType() {
         return IdentificationType.RUC;
     }
 
+    /**
+     * Returns the validated RUC number.
+     *
+     * @return taxpayer identification number
+     */
     @Override
     public String value(){
         return number;

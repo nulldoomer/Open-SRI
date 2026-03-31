@@ -7,6 +7,12 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 
+/**
+ * JAXB model for the {@code infoTributaria} section of the invoice XML.
+ *
+ * <p>This class contains the issuer identification, environment, access key,
+ * and numbering data required by the SRI to recognize the tax document.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InfoTributariaXML {
 
@@ -44,6 +50,15 @@ public class InfoTributariaXML {
     // Constructor vacío para generar la instancia del contexto de JAXB
     public InfoTributariaXML(){}
 
+    /**
+     * Creates the XML model for the tax information block.
+     *
+     * @param taxInfo reusable issuer tax information
+     * @param documentNumber document numbering data
+     * @param accessKey access key assigned to the document
+     * @param env target SRI environment
+     * @return JAXB-ready model for the {@code infoTributaria} block
+     */
     public static InfoTributariaXML fromDomain(
             TaxInfo taxInfo,
             DocumentNumber documentNumber,

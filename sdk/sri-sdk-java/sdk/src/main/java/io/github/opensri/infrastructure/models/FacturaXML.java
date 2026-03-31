@@ -7,6 +7,13 @@ import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Root JAXB model for the SRI invoice XML document.
+ *
+ * <p>This class assembles the top-level invoice structure, including tax information,
+ * invoice totals, detail lines, and optional additional fields. It mirrors the
+ * {@code factura} element expected by the SRI schema.
+ */
 @XmlRootElement(name = "factura")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FacturaXML{
@@ -37,6 +44,15 @@ public class FacturaXML{
     // Constructor vacío para generar la instancia del contexto de JAXB
     public FacturaXML(){}
 
+    /**
+     * Creates the complete XML model for an invoice document.
+     *
+     * @param invoice domain invoice to transform
+     * @param accessKey access key previously generated for the document
+     * @param env target SRI environment of the XML
+     * @param profile issuer profile used to complete the fiscal sections
+     * @return root JAXB model representing the invoice XML document
+     */
     public static FacturaXML fromDomain(Invoice invoice, String accessKey,
                                         Environment env, IssuerProfile profile){
         FacturaXML xml= new FacturaXML();

@@ -1,9 +1,11 @@
 package io.github.opensri.domain.entities.invoice;
 
 /**
- * Detalle adicional de un item del detalle de la factura.
- * @param name
- * @param value
+ * Representa un atributo adicional asociado a un detalle de factura.
+ *
+ * <p>Se utiliza para incorporar información complementaria de un producto
+ * o servicio dentro del bloque de detalles, sin alterar la estructura fiscal
+ * principal del ítem.
  */
 public record AdditionalDetail(
         // Nombre del detalle adicional

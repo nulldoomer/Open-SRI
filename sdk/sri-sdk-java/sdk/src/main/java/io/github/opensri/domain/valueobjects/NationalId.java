@@ -79,11 +79,21 @@ public record NationalId(String number) implements ClientIdentification {
         }
     }
 
+    /**
+     * Returns the SRI identification type for national identity documents.
+     *
+     * @return {@link IdentificationType#CEDULA}
+     */
     @Override
     public IdentificationType identificationType() {
         return IdentificationType.CEDULA;
     }
 
+    /**
+     * Returns the validated national identification value.
+     *
+     * @return national ID number
+     */
     @Override
     public String value() {
         return number;

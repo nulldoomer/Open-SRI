@@ -10,6 +10,8 @@ import io.github.opensri.domain.enums.IdentificationType;
  *
  * <p>Instances of this class always represent
  * the constant final consumer identification number.
+ *
+ * <p>A singleton is used because this value object has exactly one valid state.
  */
 public final class FinalConsumer implements ClientIdentification {
     private static final FinalConsumer INSTANCE = new FinalConsumer();
@@ -17,15 +19,30 @@ public final class FinalConsumer implements ClientIdentification {
 
     private FinalConsumer() {}
 
+    /**
+     * Returns the shared instance representing the SRI final consumer identification.
+     *
+     * @return singleton instance of {@code FinalConsumer}
+     */
     public static FinalConsumer instance() {
         return INSTANCE;
     }
 
+    /**
+     * Returns the SRI identification type for the final consumer category.
+     *
+     * @return {@link IdentificationType#VENTA_CONSUMIDOR_FINAL}
+     */
     @Override
     public IdentificationType identificationType() {
         return IdentificationType.VENTA_CONSUMIDOR_FINAL;
     }
 
+    /**
+     * Returns the fixed identification value mandated for final consumer sales.
+     *
+     * @return constant final consumer identification number
+     */
     @Override
     public String value() {
         return VALUE;

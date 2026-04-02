@@ -3,6 +3,9 @@
 
 package io.github.opensri.application.ports;
 
+import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.enums.Environment;
+
 /**
  * Serializes a domain document into its XML representation.
  *
@@ -18,7 +21,11 @@ public interface XmlSerializer<T> {
    * Converts the provided document into XML.
    *
    * @param document document instance to serialize
+   * @param accessKey generated access key needed in the serialization
+   * @param environment environment used to set on the XML
+   * @param issuerProfile information needed for the invoice XML
    * @return XML representation of the given document
    */
-  String serialize(T document);
+  String serialize(T document, String accessKey, Environment environment,
+                   IssuerProfile issuerProfile);
 }

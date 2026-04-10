@@ -21,7 +21,7 @@ class InvoiceBuilderTest {
   // =================== HELPERS =============================================
 
   private TaxInfo dummyTaxInfo() {
-    Ruc ruc = new Ruc("1004456727001");
+    Ruc ruc = new Ruc("1001111111001");
     Issuer issuer = new Issuer("Clínica", ruc);
     return new TaxInfo(1, issuer, "Calle A 8392835");
   }
@@ -31,7 +31,7 @@ class InvoiceBuilderTest {
   }
 
   private Client dummyClient() {
-    ClientIdentification id = new NationalId("1004456727");
+    ClientIdentification id = new NationalId("1001111111");
     return new Client(id, "Won XD");
   }
 

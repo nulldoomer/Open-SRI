@@ -30,7 +30,7 @@ class SRIAccessKeyGeneratorPropertyTest {
 
     DocumentNumber docNumber = new DocumentNumber("01", "001", "001", "001032058");
 
-    Ruc ruc = new Ruc("1004456727001");
+    Ruc ruc = new Ruc("1001111111001");
     Issuer issuer = new Issuer("Clinica", ruc);
     TaxInfo taxInfo = new TaxInfo(1, issuer, "Calle A 8392835");
 
@@ -64,7 +64,7 @@ class SRIAccessKeyGeneratorPropertyTest {
 
     DocumentNumber docNumber = new DocumentNumber("01", "001", "001", "001032058");
 
-    Ruc ruc = new Ruc("1004456727001");
+    Ruc ruc = new Ruc("1001111111001");
     Issuer issuer = new Issuer("Clinica", ruc);
     TaxInfo taxInfo = new TaxInfo(1, issuer, "Calle A 8392835");
 

@@ -16,7 +16,7 @@ class OpenSRIClientBuilderTest {
   void builder() {
 
     // Arrange
-    Ruc issuerRuc = new Ruc("1004456727001");
+    Ruc issuerRuc = new Ruc("1004499999001");
 
     IssuerProfile profileUnderTest = new IssuerProfile(issuerRuc, null, AccountingObligation.SI);
 

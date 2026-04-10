@@ -3,10 +3,12 @@
 
 package io.github.opensri.api.builders.invoice.steps;
 
+import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import java.util.List;
 
-public interface ItemsStep {
-  ItemsStep addItem(InvoiceItem item);
+public interface ItemsStep extends BuildStep {
+  ItemsStep addItems(List<InvoiceItem> items);
 
-  FirstAdditionalInfoStep doneItems();
+  ItemsStep addInfos(List<AdditionalInfo> infos);
 }

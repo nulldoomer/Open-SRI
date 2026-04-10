@@ -35,7 +35,7 @@ class InvoiceXmlSerializerTest {
         environment = Environment.PRUEBAS;
         accessKey = "1234567890123456789012345678901234567890123456789"; // 49 dígitos
 
-        Ruc ruc = new Ruc("1001111111001");
+        Ruc ruc = new Ruc("1004456727001");
         Issuer issuer = new Issuer("Empresa Test SA", ruc);
         issuerProfile = new IssuerProfile(ruc, null, AccountingObligation.SI);
 
@@ -43,7 +43,7 @@ class InvoiceXmlSerializerTest {
 
         DocumentNumber documentNumber = new DocumentNumber("01", "001", "001", "000000001");
 
-        ClientIdentification id = new NationalId("1001111111");
+        ClientIdentification id = new NationalId("1004456727");
         Client client = new Client(id, "Cliente Ejemplo");
 
         InvoiceItem item = new InvoiceItem(
@@ -97,9 +97,7 @@ class InvoiceXmlSerializerTest {
                 .taxInfo(taxInfo)
                 .documentNumber(documentNumber)
                 .client(client)
-                .addItem(item)
-                .addItem(item2)
-                .doneItems()
+                .addItems(List.of(item, item2))
                 .build();
 
         invoiceTwoTaxes = InvoiceBuilder.builder()
@@ -108,9 +106,7 @@ class InvoiceXmlSerializerTest {
                 .taxInfo(taxInfo)
                 .documentNumber(documentNumber)
                 .client(client)
-                .addItem(item)
-                .addItem(item3)
-                .doneItems()
+                .addItems(List.of(item, item3))
                 .build();
     }
 

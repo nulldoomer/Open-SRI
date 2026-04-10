@@ -21,7 +21,7 @@ class InvoiceBuilderTest {
   // =================== HELPERS =============================================
 
   private TaxInfo dummyTaxInfo() {
-    Ruc ruc = new Ruc("1001111111001");
+    Ruc ruc = new Ruc("1004456727001");
     Issuer issuer = new Issuer("Clínica", ruc);
     return new TaxInfo(1, issuer, "Calle A 8392835");
   }
@@ -31,25 +31,23 @@ class InvoiceBuilderTest {
   }
 
   private Client dummyClient() {
-    ClientIdentification id = new NationalId("1001111111");
+    ClientIdentification id = new NationalId("1004456727");
     return new Client(id, "Won XD");
   }
 
   private Invoice buildInvoice(InvoiceItem first, InvoiceItem... rest) {
-    var builder =
-        InvoiceBuilder.builder()
-            .issueDate(IssueDate.now())
-            .establishmentDirection("CASA LOL")
-            .taxInfo(dummyTaxInfo())
-            .documentNumber(dummyDoc())
-            .client(dummyClient())
-            .addItem(first); // ItemStep garantizado
+    List<InvoiceItem> items = new java.util.ArrayList<>();
+    items.add(first);
+    items.addAll(List.of(rest));
 
-    for (InvoiceItem item : rest) {
-      builder = builder.addItem(item);
-    }
-
-    return builder.doneItems().build();
+    return InvoiceBuilder.builder()
+        .issueDate(IssueDate.now())
+        .establishmentDirection("CASA LOL")
+        .taxInfo(dummyTaxInfo())
+        .documentNumber(dummyDoc())
+        .client(dummyClient())
+        .addItems(items)
+        .build();
   }
 
   // ============================ TESTS ======================================
@@ -182,9 +180,8 @@ class InvoiceBuilderTest {
             .taxInfo(dummyTaxInfo())
             .documentNumber(dummyDoc())
             .client(dummyClient())
-            .addItem(item)
-            .doneItems()
-            .addInfo(new AdditionalInfo("Impuesto ISD", "15.42x"))
+            .addItems(List.of(item))
+            .addInfos(List.of(new AdditionalInfo("Impuesto ISD", "15.42x")))
             .build();
 
     assertEquals(1, invoice.additionalInfo().size());

@@ -19,8 +19,9 @@ import java.util.Objects;
  * Orchestrates the fluent construction of an {@link Invoice} through compile-time steps.
  *
  * <p>This builder implementation collects the mandatory tax data, buyer information, line items,
- * and optional additional information required to assemble an invoice entity. It also calculates
- * {@link Totals} automatically from the registered items during the final build step.
+ * and optional additional information required to assemble an invoice entity. It accepts
+ * collections directly for variable-size sections and calculates {@link Totals} automatically
+ * from the registered items during the final build step.
  *
  * <p>It backs {@link io.github.opensri.api.builders.invoice.InvoiceBuilder} and centralizes the
  * mutable state needed to enforce the step-builder flow while keeping the resulting domain entity
@@ -35,10 +36,7 @@ public final class Steps
         TaxInfoStep,
         DocumentNumberStep,
         ClientStep,
-        FirstItemStep,
         ItemsStep,
-        FirstAdditionalInfoStep,
-        AdditionalInfoStep,
         BuildStep {
 
   private IssueDate issueDate;
@@ -102,41 +100,26 @@ public final class Steps
    * Stores the buyer data associated with the invoice.
    *
    * @param client buyer tax identification and display name
-   * @return first step that requires at least one invoice item
+   * @return step that accepts invoice items and optional additional information
    */
   @Override
-  public FirstItemStep client(Client client) {
+  public ItemsStep client(Client client) {
     this.client = Objects.requireNonNull(client, "Client is required");
     return this;
   }
 
   /**
-   * Adds a line item to the invoice being built.
+   * Adds a collection of line items to the invoice being built.
    *
-   * @param item invoice item to include in the final document
-   * @return same step so additional items can be appended
+   * <p>This method can be called multiple times to append additional batches of items.
+   * At least one item must be registered before the invoice can be built.
+   *
+   * @param items invoice items to include in the final document
+   * @return same step so more item batches or additional information can be appended
    */
   @Override
-  public ItemsStep addItem(InvoiceItem item) {
-    this.items.add(Objects.requireNonNull(item, "InvoiceItem cannot be null"));
-    return this;
-  }
-
-  /**
-   * Finishes the mandatory item section of the builder flow.
-   *
-   * <p>At least one item must have been registered before the builder can advance to optional
-   * additional information or final invoice creation.
-   *
-   * @return step that allows either adding optional additional information or building the invoice
-   *     directly
-   * @throws IllegalStateException if no items have been added
-   */
-  @Override
-  public FirstAdditionalInfoStep doneItems() {
-    if (items.isEmpty()) {
-      throw new IllegalStateException("Invoice must contain at least one item");
-    }
+  public ItemsStep addItems(List<InvoiceItem> items) {
+    addAllRequired(items, this.items, "Invoice items are required", "InvoiceItem cannot be null");
     return this;
   }
 
@@ -171,24 +154,30 @@ public final class Steps
   }
 
   /**
-   * Finishes the optional additional information section of the builder flow.
+   * Adds a collection of optional additional information fields to the invoice.
    *
-   * @return final step that can build the invoice
+   * <p>This method can be skipped entirely when the invoice does not require an
+   * {@code infoAdicional} section in the resulting XML.
+   *
+   * @param infos additional invoice fields to append
+   * @return same step so more fields or build can follow
    */
   @Override
-  public BuildStep doneAdditionalInfo() {
+  public ItemsStep addInfos(List<AdditionalInfo> infos) {
+    addAllRequired(
+        infos,
+        this.additionalInfos,
+        "Additional information list is required",
+        "AdditionalInfo cannot be null");
     return this;
   }
 
-  /**
-   * Adds an optional additional information field to the invoice.
-   *
-   * @param info additional invoice field that will be serialized under {@code infoAdicional}
-   * @return same step so more additional fields can be appended
-   */
-  @Override
-  public AdditionalInfoStep addInfo(AdditionalInfo info) {
-    this.additionalInfos.add(Objects.requireNonNull(info, "AdditionalInfo is required"));
-    return this;
+  private static <T> void addAllRequired(
+      List<T> source, List<T> target, String nullListMessage, String nullItemMessage) {
+    Objects.requireNonNull(source, nullListMessage);
+
+    for (T item : source) {
+      target.add(Objects.requireNonNull(item, nullItemMessage));
+    }
   }
 }

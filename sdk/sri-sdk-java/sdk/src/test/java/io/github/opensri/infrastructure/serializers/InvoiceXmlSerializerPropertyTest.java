@@ -22,7 +22,7 @@ class InvoiceXmlSerializerPropertyTest {
     // Inputs fijos reutilizables en todos los properties
     private final String accessKey = "1234567890123456789012345678901234567890123456789";
     private final IssuerProfile issuerProfile = new IssuerProfile(
-            new Ruc("1001111111001"), null, AccountingObligation.SI
+            new Ruc("1004456727001"), null, AccountingObligation.SI
     );
 
     // =========================================================================
@@ -147,11 +147,11 @@ class InvoiceXmlSerializerPropertyTest {
     // =========================================================================
 
     private Invoice buildSampleInvoice() {
-        Ruc ruc = new Ruc("1001111111001");
+        Ruc ruc = new Ruc("1004456727001");
         Issuer issuer = new Issuer("Empresa Test SA", ruc);
         TaxInfo taxInfo = new TaxInfo(1, issuer, "Calle Principal 123");
         DocumentNumber doc = new DocumentNumber("01", "001", "001", "000000001");
-        Client client = new Client(new NationalId("1001111111"), "Cliente Ejemplo");
+        Client client = new Client(new NationalId("1004456727"), "Cliente Ejemplo");
 
         InvoiceItem item = new InvoiceItem(
                 "P001", "A001", "Servicio",
@@ -169,8 +169,7 @@ class InvoiceXmlSerializerPropertyTest {
                 .taxInfo(taxInfo)
                 .documentNumber(doc)
                 .client(client)
-                .addItem(item)
-                .doneItems()
+                .addItems(List.of(item))
                 .build();
     }
 

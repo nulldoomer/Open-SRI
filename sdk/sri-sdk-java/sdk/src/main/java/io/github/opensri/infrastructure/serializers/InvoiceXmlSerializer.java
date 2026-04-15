@@ -11,7 +11,6 @@ import io.github.opensri.infrastructure.models.FacturaXML;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
-
 import java.io.StringWriter;
 
 /**
@@ -34,11 +33,10 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
    * @return serialized XML document
    */
   @Override
-  public String serialize(Invoice invoice, String accessKey,
-                          Environment environment,
-                          IssuerProfile issuerProfile) {
+  public String serialize(
+      Invoice invoice, String accessKey, Environment environment, IssuerProfile issuerProfile) {
 
-    try{
+    try {
 
       JAXBContext context = JAXBContext.newInstance(FacturaXML.class);
 
@@ -47,18 +45,15 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
       marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-      FacturaXML facturaDto = FacturaXML.fromDomain(invoice, accessKey,
-              environment, issuerProfile);
-
+      FacturaXML facturaDto = FacturaXML.fromDomain(invoice, accessKey, environment, issuerProfile);
 
       StringWriter writer = new StringWriter();
-      marshaller.marshal(facturaDto,writer);
+      marshaller.marshal(facturaDto, writer);
 
       return writer.toString();
-    }catch (JAXBException exception){
+    } catch (JAXBException exception) {
 
-      throw new RuntimeException("Error serializando la factura del SRI",exception);
+      throw new RuntimeException("Error serializando la factura del SRI", exception);
     }
-
   }
 }

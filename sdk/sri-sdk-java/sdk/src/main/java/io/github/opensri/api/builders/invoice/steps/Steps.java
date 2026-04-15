@@ -20,8 +20,8 @@ import java.util.Objects;
  *
  * <p>This builder implementation collects the mandatory tax data, buyer information, line items,
  * and optional additional information required to assemble an invoice entity. It accepts
- * collections directly for variable-size sections and calculates {@link Totals} automatically
- * from the registered items during the final build step.
+ * collections directly for variable-size sections and calculates {@link Totals} automatically from
+ * the registered items during the final build step.
  *
  * <p>It backs {@link io.github.opensri.api.builders.invoice.InvoiceBuilder} and centralizes the
  * mutable state needed to enforce the step-builder flow while keeping the resulting domain entity
@@ -111,8 +111,8 @@ public final class Steps
   /**
    * Adds a collection of line items to the invoice being built.
    *
-   * <p>This method can be called multiple times to append additional batches of items.
-   * At least one item must be registered before the invoice can be built.
+   * <p>This method can be called multiple times to append additional batches of items. At least one
+   * item must be registered before the invoice can be built.
    *
    * @param items invoice items to include in the final document
    * @return same step so more item batches or additional information can be appended
@@ -156,8 +156,8 @@ public final class Steps
   /**
    * Adds a collection of optional additional information fields to the invoice.
    *
-   * <p>This method can be skipped entirely when the invoice does not require an
-   * {@code infoAdicional} section in the resulting XML.
+   * <p>This method can be skipped entirely when the invoice does not require an {@code
+   * infoAdicional} section in the resulting XML.
    *
    * @param infos additional invoice fields to append
    * @return same step so more fields or build can follow

@@ -26,6 +26,6 @@ public interface XmlSerializer<T> {
    * @param issuerProfile information needed for the invoice XML
    * @return XML representation of the given document
    */
-  String serialize(T document, String accessKey, Environment environment,
-                   IssuerProfile issuerProfile);
+  String serialize(
+      T document, String accessKey, Environment environment, IssuerProfile issuerProfile);
 }

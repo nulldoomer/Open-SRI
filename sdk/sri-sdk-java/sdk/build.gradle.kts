@@ -31,10 +31,15 @@ spotless {
 }
 
 // ====================================== PLUGINS =============================
+
+// ========================= VERSIONS ==========================================
 group = "io.github.opensri"
 version = "0.1.0-SNAPSHOT"
 
 
+// ========================= VERSIONS ==========================================
+
+// ===================== DEPENDENCIES ==========================================
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -53,8 +58,14 @@ dependencies {
     // XML serialization
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
     runtimeOnly("org.glassfish.jaxb:jaxb-runtime:4.0.0")
+
+    // Firma XAdES
+    implementation("com.googlecode.xades4j:xades4j:2.4.0")
 }
 
+// ===================== DEPENDENCIES ==========================================
+
+// ===================== TOOLCHAIN ==========================================
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
@@ -62,7 +73,11 @@ java {
     }
 }
 
+// ===================== TOOLCHAIN ==========================================
+
+// ===================== TEST PLATFORM ==========================================
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+// ===================== TEST PLATFORM ==========================================

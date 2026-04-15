@@ -4,5 +4,6 @@
 .vscode
 .opencode
 .agents
+*.p12
 # Ignore Gradle build output directory
 build

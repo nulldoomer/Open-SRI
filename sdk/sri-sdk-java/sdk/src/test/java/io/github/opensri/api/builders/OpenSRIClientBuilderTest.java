@@ -6,6 +6,7 @@ import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
 import io.github.opensri.api.client.OpenSRIClient;
 import io.github.opensri.domain.entities.common.IssuerProfile;
 import io.github.opensri.domain.enums.AccountingObligation;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.Ruc;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +17,8 @@ class OpenSRIClientBuilderTest {
   void builder() {
 
     // Arrange
-    Ruc issuerRuc = new Ruc("1004499999001");
+    Ruc issuerRuc = new Ruc("1004456727001");
+    DocumentVersion version = DocumentVersion.VERSION_100;
 
     IssuerProfile profileUnderTest = new IssuerProfile(issuerRuc, null, AccountingObligation.SI);
 
@@ -28,6 +30,7 @@ class OpenSRIClientBuilderTest {
             .certificateAlias("fake-fake")
             .issuerProfile(profileUnderTest)
             .timeout(200)
+                .documentVersion(version)
             .build(); // ========= ACT ==============
 
     // Assert

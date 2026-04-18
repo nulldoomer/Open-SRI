@@ -5,6 +5,7 @@ import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.enums.AccountingObligation;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +28,14 @@ class InvoiceXmlSerializerTest {
     private Invoice invoiceTwoTaxes;
     private String accessKey;
     private Environment environment;
+    private DocumentVersion version;
     private IssuerProfile issuerProfile;
 
     @BeforeEach
     void setUp() {
         serializer = new InvoiceXmlSerializer();
         environment = Environment.PRUEBAS;
+        version = DocumentVersion.VERSION_100;
         accessKey = "1234567890123456789012345678901234567890123456789"; // 49 dígitos
 
         Ruc ruc = new Ruc("1004456727001");
@@ -117,7 +120,8 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_return_non_empty_xml_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertNotNull(xml);
@@ -127,7 +131,8 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_infoTributaria_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("infoTributaria"),
@@ -137,7 +142,8 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_infoFactura_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("infoFactura"),
@@ -147,7 +153,8 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_detalles_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("detalles"),
@@ -157,7 +164,8 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_embed_access_key_in_xml_when_provided() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertTrue(xml.contains(accessKey),
@@ -170,7 +178,8 @@ class InvoiceXmlSerializerTest {
         String expectedCode = String.valueOf(environment.getCode()); // "1" para PRUEBAS
 
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
         System.out.println(xml);
 
         // Assert
@@ -187,7 +196,8 @@ class InvoiceXmlSerializerTest {
         // Arrange — invoiceBase ya tiene un item
 
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         // Tip: xml.split("<detalle>", -1).length - 1 == 1
@@ -200,7 +210,8 @@ class InvoiceXmlSerializerTest {
     void should_contain_two_detalles_when_invoice_has_two_items() {
         // Arrange
 
-        String xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
 
@@ -218,7 +229,8 @@ class InvoiceXmlSerializerTest {
     void should_group_same_tax_codes_in_totalConImpuestos() {
         // Arrange
         // Esperado: en totalConImpuestos debe aparecer exactamente UN bloque para ese código
-        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
 
@@ -232,7 +244,8 @@ class InvoiceXmlSerializerTest {
     void should_separate_different_tax_codes_in_totalConImpuestos() {
         // Arrange
 
-        String  xml = serializer.serialize(invoiceTwoTaxes, accessKey, environment, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         int count = xml.split("<totalImpuesto>", -1).length - 1;
@@ -252,14 +265,16 @@ class InvoiceXmlSerializerTest {
         // actual lanza RuntimeException. Cuando implementes XmlSerializationException
         // actualiza este assert al tipo correcto.
         assertThrows(RuntimeException.class, () ->
-                serializer.serialize(null, accessKey, environment, issuerProfile)
+                serializer.serialize(null, accessKey, environment,
+                        version, issuerProfile)
         );
     }
 
     @Test
     void should_produce_well_formed_xml_declaration_when_serializing() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertTrue(xml.startsWith("<?xml") || xml.contains("<factura"),

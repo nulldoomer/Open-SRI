@@ -5,6 +5,7 @@ package io.github.opensri.api.builders.client.steps;
 
 import io.github.opensri.api.client.OpenSRIClient;
 import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import java.util.Objects;
 
@@ -12,11 +13,11 @@ import java.util.Objects;
  * Drives the step-by-step construction of an {@link OpenSRIClient}.
  *
  * <p>This builder implementation enforces the required client configuration order through the step
- * interfaces it implements, ensuring that environment, certificate data, issuer profile, and
- * timeout are all provided before the SDK client is created.
+ * interfaces it implements, ensuring that environment, certificate data, issuer profile, timeout,
+ * and document version are all provided before the SDK client is created.
  *
- * <p>It is used internally by {@link io.github.opensri.api.builders.client.OpenSRIClientBuilder} to
- * expose a fluent API without leaking mutable configuration state to SDK consumers.
+ * <p>It is used internally by {@link io.github.opensri.api.builders.client.OpenSRIClientBuilder}
+ * to expose a fluent API without leaking mutable configuration state to SDK consumers.
  *
  * @see OpenSRIClient
  */
@@ -27,6 +28,7 @@ public final class Steps
         CertificateAliasStep,
         IssuerProfileStep,
         TimeoutStep,
+        DocumentVersionStep,
         BuildStep {
 
   private Environment environment;
@@ -35,6 +37,7 @@ public final class Steps
   private String certificateAlias;
   private IssuerProfile issuerProfile;
   private int timeoutSeconds;
+  private DocumentVersion documentVersion;
 
   /**
    * Stores the password used to unlock the signing certificate.
@@ -90,7 +93,7 @@ public final class Steps
    * Creates an {@link OpenSRIClient} with the configuration collected by the builder flow.
    *
    * <p>The returned client is ready to use with the selected environment, certificate, issuer
-   * profile, and timeout values gathered in the previous steps.
+   * profile, timeout, and XML document version gathered in the previous steps.
    *
    * @return fully configured SDK client instance
    */
@@ -121,11 +124,24 @@ public final class Steps
    * Stores the network timeout to be applied by the generated client.
    *
    * @param seconds timeout value in seconds for SRI service calls
-   * @return final step that can build the client
+   * @return next step that requires the XML document version
    */
   @Override
-  public BuildStep timeout(int seconds) {
+  public DocumentVersionStep timeout(int seconds) {
     this.timeoutSeconds = seconds;
     return this;
   }
+
+  /**
+   * Stores the XML document version that serializers should use.
+   *
+   * @param version document version to apply when building XML payloads
+   * @return final step that can build the client
+   */
+  @Override
+  public BuildStep documentVersion(DocumentVersion version) {
+    this.documentVersion = version;
+    return this;
+  }
+
 }

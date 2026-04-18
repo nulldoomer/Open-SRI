@@ -5,6 +5,7 @@ import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.enums.AccountingObligation;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;
@@ -21,6 +22,7 @@ class InvoiceXmlSerializerPropertyTest {
 
     // Inputs fijos reutilizables en todos los properties
     private final String accessKey = "1234567890123456789012345678901234567890123456789";
+    private final DocumentVersion version = DocumentVersion.VERSION_100;
     private final IssuerProfile issuerProfile = new IssuerProfile(
             new Ruc("1004456727001"), null, AccountingObligation.SI
     );
@@ -37,7 +39,8 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoice, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         assertNotNull(xml);
@@ -61,7 +64,8 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String firstXml  = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String firstXml  = serializer.serialize(invoice, accessKey, environment,
+                version, issuerProfile);
         // TODO: parsear firstXml de vuelta a FacturaXML (usando JAXB Unmarshaller)
         // y serializar de nuevo para obtener secondXml
         // String secondXml = serializer.serialize(parsed, accessKey, environment, issuerProfile);
@@ -90,7 +94,8 @@ class InvoiceXmlSerializerPropertyTest {
         // Act & Assert
         // TODO: cuando implementes XmlSerializationException, cambiar RuntimeException por ella
         assertThrows(RuntimeException.class, () ->
-                serializer.serialize(null, accessKey, environment, issuerProfile)
+                serializer.serialize(null, accessKey, environment,
+                        version, issuerProfile)
         );
     }
 
@@ -106,7 +111,8 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoice, accessKey, environment,
+                version, issuerProfile);
 
         // Assert
         // TODO: contar cuántas combinaciones únicas (codigo, codigoPorcentaje) hay en

@@ -5,7 +5,7 @@ package io.github.opensri.infrastructure.services;
 
 import io.github.opensri.application.ports.AccessKeyGenerator;
 import io.github.opensri.domain.entities.common.DocumentNumber;
-import io.github.opensri.domain.entities.common.TaxInfo;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import java.util.concurrent.ThreadLocalRandom;

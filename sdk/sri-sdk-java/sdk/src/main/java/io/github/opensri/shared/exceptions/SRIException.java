@@ -6,8 +6,8 @@ package io.github.opensri.shared.exceptions;
 /**
  * Base runtime exception for SDK errors related to SRI processing.
  *
- * <p>This unchecked exception provides a common root for failures that occur
- * while preparing, sending, or processing electronic tax documents.
+ * <p>This unchecked exception provides a common root for failures that occur while preparing,
+ * sending, or processing electronic tax documents.
  */
 public class SRIException extends RuntimeException {
   public SRIException(String message) {

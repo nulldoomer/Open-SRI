@@ -3,7 +3,7 @@
 
 package io.github.opensri.infrastructure.models;
 
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
@@ -15,7 +15,8 @@ import java.util.List;
  *
  * <p>This class assembles the top-level invoice structure, including tax information, invoice
  * totals, detail lines, and optional additional fields. It mirrors the {@code factura} element
- * expected by the SRI schema and now receives the XML version explicitly from the serialization flow.
+ * expected by the SRI schema and now receives the XML version explicitly from the serialization
+ * flow.
  */
 @XmlRootElement(name = "factura")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -54,8 +55,11 @@ public class FacturaXML {
    * @return root JAXB model representing the invoice XML document
    */
   public static FacturaXML fromDomain(
-          Invoice invoice, String accessKey, Environment env, DocumentVersion version,
-          IssuerProfile profile) {
+      Invoice invoice,
+      String accessKey,
+      Environment env,
+      DocumentVersion version,
+      IssuerProfile profile) {
     FacturaXML xml = new FacturaXML();
 
     xml.version = version.getVersion();
@@ -67,8 +71,10 @@ public class FacturaXML {
 
     xml.detalles = invoice.items().stream().map(DetalleXML::fromDomain).toList();
 
-    xml.infoAdicional =
-        invoice.additionalInfo().stream().map(InfoAdicionalXML::fromDomain).toList();
+    if (invoice.additionalInfo() != null && !invoice.additionalInfo().isEmpty()) {
+      xml.infoAdicional =
+          invoice.additionalInfo().stream().map(InfoAdicionalXML::fromDomain).toList();
+    }
 
     return xml;
   }

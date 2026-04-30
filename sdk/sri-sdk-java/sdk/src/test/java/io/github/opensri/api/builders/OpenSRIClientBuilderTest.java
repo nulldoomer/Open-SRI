@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
 import io.github.opensri.api.client.OpenSRIClient;
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;

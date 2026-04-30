@@ -6,8 +6,8 @@ package io.github.opensri.shared.exceptions;
 /**
  * Signals certificate-related failures during SDK setup or XML signing.
  *
- * <p>This exception is thrown when the signing certificate cannot be loaded,
- * resolved by alias, or used to produce a valid digital signature.
+ * <p>This exception is thrown when the signing certificate cannot be loaded, resolved by alias, or
+ * used to produce a valid digital signature.
  */
 public class SRICertificateException extends RuntimeException {
   public SRICertificateException(String message) {

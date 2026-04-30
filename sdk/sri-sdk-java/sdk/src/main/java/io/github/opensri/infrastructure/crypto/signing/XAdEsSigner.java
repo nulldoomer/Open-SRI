@@ -27,10 +27,9 @@ import xades4j.providers.impl.DirectKeyingDataProvider;
 /**
  * Signs XML documents using an XAdES-BES profile and a loaded signing certificate.
  *
- * <p>This infrastructure implementation applies an enveloped XML signature over
- * the provided document using the private key and certificate contained in
- * {@link SigningKey}. It relies on xades4j to produce the signature structure
- * expected by the SRI signing process.
+ * <p>This infrastructure implementation applies an enveloped XML signature over the provided
+ * document using the private key and certificate contained in {@link SigningKey}. It relies on
+ * xades4j to produce the signature structure expected by the SRI signing process.
  *
  * <p>It implements {@link DocumentSigner}.
  */
@@ -46,8 +45,8 @@ class XAdEsSigner implements DocumentSigner {
   /**
    * Produces an XML document signed with XAdES-BES.
    *
-   * <p>The input XML is parsed into a DOM document, signed as an enveloped
-   * signature, and then serialized back to UTF-8 text.
+   * <p>The input XML is parsed into a DOM document, signed as an enveloped signature, and then
+   * serialized back to UTF-8 text.
    *
    * @param xmlDocument XML document to sign
    * @return signed XML document

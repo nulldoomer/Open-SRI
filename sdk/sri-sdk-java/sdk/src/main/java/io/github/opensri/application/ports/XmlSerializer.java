@@ -3,7 +3,7 @@
 
 package io.github.opensri.application.ports;
 
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 
@@ -29,6 +29,9 @@ public interface XmlSerializer<T> {
    * @return XML representation of the given document
    */
   String serialize(
-          T document, String accessKey, Environment environment,
-          DocumentVersion version, IssuerProfile issuerProfile);
+      T document,
+      String accessKey,
+      Environment environment,
+      DocumentVersion version,
+      IssuerProfile issuerProfile);
 }

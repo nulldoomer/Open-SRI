@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.opensri.application.ports.AccessKeyGenerator;
 import io.github.opensri.domain.entities.common.DocumentNumber;
-import io.github.opensri.domain.entities.common.Issuer;
-import io.github.opensri.domain.entities.common.TaxInfo;
+import io.github.opensri.domain.entities.common.issuer.Issuer;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.Ruc;

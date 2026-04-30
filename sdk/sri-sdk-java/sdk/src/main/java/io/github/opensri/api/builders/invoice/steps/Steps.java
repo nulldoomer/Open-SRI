@@ -3,14 +3,15 @@
 
 package io.github.opensri.api.builders.invoice.steps;
 
-import io.github.opensri.domain.entities.common.Client;
-import io.github.opensri.domain.entities.common.DocumentNumber;
-import io.github.opensri.domain.entities.common.TaxInfo;
-import io.github.opensri.domain.entities.common.Totals;
+import io.github.opensri.domain.entities.common.*;
+import io.github.opensri.domain.entities.common.payment.Payment;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.enums.Currency;
 import io.github.opensri.domain.valueobjects.IssueDate;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +38,7 @@ public final class Steps
         DocumentNumberStep,
         ClientStep,
         ItemsStep,
-        BuildStep {
+        PaymentStep {
 
   private IssueDate issueDate;
   private String establishmentDirection;
@@ -46,6 +47,8 @@ public final class Steps
   private Client client;
   private final List<InvoiceItem> items = new ArrayList<>();
   private final List<AdditionalInfo> additionalInfos = new ArrayList<>();
+  private final List<Payment> payments = new ArrayList<>();
+  private Currency currency;
 
   /**
    * Stores the issue date of the invoice being built.
@@ -124,36 +127,6 @@ public final class Steps
   }
 
   /**
-   * Creates an immutable {@link Invoice} and calculates its totals from the added items.
-   *
-   * <p>The build step derives {@link Totals} automatically, preserving the builder contract that
-   * invoice totals are consistent with the registered detail lines.
-   *
-   * @return invoice entity populated with mandatory data, derived totals, items, and optional
-   *     additional information
-   * @throws IllegalStateException if no items have been added
-   */
-  @Override
-  public Invoice build() {
-
-    if (items.isEmpty()) {
-      throw new IllegalStateException("Invoice must contain at least one item");
-    }
-
-    Totals totals = Totals.from(items);
-
-    return new Invoice(
-        issueDate,
-        establishmentDirection,
-        taxInfo,
-        documentNumber,
-        client,
-        totals,
-        List.copyOf(items),
-        List.copyOf(additionalInfos));
-  }
-
-  /**
    * Adds a collection of optional additional information fields to the invoice.
    *
    * <p>This method can be skipped entirely when the invoice does not require an {@code
@@ -172,12 +145,72 @@ public final class Steps
     return this;
   }
 
+  @Override
+  public PaymentStep addPayments(List<Payment> payments) {
+    addAllRequired(payments, this.payments, "Payments are required", "Payments cannot be null");
+    return this;
+  }
+
+  @Override
+  public ItemsStep addCurrency(Currency currency) {
+    this.currency = Objects.requireNonNull(currency);
+    return this;
+  }
+
+  /**
+   * Creates an immutable {@link Invoice} and calculates its totals from the added items.
+   *
+   * <p>The build step derives {@link Totals} automatically, preserving the builder contract that
+   * invoice totals are consistent with the registered detail lines.
+   *
+   * @return invoice entity populated with mandatory data, derived totals, items, and optional
+   *     additional information
+   * @throws IllegalStateException if no items have been added
+   */
+  @Override
+  public Invoice build() {
+
+    if (items.isEmpty()) {
+      throw new IllegalStateException("Invoice must contain at least one item");
+    }
+
+    Totals totals = Totals.from(items);
+
+    validatePayments(totals);
+
+    return new Invoice(
+        issueDate,
+        establishmentDirection,
+        taxInfo,
+        documentNumber,
+        client,
+        totals,
+        List.copyOf(items),
+        List.copyOf(additionalInfos),
+        List.copyOf(payments),
+        currency);
+  }
+
   private static <T> void addAllRequired(
       List<T> source, List<T> target, String nullListMessage, String nullItemMessage) {
     Objects.requireNonNull(source, nullListMessage);
 
     for (T item : source) {
       target.add(Objects.requireNonNull(item, nullItemMessage));
+    }
+  }
+
+  private void validatePayments(Totals totals) {
+
+    if (payments.isEmpty()) {
+      throw new IllegalStateException("Invoice must contain at least one payment");
+    }
+
+    BigDecimal total =
+        payments.stream().map(Payment::total).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    if (total.compareTo(totals.totalValue()) != 0) {
+      throw new IllegalStateException("The total payment doesn't match the total value");
     }
   }
 }

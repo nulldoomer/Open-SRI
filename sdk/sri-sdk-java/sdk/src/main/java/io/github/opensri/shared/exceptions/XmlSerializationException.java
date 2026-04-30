@@ -6,8 +6,8 @@ package io.github.opensri.shared.exceptions;
 /**
  * Signals failures while transforming a document model into XML.
  *
- * <p>This exception is intended for marshalling errors, invalid serialization
- * input, or schema-related issues detected during XML generation.
+ * <p>This exception is intended for marshalling errors, invalid serialization input, or
+ * schema-related issues detected during XML generation.
  */
 public class XmlSerializationException extends RuntimeException {
   public XmlSerializationException(String message) {

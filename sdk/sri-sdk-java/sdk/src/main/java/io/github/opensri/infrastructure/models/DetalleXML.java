@@ -65,8 +65,10 @@ public class DetalleXML {
     xml.descuento = String.valueOf(invoiceItem.discount());
     xml.precioTotalSinImpuesto = String.valueOf(invoiceItem.totalPriceWithoutTax());
 
-    xml.detallesAdicionales =
-        invoiceItem.additionalDetails().stream().map(DetalleAdicionalXML::fromDomain).toList();
+    if (invoiceItem.additionalDetails() != null && !invoiceItem.additionalDetails().isEmpty()) {
+      xml.detallesAdicionales =
+          invoiceItem.additionalDetails().stream().map(DetalleAdicionalXML::fromDomain).toList();
+    }
 
     // TODO: Añadir comentario explicativo
     xml.impuestos = invoiceItem.taxes().stream().map(ImpuestoXML::fromDomain).toList();

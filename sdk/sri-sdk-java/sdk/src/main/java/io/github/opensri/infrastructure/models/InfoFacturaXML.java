@@ -3,7 +3,7 @@
 
 package io.github.opensri.infrastructure.models;
 
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -58,6 +58,13 @@ public class InfoFacturaXML {
   @XmlElement(name = "importeTotal")
   private String importeTotal;
 
+  @XmlElement(name = "moneda")
+  private String moneda;
+
+  @XmlElementWrapper(name = "pagos")
+  @XmlElement(name = "pago")
+  private List<PagosXML> pagos;
+
   // Constructor vacío para generar la instancia del contexto de JAXB
   public InfoFacturaXML() {}
 
@@ -73,8 +80,9 @@ public class InfoFacturaXML {
 
     xml.fechaEmision = invoice.issueDate().format();
     xml.dirEstablecimiento = invoice.establishmentDirection();
-    xml.contribuyenteEspecial =
-        profile.specialTaxPayer() == null ? "" : profile.specialTaxPayer().number();
+    if (profile.specialTaxPayer() != null) {
+      xml.contribuyenteEspecial = profile.specialTaxPayer().number();
+    }
     xml.obligadoContabilidad = profile.accountingObligation().name();
 
     xml.tipoIdentificacionComprador =
@@ -90,6 +98,12 @@ public class InfoFacturaXML {
 
     xml.propina = String.valueOf(invoice.totals().totalTipValue());
     xml.importeTotal = String.valueOf(invoice.totals().totalValue());
+
+    if (invoice.currency() != null) {
+      xml.moneda = invoice.currency().getCurrency();
+    }
+
+    xml.pagos = invoice.payments().stream().map(PagosXML::fromDomain).toList();
 
     return xml;
   }

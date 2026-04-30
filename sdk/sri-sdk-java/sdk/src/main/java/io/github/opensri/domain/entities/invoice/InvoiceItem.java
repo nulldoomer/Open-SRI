@@ -3,7 +3,7 @@
 
 package io.github.opensri.domain.entities.invoice;
 
-import io.github.opensri.domain.entities.common.Tax;
+import io.github.opensri.domain.entities.common.taxes.Tax;
 import java.math.BigDecimal;
 import java.util.List;
 

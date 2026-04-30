@@ -4,7 +4,7 @@
 package io.github.opensri.api.builders.client.steps;
 
 import io.github.opensri.api.client.OpenSRIClient;
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import java.util.Objects;
@@ -16,8 +16,8 @@ import java.util.Objects;
  * interfaces it implements, ensuring that environment, certificate data, issuer profile, timeout,
  * and document version are all provided before the SDK client is created.
  *
- * <p>It is used internally by {@link io.github.opensri.api.builders.client.OpenSRIClientBuilder}
- * to expose a fluent API without leaking mutable configuration state to SDK consumers.
+ * <p>It is used internally by {@link io.github.opensri.api.builders.client.OpenSRIClientBuilder} to
+ * expose a fluent API without leaking mutable configuration state to SDK consumers.
  *
  * @see OpenSRIClient
  */
@@ -143,5 +143,4 @@ public final class Steps
     this.documentVersion = version;
     return this;
   }
-
 }

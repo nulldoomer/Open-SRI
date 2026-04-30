@@ -4,7 +4,7 @@
 package io.github.opensri.infrastructure.models;
 
 import io.github.opensri.domain.entities.common.DocumentNumber;
-import io.github.opensri.domain.entities.common.TaxInfo;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.enums.Environment;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

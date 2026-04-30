@@ -4,7 +4,7 @@
 package io.github.opensri.infrastructure.serializers;
 
 import io.github.opensri.application.ports.XmlSerializer;
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
@@ -20,8 +20,8 @@ import java.io.StringWriter;
  *
  * <p>This infrastructure component transforms an {@link Invoice} plus its serialization context
  * into the final XML payload expected by the SRI. The serializer receives the generated access key,
- * target environment, document version, and issuer profile so the XML model can be completed
- * before marshalling.
+ * target environment, document version, and issuer profile so the XML model can be completed before
+ * marshalling.
  *
  * <p>It implements {@link XmlSerializer}{@code <Invoice>}.
  */
@@ -30,9 +30,9 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
   /**
    * Produces the XML representation of the given invoice and serialization context.
    *
-   * <p>The serializer maps the domain invoice to {@link FacturaXML}, applies the provided
-   * access key, environment, version, and issuer profile, and then marshals the result
-   * as UTF-8 XML through JAXB.
+   * <p>The serializer maps the domain invoice to {@link FacturaXML}, applies the provided access
+   * key, environment, version, and issuer profile, and then marshals the result as UTF-8 XML
+   * through JAXB.
    *
    * @param invoice domain invoice ready to be serialized
    * @param accessKey generated access key to embed in the XML
@@ -43,8 +43,11 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
    */
   @Override
   public String serialize(
-          Invoice invoice, String accessKey, Environment environment,
-          DocumentVersion version, IssuerProfile issuerProfile) {
+      Invoice invoice,
+      String accessKey,
+      Environment environment,
+      DocumentVersion version,
+      IssuerProfile issuerProfile) {
 
     try {
 
@@ -55,8 +58,8 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
       marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-      FacturaXML facturaDto = FacturaXML.fromDomain(invoice, accessKey,
-              environment, version, issuerProfile);
+      FacturaXML facturaDto =
+          FacturaXML.fromDomain(invoice, accessKey, environment, version, issuerProfile);
 
       StringWriter writer = new StringWriter();
       marshaller.marshal(facturaDto, writer);

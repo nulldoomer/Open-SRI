@@ -3,7 +3,7 @@
 
 package io.github.opensri.infrastructure.models;
 
-import io.github.opensri.domain.entities.common.TotalTax;
+import io.github.opensri.domain.entities.common.taxes.TotalTax;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;

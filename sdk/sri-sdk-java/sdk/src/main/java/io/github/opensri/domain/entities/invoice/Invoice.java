@@ -3,10 +3,10 @@
 
 package io.github.opensri.domain.entities.invoice;
 
-import io.github.opensri.domain.entities.common.Client;
-import io.github.opensri.domain.entities.common.DocumentNumber;
-import io.github.opensri.domain.entities.common.TaxInfo;
-import io.github.opensri.domain.entities.common.Totals;
+import io.github.opensri.domain.entities.common.*;
+import io.github.opensri.domain.entities.common.payment.Payment;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
+import io.github.opensri.domain.enums.Currency;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import java.util.List;
 
@@ -28,10 +28,13 @@ public record Invoice(
     Client client,
     Totals totals,
     List<InvoiceItem> items,
-    List<AdditionalInfo> additionalInfo) {
+    List<AdditionalInfo> additionalInfo,
+    List<Payment> payments,
+    Currency currency) {
 
   public Invoice {
     items = items == null ? List.of() : List.copyOf(items);
     additionalInfo = additionalInfo == null ? List.of() : List.copyOf(additionalInfo);
+    payments = payments == null ? List.of() : List.copyOf(payments);
   }
 }

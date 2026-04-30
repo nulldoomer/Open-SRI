@@ -13,9 +13,9 @@ import java.security.cert.X509Certificate;
 /**
  * Loads signing material from a PKCS#12 certificate container.
  *
- * <p>This infrastructure helper extracts the private key and X.509 certificate
- * required to sign XML documents. It converts the raw {@code .p12} bytes into
- * a {@link SigningKey} value that can be consumed by the signing layer.
+ * <p>This infrastructure helper extracts the private key and X.509 certificate required to sign XML
+ * documents. It converts the raw {@code .p12} bytes into a {@link SigningKey} value that can be
+ * consumed by the signing layer.
  *
  * @see SigningKey
  */

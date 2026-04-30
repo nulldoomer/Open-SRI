@@ -2,6 +2,11 @@ package io.github.opensri.infrastructure.serializers;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;
+import io.github.opensri.domain.entities.common.issuer.Issuer;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
+import io.github.opensri.domain.entities.common.payment.ImmediatePayment;
+import io.github.opensri.domain.entities.common.taxes.Tax;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.enums.AccountingObligation;
@@ -83,6 +88,11 @@ class InvoiceXmlSerializerTest {
 
         Totals totals = Totals.from(List.of(item));
 
+        ImmediatePayment payment = new ImmediatePayment(
+                io.github.opensri.domain.enums.PaymentMethod.SIN_SISTEMA_FINANCIERO,
+                totals.totalValue()
+        );
+
         invoiceBase = new Invoice(
                 IssueDate.now(),
                 "Av. Siempre Viva 742",
@@ -91,8 +101,13 @@ class InvoiceXmlSerializerTest {
                 client,
                 totals,
                 List.of(item),
-                List.of()
+                List.of(),
+                List.of(payment),
+                io.github.opensri.domain.enums.Currency.USD
         );
+
+        Totals totalsTwoItems = Totals.from(List.of(item, item2));
+        ImmediatePayment paymentTwoItems = new ImmediatePayment(io.github.opensri.domain.enums.PaymentMethod.SIN_SISTEMA_FINANCIERO, totalsTwoItems.totalValue());
 
         invoiceTwoItems = InvoiceBuilder.builder()
                 .issueDate(IssueDate.now())
@@ -101,7 +116,12 @@ class InvoiceXmlSerializerTest {
                 .documentNumber(documentNumber)
                 .client(client)
                 .addItems(List.of(item, item2))
+                .addCurrency(io.github.opensri.domain.enums.Currency.USD)
+                .addPayments(List.of(paymentTwoItems))
                 .build();
+
+        Totals totalsTwoTaxes = Totals.from(List.of(item, item3));
+        ImmediatePayment paymentTwoTaxes = new ImmediatePayment(io.github.opensri.domain.enums.PaymentMethod.SIN_SISTEMA_FINANCIERO, totalsTwoTaxes.totalValue());
 
         invoiceTwoTaxes = InvoiceBuilder.builder()
                 .issueDate(IssueDate.now())
@@ -110,6 +130,8 @@ class InvoiceXmlSerializerTest {
                 .documentNumber(documentNumber)
                 .client(client)
                 .addItems(List.of(item, item3))
+                .addCurrency(io.github.opensri.domain.enums.Currency.USD)
+                .addPayments(List.of(paymentTwoTaxes))
                 .build();
     }
 

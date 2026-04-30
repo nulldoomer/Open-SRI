@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
+package io.github.opensri.infrastructure.models;
+
+import io.github.opensri.domain.entities.common.payment.DeferredPayment;
+import io.github.opensri.domain.entities.common.payment.Payment;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class PagosXML {
+
+  @XmlElement(name = "formaPago")
+  String formaPago;
+
+  @XmlElement(name = "total")
+  String total;
+
+  @XmlElement(name = "plazo")
+  String plazo;
+
+  @XmlElement(name = "unidadTiempo")
+  String unidadTiempo;
+
+  public PagosXML() {}
+
+  public static PagosXML fromDomain(Payment payment) {
+    PagosXML xml = new PagosXML();
+
+    xml.formaPago = payment.paymentMethod().getCode();
+    xml.total = payment.total().toString();
+    if (payment instanceof DeferredPayment deferredPayment) {
+      xml.plazo = deferredPayment.paymentMethod().toString();
+      xml.unidadTiempo = deferredPayment.timeUnit().toString();
+    }
+
+    return xml;
+  }
+}

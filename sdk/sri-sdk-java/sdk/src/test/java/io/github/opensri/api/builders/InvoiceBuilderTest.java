@@ -4,10 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;
-import io.github.opensri.domain.entities.common.TaxInfo;
+import io.github.opensri.domain.entities.common.issuer.Issuer;
+import io.github.opensri.domain.entities.common.taxes.Tax;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
+import io.github.opensri.domain.entities.common.payment.ImmediatePayment;
+import io.github.opensri.domain.entities.common.payment.Payment;
+import io.github.opensri.domain.entities.common.taxes.TotalTax;
 import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.enums.PaymentMethod;
 import io.github.opensri.domain.valueobjects.ClientIdentification;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;
@@ -37,6 +43,13 @@ class InvoiceBuilderTest {
 
   private Invoice buildInvoice(InvoiceItem first, InvoiceItem... rest) {
     List<InvoiceItem> items = new java.util.ArrayList<>();
+    List<Payment> payments = new java.util.ArrayList<>();
+
+    ImmediatePayment payment = new ImmediatePayment(
+            PaymentMethod.SIN_SISTEMA_FINANCIERO,
+            BigDecimal.valueOf(115)
+    );
+    payments.add(payment);
     items.add(first);
     items.addAll(List.of(rest));
 
@@ -47,6 +60,7 @@ class InvoiceBuilderTest {
         .documentNumber(dummyDoc())
         .client(dummyClient())
         .addItems(items)
+            .addPayments(payments)
         .build();
   }
 
@@ -173,6 +187,12 @@ class InvoiceBuilderTest {
             List.of(),
             List.of(new Tax("2", "2", new BigDecimal("15.00"), new BigDecimal("50.00"))));
 
+    Payment payment = new ImmediatePayment(
+            PaymentMethod.SIN_SISTEMA_FINANCIERO,
+            BigDecimal.valueOf(115)
+    );
+
+
     Invoice invoice =
         InvoiceBuilder.builder()
             .issueDate(IssueDate.now())
@@ -182,6 +202,7 @@ class InvoiceBuilderTest {
             .client(dummyClient())
             .addItems(List.of(item))
             .addInfos(List.of(new AdditionalInfo("Impuesto ISD", "15.42x")))
+                .addPayments(List.of(payment))
             .build();
 
     assertEquals(1, invoice.additionalInfo().size());

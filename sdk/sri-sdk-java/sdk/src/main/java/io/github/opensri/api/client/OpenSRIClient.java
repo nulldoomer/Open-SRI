@@ -3,7 +3,7 @@
 
 package io.github.opensri.api.client;
 
-import io.github.opensri.domain.entities.common.IssuerProfile;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.enums.Environment;
 
 public final class OpenSRIClient {

@@ -2,11 +2,17 @@ package io.github.opensri.infrastructure.serializers;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
 import io.github.opensri.domain.entities.common.*;
+import io.github.opensri.domain.entities.common.issuer.Issuer;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
+import io.github.opensri.domain.entities.common.payment.ImmediatePayment;
+import io.github.opensri.domain.entities.common.taxes.Tax;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
+import io.github.opensri.domain.enums.PaymentMethod;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;
 import io.github.opensri.domain.valueobjects.Ruc;
@@ -169,6 +175,11 @@ class InvoiceXmlSerializerPropertyTest {
                 List.of(new Tax("2", "4", new BigDecimal("15.00"), new BigDecimal("100.00")))
         );
 
+        ImmediatePayment payment = new ImmediatePayment(
+                PaymentMethod.SIN_SISTEMA_FINANCIERO,
+                BigDecimal.valueOf(115)
+        );
+
         return InvoiceBuilder.builder()
                 .issueDate(IssueDate.now())
                 .establishmentDirection("AH")
@@ -176,6 +187,7 @@ class InvoiceXmlSerializerPropertyTest {
                 .documentNumber(doc)
                 .client(client)
                 .addItems(List.of(item))
+                .addPayments(List.of(payment))
                 .build();
     }
 

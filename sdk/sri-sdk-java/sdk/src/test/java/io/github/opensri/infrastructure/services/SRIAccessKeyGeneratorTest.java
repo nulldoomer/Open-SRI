@@ -43,8 +43,6 @@ class SRIAccessKeyGeneratorTest {
 
   @Test
   void should_generate_key_of_exactly_49_chars_when_valid_inputs() {
-    // Arrange
-    setUp();
 
     // Act
     String key = generator.generate(issueDate, documentNumber, taxInfo, Environment.PRUEBAS);
@@ -55,8 +53,6 @@ class SRIAccessKeyGeneratorTest {
 
   @Test
   void should_generate_all_numeric_key_when_valid_inputs() {
-    // Arrange
-    setUp();
 
     // Act
     String key = generator.generate(issueDate, documentNumber, taxInfo, Environment.PRUEBAS);

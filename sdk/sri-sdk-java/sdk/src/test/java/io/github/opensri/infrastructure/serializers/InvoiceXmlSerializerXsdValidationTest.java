@@ -92,7 +92,7 @@ class InvoiceXmlSerializerXsdValidationTest {
         String xml = serializer.serialize(invoiceBase, accessKey, environment, version, issuerProfile);
         assertNotNull(xml);
         // Path to the XSD file
-        String xsdPath = Paths.get("", "src", "main", "java", "io", "github", "opensri", "xmlxsd", "factura_V1.0.0.xsd").toString();
+        String xsdPath = Paths.get("", "src", "main",  "resources", "xsd", "factura_V1.0.0.xsd").toString();
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = factory.newSchema(new File(xsdPath));
         Validator validator = schema.newValidator();

@@ -13,6 +13,10 @@ plugins {
     id("com.diffplug.spotless") version "6.25.0"
 }
 
+configurations{
+    create("jaxws")
+}
+
 spotless {
     java {
         target("src/**/*.java")
@@ -61,6 +65,13 @@ dependencies {
 
     // Firma XAdES
     implementation("com.googlecode.xades4j:xades4j:2.4.0")
+
+    // Web Service
+    implementation("jakarta.xml.ws:jakarta.xml.ws-api:4.0.1")
+    runtimeOnly("com.sun.xml.ws:jaxws-rt:4.0.2")
+
+    // Tool Config
+    "jaxws"("com.sun.xml.ws:jaxws-tools:4.0.2")
 }
 
 // ===================== DEPENDENCIES ==========================================
@@ -79,5 +90,58 @@ java {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
 // ===================== TEST PLATFORM ==========================================
+
+
+// ===================== WS-TASKS CONFIG ==========================================
+fun registerWsImportTask(
+    name: String,
+    pkg: String,
+    wsdlPath: String
+) {
+    tasks.register<JavaExec>(name) {
+        group = "wsdl"
+        description = "Genera cliente SOAP: $pkg"
+
+        val outputDir = layout.buildDirectory.dir("generated-sources/wsdl")
+
+        doFirst {
+            outputDir.get().asFile.mkdirs()
+        }
+
+        // 🔥 AQUÍ ESTÁ LA CLAVE
+        classpath = configurations["jaxws"]
+
+        mainClass.set("com.sun.tools.ws.WsImport")
+
+        args(
+            "-keep",
+            "-s", outputDir.get().asFile.absolutePath,
+            "-d", outputDir.get().asFile.absolutePath,
+            "-p", pkg,
+            wsdlPath
+        )
+    }
+}
+registerWsImportTask(
+    "wsimportRecepcion",
+    "ec.sri.recepcion",
+    "src/main/resources/wsdl/dev/RecepcionComprobantes.wsdl"
+)
+
+registerWsImportTask(
+    "wsimportAutorizacion",
+    "ec.sri.autorizacion",
+    "src/main/resources/wsdl/dev/AutorizacionComprobantes.wsdl"
+)
+
+sourceSets{
+    main{
+        java{
+            srcDir(layout.buildDirectory.dir("generated-sources/wsdl"))
+        }
+    }
+}
+// ===================== WS-TASKS CONFIG ==========================================

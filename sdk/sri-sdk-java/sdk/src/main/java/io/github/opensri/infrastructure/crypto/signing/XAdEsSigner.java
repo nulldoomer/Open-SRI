@@ -58,6 +58,7 @@ class XAdEsSigner implements DocumentSigner {
     try {
       // Turn the String XML into a Document
       Document doc = parseXml(xmlDocument);
+      doc.getDocumentElement().setIdAttribute("id", true);
 
       // Set the key provider and certificate
       DirectKeyingDataProvider keyProvider =
@@ -71,7 +72,7 @@ class XAdEsSigner implements DocumentSigner {
       // Define what are we going to sign
       // SRI expects the "Enveloped" signature
       DataObjectDesc dataObject =
-          new DataObjectReference("").withTransform(new EnvelopedSignatureTransform());
+          new DataObjectReference("#comprobante").withTransform(new EnvelopedSignatureTransform());
 
       // Sign
       // This introduces the tag <ds:Signature> onto the root XML

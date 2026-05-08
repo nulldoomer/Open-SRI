@@ -1,6 +1,7 @@
 package io.github.opensri.infrastructure.serializers;
 
 import io.github.opensri.api.builders.invoice.InvoiceBuilder;
+import io.github.opensri.application.ports.DocumentSigner;
 import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.common.issuer.Issuer;
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
@@ -16,6 +17,9 @@ import io.github.opensri.domain.valueobjects.ClientIdentification;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;
 import io.github.opensri.domain.valueobjects.Ruc;
+import io.github.opensri.infrastructure.crypto.certificates.CertificateLoader;
+import io.github.opensri.infrastructure.crypto.certificates.model.SigningKey;
+import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +29,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Paths;
 import java.math.BigDecimal;
@@ -34,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InvoiceXmlSerializerXsdValidationTest {
     private InvoiceXmlSerializer serializer;
+    private DocumentSigner  documentSigner;
     private Invoice invoiceBase;
     private String accessKey;
     private Environment environment;
@@ -41,8 +48,19 @@ class InvoiceXmlSerializerXsdValidationTest {
     private IssuerProfile issuerProfile;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         serializer = new InvoiceXmlSerializer();
+
+        InputStream stream = getClass().getResourceAsStream("/test-firma.p12");
+        if (stream == null) {
+            throw new IllegalStateException("No se encontró el certificado de prueba /test-firma.p12");
+        }
+        byte[] p12Bytes = stream.readAllBytes();
+        SigningKey signingKey = CertificateLoader.load(p12Bytes, "password", "SRI-Test-Firma");
+
+        documentSigner = XAdEsSignerFactory.create(signingKey);
+
+
         environment = Environment.PRUEBAS;
         version = DocumentVersion.VERSION_100;
         accessKey = "1234567890123456789012345678901234567890123456789";
@@ -85,21 +103,24 @@ class InvoiceXmlSerializerXsdValidationTest {
                 .addInfos(List.of(addInfo))
                 .addPayments(List.of(payment))
                 .build();
+
     }
 
     @Test
     void xml_should_validate_against_factura_xsd() throws Exception {
         String xml = serializer.serialize(invoiceBase, accessKey, environment, version, issuerProfile);
-        assertNotNull(xml);
+        String signedXml = documentSigner.signDocument(xml);
+
+        assertNotNull(signedXml);
         // Path to the XSD file
         String xsdPath = Paths.get("", "src", "main",  "resources", "xsd", "factura_V1.0.0.xsd").toString();
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = factory.newSchema(new File(xsdPath));
         Validator validator = schema.newValidator();
         try {
-            validator.validate(new StreamSource(new StringReader(xml)));
+            validator.validate(new StreamSource(new StringReader(signedXml)));
         } catch (Exception e) {
-            fail("XML did not validate against XSD: " + e.getMessage() + "\nXML:\n" + xml);
+            fail("XML did not validate against XSD: " + e.getMessage() + "\nXML:\n" + signedXml);
         }
     }
 }

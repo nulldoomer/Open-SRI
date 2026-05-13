@@ -3,42 +3,65 @@
 
 package io.github.opensri.infrastructure.sri.mappers;
 
-import ec.sri.autorizacion.Autorizacion;
-import ec.sri.autorizacion.RespuestaComprobante;
+import io.github.opensri.domain.entities.responses.Authorization;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.SRIMessage;
+import io.github.opensri.infrastructure.sri.parsers.AuthorizationParser;
+import io.github.opensri.infrastructure.sri.parsers.SRIMessageParser;
+import io.github.opensri.infrastructure.sri.utils.XmlUtils;
+import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
- * Convierte la respuesta SOAP de autorización del SRI a la representación de dominio del SDK.
+ * Traduce la respuesta SOAP de autorización del SRI a la representación de dominio del SDK.
  *
- * <p>Toma la primera autorización devuelta por el servicio y normaliza sus mensajes y metadatos
- * para exponerlos sin dependencia del modelo JAXB generado.
+ * <p>Extrae el número de comprobantes consultados, la autorización principal y los mensajes
+ * asociados sin exponer al resto de la aplicación la estructura XML del servicio SOAP.
  */
 public class AuthorizationMapper {
+
   /**
-   * Traduce una {@link RespuestaComprobante} SOAP a un {@link AuthorizationResponse} de dominio.
+   * Convierte un envelope SOAP de autorización en {@link AuthorizationResponse}.
    *
-   * @param respuestaComprobante respuesta del servicio {@code autorizacionComprobante}
+   * @param soapXml respuesta SOAP cruda devuelta por el servicio de autorización
    * @return autorización con estado, XML autorizado y mensajes asociados
+   * @throws RuntimeException si el XML no puede parsearse o la respuesta no contiene el nodo
+   *     principal esperado
    */
-  public static AuthorizationResponse toDomain(RespuestaComprobante respuestaComprobante) {
+  public static AuthorizationResponse toDomain(String soapXml) {
+    try {
+      Document document = XmlUtils.parse(soapXml);
 
-    Autorizacion auth = respuestaComprobante.getAutorizaciones().getAutorizacion().get(0);
+      Element response =
+          XmlUtils.firstElementByLocalName(document, "RespuestaAutorizacionComprobante");
 
-    return new AuthorizationResponse(
-        auth.getEstado().replace(" ", "_"),
-        auth.getNumeroAutorizacion(),
-        auth.getFechaAutorizacion().toGregorianCalendar().toZonedDateTime().toLocalDateTime(),
-        auth.getAmbiente(),
-        auth.getComprobante(),
-        auth.getMensajes().getMensaje().stream()
-            .map(
-                m ->
-                    new SRIMessage(
-                        m.getIdentificador(),
-                        m.getMensaje(),
-                        m.getInformacionAdicional() != null ? m.getInformacionAdicional() : "",
-                        m.getTipo()))
-            .toList());
+      if (response == null) {
+        throw new IllegalArgumentException(
+            "SOAP response does not contain " + "RespuestaAutorizacionComprobante");
+      }
+
+      String documentsNumber = XmlUtils.textOfFirstChild(response, "numeroComprobantes");
+
+      Element authorizations = XmlUtils.firstDirectChild(response, "autorizaciones");
+
+      Element authorizationElement =
+          authorizations != null ? XmlUtils.firstDirectChild(authorizations, "autorizacion") : null;
+
+      Authorization authorization =
+          authorizationElement != null
+              ? AuthorizationParser.parseSingle(authorizationElement).orElse(null)
+              : null;
+
+      List<SRIMessage> messages =
+          authorizationElement != null
+              ? SRIMessageParser.parse(XmlUtils.firstDirectChild(authorizationElement, "mensajes"))
+              : List.of();
+
+      return new AuthorizationResponse(documentsNumber, authorization, messages);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Cannot parse SOAP authorization response", e);
+    }
   }
 }

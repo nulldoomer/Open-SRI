@@ -3,41 +3,48 @@
 
 package io.github.opensri.infrastructure.sri.mappers;
 
-import ec.sri.recepcion.RespuestaSolicitud;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
 import io.github.opensri.domain.entities.responses.SRIMessage;
+import io.github.opensri.infrastructure.sri.parsers.SRIMessageParser;
+import io.github.opensri.infrastructure.sri.utils.XmlUtils;
 import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Traduce la respuesta SOAP de recepción del SRI al modelo de dominio del SDK.
  *
- * <p>Extrae el estado general y aplana los mensajes de los comprobantes devueltos por el servicio
- * para que el resto de la aplicación no dependa de la estructura JAXB generada desde el WSDL.
+ * <p>Extrae el estado general y los mensajes de los comprobantes devueltos por el servicio para
+ * que el resto de la aplicación no dependa de la estructura SOAP ni de DTOs generados desde WSDL.
  */
 public class ReceiptMapper {
 
   /**
-   * Convierte una {@link RespuestaSolicitud} SOAP en un {@link ReceiptResponse} de dominio.
+   * Convierte un envelope SOAP de recepción en {@link ReceiptResponse}.
    *
-   * @param respuestaSolicitud respuesta recibida desde {@code validarComprobante}
-   * @return estado de recepción y mensajes relevantes del SRI
+   * @param soapXml respuesta SOAP cruda devuelta por el servicio {@code validarComprobante}
+   * @return estado de recepción y mensajes asociados al comprobante procesado
+   * @throws RuntimeException si el XML no puede parsearse o no contiene la estructura esperada
    */
-  public static ReceiptResponse toDomain(RespuestaSolicitud respuestaSolicitud) {
-    return new ReceiptResponse(
-        respuestaSolicitud.getEstado(), mapMessages(respuestaSolicitud.getComprobantes()));
-  }
+  public static ReceiptResponse toDomain(String soapXml) {
+    try {
+      Document document = XmlUtils.parse(soapXml);
 
-  private static List<SRIMessage> mapMessages(RespuestaSolicitud.Comprobantes comprobantes) {
-    if (comprobantes == null) {
-      return List.of();
+      Element receiptElement =
+          XmlUtils.firstElementByLocalName(document, "RespuestaRecepcionComprobante");
+
+      if (receiptElement == null) {
+        throw new IllegalArgumentException(
+            "SOAP response does not contain RespuestaRecepcionComprobante");
+      }
+
+      String status = XmlUtils.textOfFirstChild(receiptElement, "estado");
+      Element mensajesElement = XmlUtils.firstElementByLocalName(document, "mensajes");
+      List<SRIMessage> messages = SRIMessageParser.parse(mensajesElement);
+      return new ReceiptResponse(status, messages);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Cannot parse SOAP receipt response", e);
     }
-
-    return comprobantes.getComprobante().stream()
-        .flatMap(c -> c.getMensajes().getMensaje().stream())
-        .map(
-            m ->
-                new SRIMessage(
-                    m.getIdentificador(), m.getMensaje(), m.getInformacionAdicional(), m.getTipo()))
-        .toList();
   }
 }

@@ -3,16 +3,14 @@
 
 package io.github.opensri.infrastructure.sri;
 
-import ec.sri.autorizacion.RespuestaComprobante;
-import ec.sri.recepcion.RespuestaSolicitud;
 import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
+import io.github.opensri.infrastructure.sri.client.AuthorizationSoapClient;
+import io.github.opensri.infrastructure.sri.client.SendReceiptSoapClient;
 import io.github.opensri.infrastructure.sri.mappers.AuthorizationMapper;
 import io.github.opensri.infrastructure.sri.mappers.ReceiptMapper;
-import io.github.opensri.infrastructure.sri.proxy.AuthorizationProxy;
-import io.github.opensri.infrastructure.sri.proxy.SendReceiptProxy;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 /**
  * Implementa {@link SRIGateway} usando los web services SOAP oficiales del SRI.
@@ -22,18 +20,14 @@ import java.nio.charset.StandardCharsets;
  */
 public class SRISOAPGateway implements SRIGateway {
 
-  private final SendReceiptProxy sendReceiptProxy;
-  private final AuthorizationProxy authorizationProxy;
+  private final SendReceiptSoapClient sendReceiptSoapClient;
+  private final AuthorizationSoapClient authorizationSoapClient;
 
-  /**
-   * Crea un adapter SOAP con los proxies de recepción y autorización ya configurados.
-   *
-   * @param sendReceiptProxy cliente SOAP para {@code validarComprobante}
-   * @param authorizationProxy cliente SOAP para {@code autorizacionComprobante}
-   */
-  public SRISOAPGateway(SendReceiptProxy sendReceiptProxy, AuthorizationProxy authorizationProxy) {
-    this.sendReceiptProxy = sendReceiptProxy;
-    this.authorizationProxy = authorizationProxy;
+  public SRISOAPGateway(
+      SendReceiptSoapClient sendReceiptSoapClient,
+      AuthorizationSoapClient authorizationSoapClient) {
+    this.sendReceiptSoapClient = sendReceiptSoapClient;
+    this.authorizationSoapClient = authorizationSoapClient;
   }
 
   /**
@@ -43,11 +37,9 @@ public class SRISOAPGateway implements SRIGateway {
    * @return estado de recepción y mensajes informativos reportados por el SRI
    */
   @Override
-  public ReceiptResponse sendDocument(String signedXML) {
+  public ReceiptResponse sendDocument(String signedXML) throws IOException, InterruptedException {
 
-    byte[] bytesSignedXML = signedXML.getBytes(StandardCharsets.UTF_8);
-    RespuestaSolicitud response = sendReceiptProxy.sendReceipt(bytesSignedXML);
-
+    String response = sendReceiptSoapClient.sendReceipt(signedXML);
     return ReceiptMapper.toDomain(response);
   }
 
@@ -58,10 +50,10 @@ public class SRISOAPGateway implements SRIGateway {
    * @return respuesta de autorización traducida al modelo de dominio
    */
   @Override
-  public AuthorizationResponse sendAuthorization(String accessKey) {
+  public AuthorizationResponse sendAuthorization(String accessKey)
+      throws IOException, InterruptedException {
 
-    RespuestaComprobante response = authorizationProxy.singleAuthorize(accessKey);
-
+    String response = authorizationSoapClient.authorizeDocument(accessKey);
     return AuthorizationMapper.toDomain(response);
   }
 }

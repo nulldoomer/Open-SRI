@@ -3,7 +3,6 @@
 
 package io.github.opensri.domain.entities.responses;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -13,15 +12,12 @@ import java.util.List;
  * complementarios reportados por el servicio SOAP de autorización.
  */
 public record AuthorizationResponse(
-    // Estado de autorización normalizado desde la respuesta SOAP del SRI.
-    String status,
-    // Número de autorización asignado por el SRI.
-    String authorizationNumber,
-    // Fecha y hora en que el SRI autorizó el comprobante.
-    LocalDateTime authorizationDate,
-    // Ambiente reportado por el SRI para la autorización.
-    String environment,
-    // XML autorizado que el SRI devuelve en la respuesta.
-    String authorizedXML,
-    // Mensajes adicionales emitidos durante la autorización.
+
+    // Cantidad de comprobantes incluidos en la respuesta de autorización.
+    String documentsNumber,
+
+    // Datos principales del nodo de autorización procesado por el SRI.
+    Authorization authorization,
+
+    // Mensajes adicionales emitidos por el servicio de autorización.
     List<SRIMessage> messages) {}

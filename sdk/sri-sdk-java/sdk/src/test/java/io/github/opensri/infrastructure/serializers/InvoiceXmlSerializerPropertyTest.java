@@ -28,7 +28,6 @@ class InvoiceXmlSerializerPropertyTest {
 
     // Inputs fijos reutilizables en todos los properties
     private final String accessKey = "1234567890123456789012345678901234567890123456789";
-    private final DocumentVersion version = DocumentVersion.VERSION_100;
     private final IssuerProfile issuerProfile = new IssuerProfile(
             new Ruc("1004456727001"), null, AccountingObligation.SI
     );
@@ -45,8 +44,7 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String xml = serializer.serialize(invoice, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
 
         // Assert
         assertNotNull(xml);
@@ -70,8 +68,7 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String firstXml  = serializer.serialize(invoice, accessKey, environment,
-                version, issuerProfile);
+        String firstXml  = serializer.serialize(invoice, accessKey, environment, issuerProfile);
         // TODO: parsear firstXml de vuelta a FacturaXML (usando JAXB Unmarshaller)
         // y serializar de nuevo para obtener secondXml
         // String secondXml = serializer.serialize(parsed, accessKey, environment, issuerProfile);
@@ -100,8 +97,7 @@ class InvoiceXmlSerializerPropertyTest {
         // Act & Assert
         // TODO: cuando implementes XmlSerializationException, cambiar RuntimeException por ella
         assertThrows(RuntimeException.class, () ->
-                serializer.serialize(null, accessKey, environment,
-                        version, issuerProfile)
+                serializer.serialize(null, accessKey, environment, issuerProfile)
         );
     }
 
@@ -117,8 +113,7 @@ class InvoiceXmlSerializerPropertyTest {
             @ForAll("anyEnvironment") Environment environment
     ) {
         // Act
-        String xml = serializer.serialize(invoice, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
 
         // Assert
         // TODO: contar cuántas combinaciones únicas (codigo, codigoPorcentaje) hay en
@@ -185,6 +180,7 @@ class InvoiceXmlSerializerPropertyTest {
                 .establishmentDirection("AH")
                 .taxInfo(taxInfo)
                 .documentNumber(doc)
+                .documentVersion(DocumentVersion.VERSION_100)
                 .client(client)
                 .addItems(List.of(item))
                 .addPayments(List.of(payment))
@@ -192,3 +188,5 @@ class InvoiceXmlSerializerPropertyTest {
     }
 
 }
+
+

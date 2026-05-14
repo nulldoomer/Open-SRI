@@ -44,7 +44,6 @@ class InvoiceXmlSerializerXsdValidationTest {
     private Invoice invoiceBase;
     private String accessKey;
     private Environment environment;
-    private DocumentVersion version;
     private IssuerProfile issuerProfile;
 
     @BeforeEach
@@ -62,7 +61,6 @@ class InvoiceXmlSerializerXsdValidationTest {
 
 
         environment = Environment.PRUEBAS;
-        version = DocumentVersion.VERSION_100;
         accessKey = "1234567890123456789012345678901234567890123456789";
         Ruc ruc = new Ruc("1004456727001");
         Issuer issuer = new Issuer("Empresa Test SA", ruc);
@@ -98,6 +96,7 @@ class InvoiceXmlSerializerXsdValidationTest {
                 .establishmentDirection("Lol")
                 .taxInfo(taxInfo)
                 .documentNumber(documentNumber)
+                .documentVersion(DocumentVersion.VERSION_100)
                 .client(client)
                 .addItems(List.of(item))
                 .addInfos(List.of(addInfo))
@@ -108,7 +107,7 @@ class InvoiceXmlSerializerXsdValidationTest {
 
     @Test
     void xml_should_validate_against_factura_xsd() throws Exception {
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
         String signedXml = documentSigner.signDocument(xml);
 
         assertNotNull(signedXml);
@@ -124,3 +123,5 @@ class InvoiceXmlSerializerXsdValidationTest {
         }
     }
 }
+
+

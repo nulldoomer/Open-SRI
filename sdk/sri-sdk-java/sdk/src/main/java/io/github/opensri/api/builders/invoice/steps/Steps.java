@@ -10,6 +10,7 @@ import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.enums.Currency;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ import java.util.Objects;
 /**
  * Orchestrates the fluent construction of an {@link Invoice} through compile-time steps.
  *
- * <p>This builder implementation collects the mandatory tax data, buyer information, line items,
- * and optional additional information required to assemble an invoice entity. It accepts
- * collections directly for variable-size sections and calculates {@link Totals} automatically from
- * the registered items during the final build step.
+ * <p>This builder implementation collects the mandatory tax data, XML document version, buyer
+ * information, line items, and optional additional information required to assemble an invoice
+ * entity. It accepts collections directly for variable-size sections and calculates {@link Totals}
+ * automatically from the registered items during the final build step.
  *
  * <p>It backs {@link io.github.opensri.api.builders.invoice.InvoiceBuilder} and centralizes the
  * mutable state needed to enforce the step-builder flow while keeping the resulting domain entity
@@ -36,6 +37,7 @@ public final class Steps
         EstablishmentDirectionStep,
         TaxInfoStep,
         DocumentNumberStep,
+        DocumentVersionStep,
         ClientStep,
         ItemsStep,
         PaymentStep {
@@ -44,6 +46,7 @@ public final class Steps
   private String establishmentDirection;
   private TaxInfo taxInfo;
   private DocumentNumber documentNumber;
+  private DocumentVersion documentVersion;
   private Client client;
   private final List<InvoiceItem> items = new ArrayList<>();
   private final List<AdditionalInfo> additionalInfos = new ArrayList<>();
@@ -91,11 +94,23 @@ public final class Steps
    * Stores the document numbering data for the invoice.
    *
    * @param documentNumber document code, establishment, emission point, and sequential number
+   * @return next step that requires the XML document version
+   */
+  @Override
+  public DocumentVersionStep documentNumber(DocumentNumber documentNumber) {
+    this.documentNumber = Objects.requireNonNull(documentNumber, "DocumentNumber is required");
+    return this;
+  }
+
+  /**
+   * Stores the XML document version associated with the invoice.
+   *
+   * @param documentVersion target SRI XML version for the final document
    * @return next step that requires the buyer information
    */
   @Override
-  public ClientStep documentNumber(DocumentNumber documentNumber) {
-    this.documentNumber = Objects.requireNonNull(documentNumber, "DocumentNumber is required");
+  public ClientStep documentVersion(DocumentVersion documentVersion) {
+    this.documentVersion = Objects.requireNonNull(documentVersion, "DocumentVersion is required");
     return this;
   }
 
@@ -183,6 +198,7 @@ public final class Steps
         establishmentDirection,
         taxInfo,
         documentNumber,
+        documentVersion,
         client,
         totals,
         List.copyOf(items),

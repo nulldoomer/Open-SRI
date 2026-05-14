@@ -33,14 +33,12 @@ class InvoiceXmlSerializerTest {
     private Invoice invoiceTwoTaxes;
     private String accessKey;
     private Environment environment;
-    private DocumentVersion version;
     private IssuerProfile issuerProfile;
 
     @BeforeEach
     void setUp() {
         serializer = new InvoiceXmlSerializer();
         environment = Environment.PRUEBAS;
-        version = DocumentVersion.VERSION_100;
         accessKey = "1234567890123456789012345678901234567890123456789"; // 49 dígitos
 
         Ruc ruc = new Ruc("1004456727001");
@@ -84,8 +82,6 @@ class InvoiceXmlSerializerTest {
                 List.of(new Tax("3", "3011", new BigDecimal("0.17"), new BigDecimal("100.00")))
         );
 
-        List<InvoiceItem> twoItemsList = List.of(item, item2);
-
         Totals totals = Totals.from(List.of(item));
 
         ImmediatePayment payment = new ImmediatePayment(
@@ -98,6 +94,7 @@ class InvoiceXmlSerializerTest {
                 "Av. Siempre Viva 742",
                 taxInfo,
                 documentNumber,
+                DocumentVersion.VERSION_100,
                 client,
                 totals,
                 List.of(item),
@@ -114,6 +111,7 @@ class InvoiceXmlSerializerTest {
                 .establishmentDirection("Av. Siempre Viva 742")
                 .taxInfo(taxInfo)
                 .documentNumber(documentNumber)
+                .documentVersion(DocumentVersion.VERSION_100)
                 .client(client)
                 .addItems(List.of(item, item2))
                 .addCurrency(io.github.opensri.domain.enums.Currency.USD)
@@ -128,6 +126,7 @@ class InvoiceXmlSerializerTest {
                 .establishmentDirection("Av. Siempre Viva 742")
                 .taxInfo(taxInfo)
                 .documentNumber(documentNumber)
+                .documentVersion(DocumentVersion.VERSION_100)
                 .client(client)
                 .addItems(List.of(item, item3))
                 .addCurrency(io.github.opensri.domain.enums.Currency.USD)
@@ -142,8 +141,7 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_return_non_empty_xml_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
 
         // Assert
         assertNotNull(xml);
@@ -153,8 +151,7 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_infoTributaria_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("infoTributaria"),
@@ -164,8 +161,7 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_infoFactura_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("infoFactura"),
@@ -175,8 +171,7 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_detalles_when_invoice_is_valid() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
         assertTrue(xml.contains("detalles"),
@@ -186,8 +181,7 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_embed_access_key_in_xml_when_provided() {
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
         assertTrue(xml.contains(accessKey),
@@ -200,8 +194,7 @@ class InvoiceXmlSerializerTest {
         String expectedCode = String.valueOf(environment.getCode()); // "1" para PRUEBAS
 
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
         System.out.println(xml);
 
         // Assert
@@ -218,8 +211,7 @@ class InvoiceXmlSerializerTest {
         // Arrange — invoiceBase ya tiene un item
 
         // Act
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
         // Tip: xml.split("<detalle>", -1).length - 1 == 1
@@ -232,8 +224,7 @@ class InvoiceXmlSerializerTest {
     void should_contain_two_detalles_when_invoice_has_two_items() {
         // Arrange
 
-        String xml = serializer.serialize(invoiceBase, accessKey, environment,
-                version, issuerProfile);
+        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
 
@@ -251,8 +242,7 @@ class InvoiceXmlSerializerTest {
     void should_group_same_tax_codes_in_totalConImpuestos() {
         // Arrange
         // Esperado: en totalConImpuestos debe aparecer exactamente UN bloque para ese código
-        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
-                version, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoTaxes, accessKey, environment, issuerProfile);
 
         // Assert
 
@@ -266,8 +256,7 @@ class InvoiceXmlSerializerTest {
     void should_separate_different_tax_codes_in_totalConImpuestos() {
         // Arrange
 
-        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
-                version, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
 
         // Assert
         int count = xml.split("<totalImpuesto>", -1).length - 1;
@@ -287,19 +276,19 @@ class InvoiceXmlSerializerTest {
         // actual lanza RuntimeException. Cuando implementes XmlSerializationException
         // actualiza este assert al tipo correcto.
         assertThrows(RuntimeException.class, () ->
-                serializer.serialize(null, accessKey, environment,
-                        version, issuerProfile)
+                serializer.serialize(null, accessKey, environment, issuerProfile)
         );
     }
 
     @Test
     void should_produce_well_formed_xml_declaration_when_serializing() {
         // Act
-        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment,
-                version, issuerProfile);
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
 
         // Assert
         assertTrue(xml.startsWith("<?xml") || xml.contains("<factura"),
                 "El XML debe comenzar con declaración XML o elemento raíz <factura>");
     }
 }
+
+

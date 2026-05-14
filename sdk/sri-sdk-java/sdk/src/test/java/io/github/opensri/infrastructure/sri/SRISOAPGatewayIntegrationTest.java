@@ -57,7 +57,6 @@ class SRISOAPGatewayIntegrationTest {
   private Invoice sampleInvoice;
   private String accessKey;
   private Environment environment;
-  private DocumentVersion version;
   private IssuerProfile issuerProfile;
 
   @BeforeEach
@@ -86,7 +85,6 @@ class SRISOAPGatewayIntegrationTest {
 
     // 3. Crear data de prueba
     environment = Environment.PRUEBAS;
-    version = DocumentVersion.VERSION_100;
 
     Ruc ruc = new Ruc("1791248678001");
     Issuer issuer = new Issuer("EMPRESA DE PRUEBA", ruc);
@@ -119,6 +117,7 @@ class SRISOAPGatewayIntegrationTest {
                     "Sucursal 1",
                     taxInfo,
                     docNum,
+                    DocumentVersion.VERSION_100,
                     client,
                     totals,
                     List.of(item),
@@ -134,7 +133,7 @@ class SRISOAPGatewayIntegrationTest {
   void should_connect_to_sri_and_receive_response() throws IOException, InterruptedException {
     // 1. Serializar
     String xml =
-            serializer.serialize(sampleInvoice, accessKey, environment, version, issuerProfile);
+            serializer.serialize(sampleInvoice, accessKey, environment, issuerProfile);
 
     // 2. Firmar
     String signedXml = signer.signDocument(xml);
@@ -169,3 +168,4 @@ class SRISOAPGatewayIntegrationTest {
     assertNotNull(response.messages());
   }
 }
+

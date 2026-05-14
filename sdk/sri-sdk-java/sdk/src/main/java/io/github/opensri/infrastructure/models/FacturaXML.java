@@ -5,7 +5,6 @@ package io.github.opensri.infrastructure.models;
 
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.invoice.Invoice;
-import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import jakarta.xml.bind.annotation.*;
 import java.util.List;
@@ -50,19 +49,14 @@ public class FacturaXML {
    * @param invoice domain invoice to transform
    * @param accessKey access key previously generated for the document
    * @param env target SRI environment of the XML
-   * @param version XML schema version to assign to the root element
    * @param profile issuer profile used to complete the fiscal sections
    * @return root JAXB model representing the invoice XML document
    */
   public static FacturaXML fromDomain(
-      Invoice invoice,
-      String accessKey,
-      Environment env,
-      DocumentVersion version,
-      IssuerProfile profile) {
+      Invoice invoice, String accessKey, Environment env, IssuerProfile profile) {
     FacturaXML xml = new FacturaXML();
 
-    xml.version = version.getVersion();
+    xml.version = invoice.documentVersion().getVersion();
 
     xml.infoTributaria =
         InfoTributariaXML.fromDomain(invoice.taxInfo(), invoice.documentNumber(), accessKey, env);

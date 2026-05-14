@@ -4,7 +4,6 @@
 package io.github.opensri.application.ports;
 
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
-import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 
 /**
@@ -24,14 +23,8 @@ public interface XmlSerializer<T> {
    * @param document document instance to serialize
    * @param accessKey generated access key needed in the serialization
    * @param environment environment used to set on the XML
-   * @param version document version to write in the XML root element
    * @param issuerProfile issuer profile information needed to complete the XML
    * @return XML representation of the given document
    */
-  String serialize(
-      T document,
-      String accessKey,
-      Environment environment,
-      DocumentVersion version,
-      IssuerProfile issuerProfile);
+  String serialize(T document, String accessKey, Environment environment, IssuerProfile issuerProfile);
 }

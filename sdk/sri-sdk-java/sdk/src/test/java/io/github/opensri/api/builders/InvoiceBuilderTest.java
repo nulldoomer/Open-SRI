@@ -13,6 +13,7 @@ import io.github.opensri.domain.entities.common.taxes.TotalTax;
 import io.github.opensri.domain.entities.invoice.AdditionalInfo;
 import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.PaymentMethod;
 import io.github.opensri.domain.valueobjects.ClientIdentification;
 import io.github.opensri.domain.valueobjects.IssueDate;
@@ -58,6 +59,7 @@ class InvoiceBuilderTest {
         .establishmentDirection("CASA LOL")
         .taxInfo(dummyTaxInfo())
         .documentNumber(dummyDoc())
+        .documentVersion(DocumentVersion.VERSION_100)
         .client(dummyClient())
         .addItems(items)
             .addPayments(payments)
@@ -89,6 +91,7 @@ class InvoiceBuilderTest {
     assertNotNull(invoice);
     assertNotNull(invoice.totals());
     assertTrue(invoice.additionalInfo().isEmpty());
+    assertEquals(DocumentVersion.VERSION_100, invoice.documentVersion());
 
     assertEquals(new BigDecimal("100.00"), invoice.totals().totalWithoutTaxes());
 
@@ -199,6 +202,7 @@ class InvoiceBuilderTest {
             .establishmentDirection("CASA LOL")
             .taxInfo(dummyTaxInfo())
             .documentNumber(dummyDoc())
+            .documentVersion(DocumentVersion.VERSION_100)
             .client(dummyClient())
             .addItems(List.of(item))
             .addInfos(List.of(new AdditionalInfo("Impuesto ISD", "15.42x")))

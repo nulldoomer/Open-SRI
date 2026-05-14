@@ -7,6 +7,7 @@ import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.common.payment.Payment;
 import io.github.opensri.domain.entities.common.taxes.TaxInfo;
 import io.github.opensri.domain.enums.Currency;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import java.util.List;
 
@@ -18,13 +19,16 @@ import java.util.List;
  * electrónico.
  *
  * <p>También admite información adicional opcional de nivel factura que luego puede reflejarse en
- * la sección {@code infoAdicional} del XML del SRI.
+ * la sección {@code infoAdicional} del XML del SRI. La versión XML del documento se conserva como
+ * parte de la entidad para que el flujo de serialización no tenga que recibirla como un parámetro
+ * separado.
  */
 public record Invoice(
     IssueDate issueDate,
     String establishmentDirection,
     TaxInfo taxInfo,
     DocumentNumber documentNumber,
+    DocumentVersion documentVersion,
     Client client,
     Totals totals,
     List<InvoiceItem> items,

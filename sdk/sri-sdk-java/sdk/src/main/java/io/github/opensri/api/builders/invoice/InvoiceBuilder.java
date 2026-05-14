@@ -11,8 +11,9 @@ import io.github.opensri.api.builders.invoice.steps.Steps;
  * io.github.opensri.domain.entities.invoice.Invoice} instances.
  *
  * <p>This builder starts a fluent workflow that collects the mandatory invoice data in a fixed
- * order, requires at least one item, and delegates total calculation to the internal step
- * implementation before producing the final immutable entity.
+ * order, including the target XML document version, requires at least one item, and delegates
+ * total calculation to the internal step implementation before producing the final immutable
+ * entity.
  *
  * @see Steps
  */

@@ -16,5 +16,5 @@ public interface TimeoutStep {
    * @param seconds timeout value in seconds
    * @return next step that requires the document version
    */
-  DocumentVersionStep timeout(int seconds);
+  BuildStep timeout(int seconds);
 }

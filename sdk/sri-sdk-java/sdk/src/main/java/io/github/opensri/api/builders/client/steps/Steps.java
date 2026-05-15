@@ -28,7 +28,6 @@ public final class Steps
         CertificateAliasStep,
         IssuerProfileStep,
         TimeoutStep,
-        DocumentVersionStep,
         BuildStep {
 
   private Environment environment;
@@ -37,7 +36,6 @@ public final class Steps
   private String certificateAlias;
   private IssuerProfile issuerProfile;
   private int timeoutSeconds;
-  private DocumentVersion documentVersion;
 
   /**
    * Stores the password used to unlock the signing certificate.
@@ -120,27 +118,11 @@ public final class Steps
     return this;
   }
 
-  /**
-   * Stores the network timeout to be applied by the generated client.
-   *
-   * @param seconds timeout value in seconds for SRI service calls
-   * @return next step that requires the XML document version
-   */
   @Override
-  public DocumentVersionStep timeout(int seconds) {
-    this.timeoutSeconds = seconds;
+  public BuildStep timeout(int seconds) {
+    this.timeoutSeconds = Objects.requireNonNull(seconds, "Timeout in seconds must not be null");
     return this;
   }
 
-  /**
-   * Stores the XML document version that serializers should use.
-   *
-   * @param version document version to apply when building XML payloads
-   * @return final step that can build the client
-   */
-  @Override
-  public BuildStep documentVersion(DocumentVersion version) {
-    this.documentVersion = version;
-    return this;
-  }
+
 }

@@ -30,7 +30,6 @@ class OpenSRIClientBuilderTest {
             .certificateAlias("fake-fake")
             .issuerProfile(profileUnderTest)
             .timeout(200)
-                .documentVersion(version)
             .build(); // ========= ACT ==============
 
     // Assert

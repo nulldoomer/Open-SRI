@@ -4,7 +4,7 @@
 package io.github.opensri.domain.valueobjects;
 
 import io.github.opensri.domain.enums.IdentificationType;
-import java.util.Objects;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
  * Represents a national identification number.
@@ -16,14 +16,16 @@ import java.util.Objects;
  */
 public record NationalId(String number) implements ClientIdentification {
   public NationalId {
-    Objects.requireNonNull(number, "National ID cannot be null");
+    if (number == null) {
+      throw new OpenSRIValidationException("National ID cannot be null");
+    }
 
     if (number.length() != 10) {
-      throw new IllegalArgumentException("National ID must have 10 digits");
+      throw new OpenSRIValidationException("National ID must have 10 digits");
     }
 
     if (!number.chars().allMatch(Character::isDigit)) {
-      throw new IllegalArgumentException("National ID must contain only digits");
+      throw new OpenSRIValidationException("National ID must contain only digits");
     }
 
     validateProvince(number);
@@ -36,7 +38,7 @@ public record NationalId(String number) implements ClientIdentification {
     int province = Integer.parseInt(number.substring(0, 2));
 
     if (province < 1 || province > 24) {
-      throw new IllegalArgumentException("Invalid province code");
+      throw new OpenSRIValidationException("Invalid province code");
     }
   }
 
@@ -45,7 +47,7 @@ public record NationalId(String number) implements ClientIdentification {
     int thirdDigit = Character.getNumericValue(number.charAt(2));
 
     if (thirdDigit < 0 || thirdDigit > 5) {
-      throw new IllegalArgumentException("Invalid third digit for national ID");
+      throw new OpenSRIValidationException("Invalid third digit for national ID");
     }
   }
 
@@ -76,7 +78,7 @@ public record NationalId(String number) implements ClientIdentification {
     }
 
     if (calculated != verifier) {
-      throw new IllegalArgumentException("Invalid national ID verifier digit");
+      throw new OpenSRIValidationException("Invalid national ID verifier digit");
     }
   }
 

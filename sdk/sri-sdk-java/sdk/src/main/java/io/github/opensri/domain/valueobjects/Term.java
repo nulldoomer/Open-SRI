@@ -3,14 +3,12 @@
 
 package io.github.opensri.domain.valueobjects;
 
-import java.util.Objects;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 public record Term(int termDays) {
   public Term {
-    Objects.requireNonNull(termDays);
-
     if (termDays <= 0) {
-      throw new IllegalArgumentException("termDays must be greater than zero");
+      throw new OpenSRIValidationException("termDays must be greater than zero");
     }
   }
 }

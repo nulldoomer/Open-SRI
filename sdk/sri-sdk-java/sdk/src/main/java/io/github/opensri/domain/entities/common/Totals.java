@@ -6,6 +6,7 @@ package io.github.opensri.domain.entities.common;
 import io.github.opensri.domain.entities.common.taxes.Tax;
 import io.github.opensri.domain.entities.common.taxes.TotalTax;
 import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,12 +48,12 @@ public record Totals(
    *
    * @param items detalles de la factura desde los que se obtienen subtotales e impuestos
    * @return instancia con los valores monetarios agregados del comprobante
-   * @throws IllegalArgumentException si la lista de items es nula o está vacía
+   * @throws OpenSRIValidationException si la lista de items es nula o está vacía
    */
   public static Totals from(List<InvoiceItem> items) {
 
     if (items == null || items.isEmpty()) {
-      throw new IllegalArgumentException("items cannot be null or empty");
+      throw new OpenSRIValidationException("items cannot be null or empty");
     }
 
     BigDecimal totalWithoutTaxes = BigDecimal.ZERO;

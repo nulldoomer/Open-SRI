@@ -4,6 +4,7 @@
 package io.github.opensri.domain.valueobjects;
 
 import io.github.opensri.domain.enums.IdentificationType;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
  * Represents a foreign identification number.
@@ -18,15 +19,15 @@ public record ForeignId(String number) implements ClientIdentification {
 
   public ForeignId {
     if (number == null || number.isBlank()) {
-      throw new IllegalArgumentException("Foreign ID cannot be blank");
+      throw new OpenSRIValidationException("Foreign ID cannot be blank");
     }
 
     if (number.length() < 3 || number.length() > 20) {
-      throw new IllegalArgumentException("Invalid foreign ID length");
+      throw new OpenSRIValidationException("Invalid foreign ID length");
     }
 
     if (!number.chars().allMatch(Character::isLetterOrDigit)) {
-      throw new IllegalArgumentException("Foreign ID must be alphanumeric");
+      throw new OpenSRIValidationException("Foreign ID must be alphanumeric");
     }
   }
 

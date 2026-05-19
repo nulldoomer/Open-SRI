@@ -3,6 +3,7 @@
 
 package io.github.opensri.domain.enums;
 
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.util.Arrays;
 
 /**
@@ -53,7 +54,7 @@ public enum PaymentMethod {
    *
    * @param code código del método de pago según la tabla Nro. 24 del SRI
    * @return método de pago correspondiente
-   * @throws IllegalArgumentException si el código no existe en el catálogo
+   * @throws OpenSRIValidationException si el código no existe en el catálogo
    */
   public static PaymentMethod fromCode(String code) {
     return Arrays.stream(values())
@@ -61,6 +62,7 @@ public enum PaymentMethod {
         .findFirst()
         .orElseThrow(
             () ->
-                new IllegalArgumentException("No such PaymentMethodEnum exists with code " + code));
+                new OpenSRIValidationException(
+                    "No such PaymentMethodEnum exists with code " + code));
   }
 }

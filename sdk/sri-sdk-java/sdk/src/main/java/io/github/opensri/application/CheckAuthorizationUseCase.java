@@ -5,7 +5,6 @@ package io.github.opensri.application;
 
 import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
-import java.io.IOException;
 
 class CheckAuthorizationUseCase {
   private final SRIGateway sriGateway;
@@ -15,10 +14,6 @@ class CheckAuthorizationUseCase {
   }
 
   AuthorizationResponse execute(String accessKey) {
-    try {
-      return sriGateway.sendAuthorization(accessKey);
-    } catch (IOException | InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+    return sriGateway.sendAuthorization(accessKey);
   }
 }

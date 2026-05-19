@@ -10,6 +10,7 @@ import io.github.opensri.infrastructure.sri.client.AuthorizationSoapClient;
 import io.github.opensri.infrastructure.sri.client.SendReceiptSoapClient;
 import io.github.opensri.infrastructure.sri.mappers.AuthorizationMapper;
 import io.github.opensri.infrastructure.sri.mappers.ReceiptMapper;
+import io.github.opensri.shared.exceptions.OpenSRICommunicationException;
 import java.io.IOException;
 
 /**
@@ -37,10 +38,17 @@ public class SRISOAPGateway implements SRIGateway {
    * @return estado de recepción y mensajes informativos reportados por el SRI
    */
   @Override
-  public ReceiptResponse sendDocument(String signedXML) throws IOException, InterruptedException {
-
-    String response = sendReceiptSoapClient.sendReceipt(signedXML);
-    return ReceiptMapper.toDomain(response);
+  public ReceiptResponse sendDocument(String signedXML) {
+    try {
+      String response = sendReceiptSoapClient.sendReceipt(signedXML);
+      return ReceiptMapper.toDomain(response);
+    } catch (IOException e) {
+      throw new OpenSRICommunicationException(
+          "Error de comunicación con el servicio de recepción del SRI", e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new OpenSRICommunicationException("La operación de envío fue interrumpida", e);
+    }
   }
 
   /**
@@ -50,10 +58,17 @@ public class SRISOAPGateway implements SRIGateway {
    * @return respuesta de autorización traducida al modelo de dominio
    */
   @Override
-  public AuthorizationResponse sendAuthorization(String accessKey)
-      throws IOException, InterruptedException {
-
-    String response = authorizationSoapClient.authorizeDocument(accessKey);
-    return AuthorizationMapper.toDomain(response);
+  public AuthorizationResponse sendAuthorization(String accessKey) {
+    try {
+      String response = authorizationSoapClient.authorizeDocument(accessKey);
+      return AuthorizationMapper.toDomain(response);
+    } catch (IOException e) {
+      throw new OpenSRICommunicationException(
+          "Error de comunicación con el servicio de autorización del SRI", e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new OpenSRICommunicationException(
+          "La operación de consulta de autorización fue interrumpida", e);
+    }
   }
 }

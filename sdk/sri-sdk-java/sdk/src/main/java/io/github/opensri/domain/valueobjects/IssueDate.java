@@ -3,11 +3,11 @@
 
 package io.github.opensri.domain.valueobjects;
 
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
-import java.util.Objects;
 
 /**
  * Represents the issuance date of a tax document.
@@ -20,10 +20,12 @@ import java.util.Objects;
  */
 public record IssueDate(LocalDate date) {
   public IssueDate {
-    Objects.requireNonNull(date, "IssueDate cannot be null");
+    if (date == null) {
+      throw new OpenSRIValidationException("IssueDate cannot be null");
+    }
 
     if (date.isAfter(LocalDate.now())) {
-      throw new IllegalArgumentException("IssueDate cannot be after the current date");
+      throw new OpenSRIValidationException("IssueDate cannot be after the current date");
     }
   }
 
@@ -41,7 +43,7 @@ public record IssueDate(LocalDate date) {
    *
    * @param value textual date representation to parse
    * @return validated issue date built from the provided string
-   * @throws IllegalArgumentException if the input cannot be parsed or represents an invalid date
+   * @throws OpenSRIValidationException if the input cannot be parsed or represents an invalid date
    */
   public static IssueDate from(String value) {
     DateTimeFormatter formatter =
@@ -52,7 +54,7 @@ public record IssueDate(LocalDate date) {
 
       return new IssueDate(date);
     } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException("Invalid IssueDate format" + e.getMessage());
+      throw new OpenSRIValidationException("Invalid IssueDate format" + e.getMessage());
     }
   }
 

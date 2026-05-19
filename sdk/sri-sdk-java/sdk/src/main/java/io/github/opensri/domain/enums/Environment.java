@@ -3,6 +3,7 @@
 
 package io.github.opensri.domain.enums;
 
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.util.Arrays;
 
 /**
@@ -47,13 +48,14 @@ public enum Environment {
    *
    * @param code código del ambiente según la tabla Nro. 4 del SRI
    * @return ambiente correspondiente al código indicado
-   * @throws IllegalArgumentException si el código no existe en el catálogo
+   * @throws OpenSRIValidationException si el código no existe en el catálogo
    */
   public static Environment fromCode(int code) {
     return Arrays.stream(values())
         .filter(v -> v.code == code)
         .findFirst()
         .orElseThrow(
-            () -> new IllegalArgumentException("No such EnvironmentEnum exists with code " + code));
+            () ->
+                new OpenSRIValidationException("No such EnvironmentEnum exists with code " + code));
   }
 }

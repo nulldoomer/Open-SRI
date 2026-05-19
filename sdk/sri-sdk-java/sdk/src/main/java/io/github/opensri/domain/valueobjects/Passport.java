@@ -4,7 +4,7 @@
 package io.github.opensri.domain.valueobjects;
 
 import io.github.opensri.domain.enums.IdentificationType;
-import java.util.Objects;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
  * Represents a passport identification number.
@@ -16,18 +16,20 @@ import java.util.Objects;
  */
 public record Passport(String number) implements ClientIdentification {
   public Passport {
-    Objects.requireNonNull(number);
+    if (number == null) {
+      throw new OpenSRIValidationException("Passport cannot be null");
+    }
 
     if (number.isBlank()) {
-      throw new IllegalArgumentException("Passport cannot be blank");
+      throw new OpenSRIValidationException("Passport cannot be blank");
     }
 
     if (number.length() < 6 || number.length() > 20) {
-      throw new IllegalArgumentException("Invalid passport length");
+      throw new OpenSRIValidationException("Invalid passport length");
     }
 
     if (!number.chars().allMatch(Character::isLetterOrDigit)) {
-      throw new IllegalArgumentException("Passport must be alphanumeric");
+      throw new OpenSRIValidationException("Passport must be alphanumeric");
     }
   }
 

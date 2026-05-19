@@ -3,6 +3,7 @@
 
 package io.github.opensri.domain.enums;
 
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.util.Arrays;
 
 /**
@@ -49,13 +50,13 @@ public enum IdentificationType {
    *
    * @param code código del tipo de identificación según la tabla Nro. 6 del SRI
    * @return tipo de identificación asociado al código indicado
-   * @throws IllegalArgumentException si el código no existe en el catálogo
+   * @throws OpenSRIValidationException si el código no existe en el catálogo
    */
   public static IdentificationType fromCode(String code) {
     return Arrays.stream(values())
         .filter(v -> v.code.equals(code))
         .findFirst()
         .orElseThrow(
-            () -> new IllegalArgumentException("No such IdentificationTypeEnum code " + code));
+            () -> new OpenSRIValidationException("No such IdentificationTypeEnum code " + code));
   }
 }

@@ -9,7 +9,7 @@ package io.github.opensri.shared.exceptions;
  * <p>This exception is thrown when the signing certificate cannot be loaded, resolved by alias, or
  * used to produce a valid digital signature.
  */
-public class SRICertificateException extends RuntimeException {
+public class SRICertificateException extends SRIException {
   public SRICertificateException(String message) {
     super(message);
   }

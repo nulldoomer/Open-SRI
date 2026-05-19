@@ -4,6 +4,7 @@
 package io.github.opensri.domain.entities.common.payment;
 
 import io.github.opensri.domain.enums.PaymentMethod;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.math.BigDecimal;
 
 public record ImmediatePayment(PaymentMethod paymentMethod, BigDecimal total) implements Payment {
@@ -11,11 +12,11 @@ public record ImmediatePayment(PaymentMethod paymentMethod, BigDecimal total) im
   public ImmediatePayment {
 
     if (paymentMethod == null) {
-      throw new IllegalArgumentException("paymentMethod required");
+      throw new OpenSRIValidationException("paymentMethod required");
     }
 
     if (total == null || total == BigDecimal.ZERO) {
-      throw new IllegalArgumentException("Total has to be more than zero");
+      throw new OpenSRIValidationException("Total has to be more than zero");
     }
   }
 }

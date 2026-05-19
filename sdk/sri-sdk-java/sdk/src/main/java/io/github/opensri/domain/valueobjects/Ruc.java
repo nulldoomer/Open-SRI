@@ -4,7 +4,7 @@
 package io.github.opensri.domain.valueobjects;
 
 import io.github.opensri.domain.enums.IdentificationType;
-import java.util.Objects;
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
  * Represents a taxpayer identification number (RUC).
@@ -17,10 +17,12 @@ import java.util.Objects;
 public record Ruc(String number) implements ClientIdentification {
 
   public Ruc {
-    Objects.requireNonNull(number, "RUC cannot be null");
+    if (number == null) {
+      throw new OpenSRIValidationException("RUC cannot be null");
+    }
 
     if (!number.matches("\\d{13}")) {
-      throw new IllegalArgumentException("Invalid RUC length, it must be 13 digits");
+      throw new OpenSRIValidationException("Invalid RUC length, it must be 13 digits");
     }
 
     validateProvince(number);
@@ -32,7 +34,7 @@ public record Ruc(String number) implements ClientIdentification {
   private void validateProvince(String number) {
     int provinceDigits = Integer.parseInt(number.subSequence(0, 2).toString());
     if (provinceDigits < 1 || provinceDigits > 24) {
-      throw new IllegalArgumentException("Invalid province code in RUC");
+      throw new OpenSRIValidationException("Invalid province code in RUC");
     }
   }
 
@@ -40,7 +42,7 @@ public record Ruc(String number) implements ClientIdentification {
     int thirdDigit = Character.getNumericValue(number.charAt(2));
 
     if (thirdDigit == 7 || thirdDigit == 8) {
-      throw new IllegalArgumentException("Invalid third digit in RUC");
+      throw new OpenSRIValidationException("Invalid third digit in RUC");
     }
   }
 
@@ -82,7 +84,7 @@ public record Ruc(String number) implements ClientIdentification {
       calculated = 0;
     }
     if (calculated != verifier) {
-      throw new IllegalArgumentException("Invalid RUC verifier digit (natural person)");
+      throw new OpenSRIValidationException("Invalid RUC verifier digit (natural person)");
     }
   }
 
@@ -106,7 +108,7 @@ public record Ruc(String number) implements ClientIdentification {
     int verifier = Character.getNumericValue(number.charAt(9));
 
     if (calculated != verifier) {
-      throw new IllegalArgumentException("Invalid RUC verifier digit (private company)");
+      throw new OpenSRIValidationException("Invalid RUC verifier digit (private company)");
     }
   }
 
@@ -126,20 +128,20 @@ public record Ruc(String number) implements ClientIdentification {
     if (calculated == 11) {
       calculated = 0;
     } else if (calculated == 10) {
-      throw new IllegalArgumentException("Invalid RUC verifier digit (private company)");
+      throw new OpenSRIValidationException("Invalid RUC verifier digit (private company)");
     }
 
     int verifier = Character.getNumericValue(number.charAt(9));
 
     if (calculated != verifier) {
-      throw new IllegalArgumentException("Invalid RUC verifier digit (private company)");
+      throw new OpenSRIValidationException("Invalid RUC verifier digit (private company)");
     }
   }
 
   private void validateEstablishmentCode(String number) {
     String establishmentCode = String.valueOf(number.subSequence(10, 13));
     if (establishmentCode.equals("000")) {
-      throw new IllegalArgumentException("Invalid establishment code in RUC");
+      throw new OpenSRIValidationException("Invalid establishment code in RUC");
     }
   }
 

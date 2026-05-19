@@ -3,6 +3,7 @@
 
 package io.github.opensri.domain.enums;
 
+import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 import java.util.Arrays;
 
 /**
@@ -47,12 +48,12 @@ public enum TaxType {
    *
    * @param code código del impuesto según la tabla Nro. 19 del SRI
    * @return tipo de impuesto asociado al código indicado
-   * @throws IllegalArgumentException si el código no existe en el catálogo
+   * @throws OpenSRIValidationException si el código no existe en el catálogo
    */
   public static TaxType fromCode(int code) {
     return Arrays.stream(values())
         .filter(v -> v.code == code)
         .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("No such TaxTypeEnum code " + code));
+        .orElseThrow(() -> new OpenSRIValidationException("No such TaxTypeEnum code " + code));
   }
 }

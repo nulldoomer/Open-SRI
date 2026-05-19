@@ -9,7 +9,7 @@ package io.github.opensri.shared.exceptions;
  * <p>This exception is intended for marshalling errors, invalid serialization input, or
  * schema-related issues detected during XML generation.
  */
-public class XmlSerializationException extends RuntimeException {
+public class XmlSerializationException extends OpenSRIInfrastructureException {
   public XmlSerializationException(String message) {
     super(message);
   }

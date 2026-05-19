@@ -5,7 +5,6 @@ package io.github.opensri.application.ports;
 
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
-import java.io.IOException;
 
 /**
  * Define la comunicación del SDK con los servicios SOAP del SRI.
@@ -21,7 +20,7 @@ public interface SRIGateway {
    * @param signedXML XML firmado listo para ser validado por el SRI
    * @return resultado de recepción transformado al modelo de dominio
    */
-  ReceiptResponse sendDocument(String signedXML) throws IOException, InterruptedException;
+  ReceiptResponse sendDocument(String signedXML);
 
   /**
    * Consulta la autorización de un comprobante previamente recibido por el SRI.
@@ -29,6 +28,5 @@ public interface SRIGateway {
    * @param accessKey clave de acceso de 49 dígitos del comprobante
    * @return respuesta de autorización transformada al modelo de dominio
    */
-  AuthorizationResponse sendAuthorization(String accessKey)
-      throws IOException, InterruptedException;
+  AuthorizationResponse sendAuthorization(String accessKey);
 }

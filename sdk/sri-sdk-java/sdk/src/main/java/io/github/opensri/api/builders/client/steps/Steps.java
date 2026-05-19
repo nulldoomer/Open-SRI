@@ -5,7 +5,6 @@ package io.github.opensri.api.builders.client.steps;
 
 import io.github.opensri.api.client.OpenSRIClient;
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
-import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import java.util.Objects;
 
@@ -13,8 +12,8 @@ import java.util.Objects;
  * Drives the step-by-step construction of an {@link OpenSRIClient}.
  *
  * <p>This builder implementation enforces the required client configuration order through the step
- * interfaces it implements, ensuring that environment, certificate data, issuer profile, timeout,
- * and document version are all provided before the SDK client is created.
+ * interfaces it implements, ensuring that environment, certificate data, issuer profile, and
+ * timeout are all provided before the SDK client is created.
  *
  * <p>It is used internally by {@link io.github.opensri.api.builders.client.OpenSRIClientBuilder} to
  * expose a fluent API without leaking mutable configuration state to SDK consumers.
@@ -91,7 +90,7 @@ public final class Steps
    * Creates an {@link OpenSRIClient} with the configuration collected by the builder flow.
    *
    * <p>The returned client is ready to use with the selected environment, certificate, issuer
-   * profile, timeout, and XML document version gathered in the previous steps.
+   * profile, and timeout gathered in the previous steps.
    *
    * @return fully configured SDK client instance
    */
@@ -120,9 +119,10 @@ public final class Steps
 
   @Override
   public BuildStep timeout(int seconds) {
-    this.timeoutSeconds = Objects.requireNonNull(seconds, "Timeout in seconds must not be null");
+    if (seconds <= 0) {
+      throw new IllegalArgumentException("Timeout must be greater than zero seconds");
+    }
+    this.timeoutSeconds = seconds;
     return this;
   }
-
-
 }

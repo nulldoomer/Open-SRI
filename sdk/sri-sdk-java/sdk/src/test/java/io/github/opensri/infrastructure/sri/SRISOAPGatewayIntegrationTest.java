@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.opensri.application.ports.AccessKeyGenerator;
 import io.github.opensri.application.ports.DocumentSigner;
+import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.application.ports.XmlSerializer;
 import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.common.issuer.Issuer;
@@ -20,39 +21,43 @@ import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
 import io.github.opensri.domain.enums.*;
 import io.github.opensri.domain.valueobjects.*;
-import io.github.opensri.infrastructure.crypto.certificates.CertificateLoader;
-import io.github.opensri.infrastructure.crypto.certificates.model.SigningKey;
 import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
 import io.github.opensri.infrastructure.serializers.InvoiceXmlSerializerFactory;
 import io.github.opensri.infrastructure.services.SRIAccessKeyGeneratorFactory;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.http.HttpClient;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-
-import io.github.opensri.infrastructure.sri.client.AuthorizationSoapClient;
-import io.github.opensri.infrastructure.sri.client.SendReceiptSoapClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 /**
  * Test de integración real con los servidores del SRI (Ambiente de Pruebas).
  *
- * <p>ADVERTENCIA: Este test requiere conexión a internet y que los servicios del SRI estén activos.
- * Utiliza un certificado de prueba que, aunque es válido para firmar, será rechazado por el SRI
- * por no ser emitido por una entidad certificadora autorizada en Ecuador. Esto es suficiente
- * para validar que la comunicación SOAP (HTTPS, Proxies, Mappers) funciona correctamente.
+ * <p>ADVERTENCIA: este test requiere conexión a internet, un certificado PKCS#12 real y que los
+ * servicios del SRI estén activos. No corre por defecto.
+ *
+ * <p>Variables requeridas:
+ *
+ * <ul>
+ *   <li>OPEN_SRI_INTEGRATION_TESTS=true
+ *   <li>OPEN_SRI_CERT_PATH=/ruta/certificado.p12
+ *   <li>OPEN_SRI_CERT_PASSWORD=password
+ *   <li>OPEN_SRI_CERT_ALIAS=alias
+ * </ul>
  */
+@Tag("integration")
+@EnabledIfEnvironmentVariable(named = "OPEN_SRI_INTEGRATION_TESTS", matches = "true")
 class SRISOAPGatewayIntegrationTest {
 
-  private SRISOAPGateway gateway;
+  private SRIGateway gateway;
   private XmlSerializer<Invoice> serializer;
   private DocumentSigner signer;
   private AccessKeyGenerator  accessKeyGenerator;
-  private HttpClient httpClient;
 
   private Invoice sampleInvoice;
   private String accessKey;
@@ -61,30 +66,16 @@ class SRISOAPGatewayIntegrationTest {
 
   @BeforeEach
   void setUp() throws Exception {
-    // 1. Configurar infraestructura SOAP real (Pruebas)
-    httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+    String certificatePath = requiredEnv("OPEN_SRI_CERT_PATH");
+    String certificatePassword = requiredEnv("OPEN_SRI_CERT_PASSWORD");
+    String certificateAlias = requiredEnv("OPEN_SRI_CERT_ALIAS");
 
-    SendReceiptSoapClient sendReceiptSoapClient =
-            new SendReceiptSoapClient(httpClient, SRIEndpoints.SRI_PRUEBAS_RECEPCION_COMPROBANTES_WSDL);
-    AuthorizationSoapClient authorizationSoapClient =
-            new AuthorizationSoapClient(httpClient, SRIEndpoints.SRI_PRUEBAS_AUTORIZACION_COMPROBANTES_WSDL);
-
-    gateway = new SRISOAPGateway(sendReceiptSoapClient, authorizationSoapClient);
-
-    // 2. Configurar Serializador y Firmador
-    serializer = InvoiceXmlSerializerFactory.create();
-
-
-    InputStream stream = getClass().getResourceAsStream("/test-firma.p12");
-    if (stream == null) {
-      throw new IllegalStateException("No se encontró el certificado de prueba /test-firma.p12");
-    }
-    byte[] p12Bytes = stream.readAllBytes();
-    SigningKey signingKey = CertificateLoader.load(p12Bytes, "password", "SRI-Test-Firma");
-    signer = XAdEsSignerFactory.create(signingKey);
-
-    // 3. Crear data de prueba
     environment = Environment.PRUEBAS;
+    gateway = SRIGatewayFactory.create(environment, 30);
+    serializer = InvoiceXmlSerializerFactory.create();
+    signer =
+        XAdEsSignerFactory.create(
+            Files.readAllBytes(Path.of(certificatePath)), certificatePassword, certificateAlias);
 
     Ruc ruc = new Ruc("1791248678001");
     Issuer issuer = new Issuer("EMPRESA DE PRUEBA", ruc);
@@ -125,24 +116,24 @@ class SRISOAPGatewayIntegrationTest {
                     List.of(payment),
                     Currency.USD);
 
-    accessKey = accessKeyGenerator.generate(sampleInvoice.issueDate(),sampleInvoice.documentNumber(),sampleInvoice.taxInfo(),environment);
+    accessKey =
+        accessKeyGenerator.generate(
+            sampleInvoice.issueDate(),
+            sampleInvoice.documentNumber(),
+            sampleInvoice.taxInfo(),
+            environment);
   }
 
   @Test
   @DisplayName("Debe conectar con el SRI y recibir una respuesta (aunque sea de firma inválida)")
   void should_connect_to_sri_and_receive_response() throws IOException, InterruptedException {
-    // 1. Serializar
     String xml =
             serializer.serialize(sampleInvoice, accessKey, environment, issuerProfile);
 
-    // 2. Firmar
     String signedXml = signer.signDocument(xml);
-    System.out.println(signedXml);
 
-    // 3. Enviar al SRI (Real)
     ReceiptResponse response = gateway.sendDocument(signedXml);
 
-    // 4. Verificar
     assertNotNull(response);
     System.out.println("Integración SRI - Estado Recepción: " + response.status());
     System.out.println(response);
@@ -167,5 +158,12 @@ class SRISOAPGatewayIntegrationTest {
     // Se espera "NO_AUTORIZADO" o "ERROR" porque la clave no existe en sus registros reales.
     assertNotNull(response.messages());
   }
-}
 
+  private static String requiredEnv(String name) {
+    String value = System.getenv(name);
+    if (value == null || value.isBlank()) {
+      throw new IllegalStateException("Missing required environment variable: " + name);
+    }
+    return value;
+  }
+}

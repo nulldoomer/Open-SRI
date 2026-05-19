@@ -1,4 +1,4 @@
-package io.github.opensri.application.usecases;
+package io.github.opensri.application;
 
 import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
@@ -12,7 +12,7 @@ class CheckAuthorizationUseCase {
         this.sriGateway = sriGateway;
     }
 
-    public AuthorizationResponse execute(String accessKey){
+    AuthorizationResponse execute(String accessKey){
         try {
             return sriGateway.sendAuthorization(accessKey);
         } catch (IOException | InterruptedException e) {

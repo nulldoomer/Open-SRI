@@ -3,28 +3,32 @@
 
 package io.github.opensri.api.client;
 
+import io.github.opensri.application.OPENSRIApplication;
+import io.github.opensri.application.ports.DocumentSigner;
+import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
+import io.github.opensri.domain.entities.invoice.Invoice;
+import io.github.opensri.domain.entities.responses.AuthorizationResponse;
+import io.github.opensri.domain.entities.responses.SendInvoiceResult;
 import io.github.opensri.domain.enums.Environment;
+import io.github.opensri.infrastructure.crypto.certificates.CertificateLoader;
+import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
+import io.github.opensri.infrastructure.serializers.InvoiceXmlSerializerFactory;
+import io.github.opensri.infrastructure.services.SRIAccessKeyGeneratorFactory;
+import io.github.opensri.infrastructure.sri.SRIEndpoints;
+import io.github.opensri.infrastructure.sri.SRIGatewayFactory;
+import io.github.opensri.infrastructure.sri.SRISOAPGateway;
+import io.github.opensri.infrastructure.sri.client.AuthorizationSoapClient;
+import io.github.opensri.infrastructure.sri.client.SendReceiptSoapClient;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.time.Duration;
 
 public final class OpenSRIClient {
 
-  // TODO: Use this class as the composition root of the SDK.
-  //  Instantiate the concrete infrastructure implementations here
-  //  (access key generator, XML serializers, signer, and SRI gateway)
-  //  and inject them into the corresponding use cases through their constructors.
-
   private final Environment environment;
-  private final byte[] certificate;
-  private final String certificatePassword;
-  private final String certificateAlias;
   private final IssuerProfile issuerProfile;
-  private final int timeoutSeconds;
-
-  // TODO: Promote the use cases to fields once certificate loading,
-  //  document signing, and SRI web service integration are finished.
-  //  Example: private final SendInvoiceUseCase sendInvoiceUseCase;
-  //  Later, additional document-specific use cases can be added here as well
-  //  (sendRemision, sendCreditNote, etc.).
+  private final OPENSRIApplication applicationFacade;
 
   public OpenSRIClient(
       Environment environment,
@@ -35,20 +39,33 @@ public final class OpenSRIClient {
       int timeoutSeconds) {
 
     this.environment = environment;
-    this.certificate = certificate;
-    this.certificatePassword = certificatePassword;
-    this.certificateAlias = certificateAlias;
     this.issuerProfile = issuerProfile;
-    this.timeoutSeconds = timeoutSeconds;
 
-    // TODO: Build the concrete dependencies here using the client configuration:
-    //  environment, certificate bytes, certificate password, certificate alias,
-    //  issuer profile, and timeout.
-    //  Then wire those dependencies into the use cases so the public API methods
-    //  only delegate to application-layer execute() calls.
+    DocumentSigner signer = XAdEsSignerFactory.create(
+                    certificate,
+                    certificatePassword,
+                    certificateAlias
+            );
+
+    SRIGateway gateway = SRIGatewayFactory.create(
+            environment, timeoutSeconds
+    );
+
+    this.applicationFacade = new OPENSRIApplication(
+            SRIAccessKeyGeneratorFactory.create(),
+            InvoiceXmlSerializerFactory.create(),
+            signer,
+            gateway
+    );
+
   }
 
-  // TODO: Expose a public sendInvoice(Invoice invoice) method that delegates to
-  //  SendInvoiceUseCase.execute(...), passing the invoice plus the stable client
-  //  configuration required by the use case (environment and issuer profile).
+  public SendInvoiceResult sendInvoice(Invoice invoice) {
+    return applicationFacade.sendInvoice(invoice, environment, issuerProfile);
+  }
+
+  public AuthorizationResponse checkAuthorization(String accessKey) {
+    return applicationFacade.checkAuthorization(accessKey);
+  }
+
 }

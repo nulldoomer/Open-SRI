@@ -8,3 +8,4 @@
 *.p12
 # Ignore Gradle build output directory
 build
+/.idea/

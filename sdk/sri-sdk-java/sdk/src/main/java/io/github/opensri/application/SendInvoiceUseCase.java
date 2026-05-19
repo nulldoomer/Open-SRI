@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Nulldoomer
 
-package io.github.opensri.application.usecases;
+package io.github.opensri.application;
 
 import io.github.opensri.application.ports.AccessKeyGenerator;
 import io.github.opensri.application.ports.DocumentSigner;
@@ -22,7 +22,7 @@ class SendInvoiceUseCase {
   private final DocumentSigner documentSigner;
   private final SRIGateway sriGateway;
 
-  public SendInvoiceUseCase(
+  SendInvoiceUseCase(
       AccessKeyGenerator accessKeyGenerator,
       XmlSerializer<Invoice> xmlSerializer,
       DocumentSigner documentSigner,
@@ -38,7 +38,7 @@ class SendInvoiceUseCase {
   //  Important: do not recover the access key by parsing the XML.
   //  It should remain an explicit value of the application flow.
 
-  public SendInvoiceResult execute(Invoice invoice, Environment environment, IssuerProfile issuerProfile) {
+  SendInvoiceResult execute(Invoice invoice, Environment environment, IssuerProfile issuerProfile) {
 
     try {
 

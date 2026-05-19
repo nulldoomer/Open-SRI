@@ -14,8 +14,8 @@ import org.w3c.dom.Element;
 /**
  * Traduce la respuesta SOAP de recepción del SRI al modelo de dominio del SDK.
  *
- * <p>Extrae el estado general y los mensajes de los comprobantes devueltos por el servicio para
- * que el resto de la aplicación no dependa de la estructura SOAP ni de DTOs generados desde WSDL.
+ * <p>Extrae el estado general y los mensajes de los comprobantes devueltos por el servicio para que
+ * el resto de la aplicación no dependa de la estructura SOAP ni de DTOs generados desde WSDL.
  */
 public class ReceiptMapper {
 

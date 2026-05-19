@@ -12,7 +12,6 @@ import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
 import io.github.opensri.domain.entities.responses.SendInvoiceResult;
 import io.github.opensri.domain.enums.Environment;
-
 import java.io.IOException;
 
 class SendInvoiceUseCase {
@@ -42,35 +41,21 @@ class SendInvoiceUseCase {
 
     try {
 
-      String accessKey = accessKeyGenerator.generate(
-              invoice.issueDate(),
-              invoice.documentNumber(),
-              invoice.taxInfo(),
-              environment
-      );
+      String accessKey =
+          accessKeyGenerator.generate(
+              invoice.issueDate(), invoice.documentNumber(), invoice.taxInfo(), environment);
 
-      String unsignedXml = xmlSerializer.serialize(
-              invoice,
-              accessKey,
-              environment,
-              issuerProfile
-      );
+      String unsignedXml = xmlSerializer.serialize(invoice, accessKey, environment, issuerProfile);
 
       String signedXml = documentSigner.signDocument(unsignedXml);
 
       ReceiptResponse response = sriGateway.sendDocument(signedXml);
 
-      return new SendInvoiceResult(
-              accessKey,
-              signedXml,
-              response
-      );
+      return new SendInvoiceResult(accessKey, signedXml, response);
 
     } catch (IOException | InterruptedException e) {
 
       throw new RuntimeException(e);
-
     }
-
   }
 }

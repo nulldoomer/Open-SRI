@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
 package io.github.opensri.application;
 
 import io.github.opensri.application.ports.AccessKeyGenerator;
@@ -22,7 +25,8 @@ public final class OPENSRIApplication {
       SRIGateway sriGateway) {
 
     this.sendInvoiceUseCase =
-        new SendInvoiceUseCase(accessKeyGenerator, invoiceXmlSerializer, documentSigner, sriGateway);
+        new SendInvoiceUseCase(
+            accessKeyGenerator, invoiceXmlSerializer, documentSigner, sriGateway);
     this.authorizationUseCase = new CheckAuthorizationUseCase(sriGateway);
   }
 

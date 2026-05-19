@@ -19,8 +19,8 @@ import java.io.StringWriter;
  *
  * <p>This infrastructure component transforms an {@link Invoice} plus its serialization context
  * into the final XML payload expected by the SRI. The serializer receives the generated access key,
- * target environment, and issuer profile, while the invoice itself carries the XML document
- * version required by the root element.
+ * target environment, and issuer profile, while the invoice itself carries the XML document version
+ * required by the root element.
  *
  * <p>It implements {@link XmlSerializer}{@code <Invoice>}.
  */
@@ -30,8 +30,7 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
    * Produces the XML representation of the given invoice and serialization context.
    *
    * <p>The serializer maps the domain invoice to {@link FacturaXML}, applies the provided access
-   * key, environment, and issuer profile, and then marshals the result as UTF-8 XML
-   * through JAXB.
+   * key, environment, and issuer profile, and then marshals the result as UTF-8 XML through JAXB.
    *
    * @param invoice domain invoice ready to be serialized
    * @param accessKey generated access key to embed in the XML

@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 /**
  * Consulta el servicio SOAP de autorización del SRI mediante llamadas HTTP directas.
  *
- * <p>Construye manualmente la operación {@code autorizacionComprobante} y devuelve el envelope
- * SOAP crudo para que la infraestructura lo traduzca después al modelo de dominio del SDK.
+ * <p>Construye manualmente la operación {@code autorizacionComprobante} y devuelve el envelope SOAP
+ * crudo para que la infraestructura lo traduzca después al modelo de dominio del SDK.
  */
 public final class AuthorizationSoapClient {
 

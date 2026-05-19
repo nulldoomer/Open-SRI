@@ -11,18 +11,10 @@ import io.github.opensri.domain.entities.invoice.Invoice;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.SendInvoiceResult;
 import io.github.opensri.domain.enums.Environment;
-import io.github.opensri.infrastructure.crypto.certificates.CertificateLoader;
 import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
 import io.github.opensri.infrastructure.serializers.InvoiceXmlSerializerFactory;
 import io.github.opensri.infrastructure.services.SRIAccessKeyGeneratorFactory;
-import io.github.opensri.infrastructure.sri.SRIEndpoints;
 import io.github.opensri.infrastructure.sri.SRIGatewayFactory;
-import io.github.opensri.infrastructure.sri.SRISOAPGateway;
-import io.github.opensri.infrastructure.sri.client.AuthorizationSoapClient;
-import io.github.opensri.infrastructure.sri.client.SendReceiptSoapClient;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.time.Duration;
 
 public final class OpenSRIClient {
 
@@ -41,23 +33,17 @@ public final class OpenSRIClient {
     this.environment = environment;
     this.issuerProfile = issuerProfile;
 
-    DocumentSigner signer = XAdEsSignerFactory.create(
-                    certificate,
-                    certificatePassword,
-                    certificateAlias
-            );
+    DocumentSigner signer =
+        XAdEsSignerFactory.create(certificate, certificatePassword, certificateAlias);
 
-    SRIGateway gateway = SRIGatewayFactory.create(
-            environment, timeoutSeconds
-    );
+    SRIGateway gateway = SRIGatewayFactory.create(environment, timeoutSeconds);
 
-    this.applicationFacade = new OPENSRIApplication(
+    this.applicationFacade =
+        new OPENSRIApplication(
             SRIAccessKeyGeneratorFactory.create(),
             InvoiceXmlSerializerFactory.create(),
             signer,
-            gateway
-    );
-
+            gateway);
   }
 
   public SendInvoiceResult sendInvoice(Invoice invoice) {
@@ -67,5 +53,4 @@ public final class OpenSRIClient {
   public AuthorizationResponse checkAuthorization(String accessKey) {
     return applicationFacade.checkAuthorization(accessKey);
   }
-
 }

@@ -26,5 +26,6 @@ public interface XmlSerializer<T> {
    * @param issuerProfile issuer profile information needed to complete the XML
    * @return XML representation of the given document
    */
-  String serialize(T document, String accessKey, Environment environment, IssuerProfile issuerProfile);
+  String serialize(
+      T document, String accessKey, Environment environment, IssuerProfile issuerProfile);
 }

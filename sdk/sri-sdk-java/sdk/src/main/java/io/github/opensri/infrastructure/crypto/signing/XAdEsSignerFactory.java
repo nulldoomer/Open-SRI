@@ -14,12 +14,9 @@ public final class XAdEsSignerFactory {
   }
 
   public static DocumentSigner create(
-          byte[] certificate,
-          String certificatePassword,
-          String certificateAlias
-) {
-    SigningKey signingKey = CertificateLoader.load(certificate,
-            certificatePassword, certificateAlias);
+      byte[] certificate, String certificatePassword, String certificateAlias) {
+    SigningKey signingKey =
+        CertificateLoader.load(certificate, certificatePassword, certificateAlias);
 
     return new XAdEsSigner(signingKey);
   }

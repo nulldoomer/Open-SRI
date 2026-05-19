@@ -11,8 +11,8 @@ import org.w3c.dom.Element;
 /**
  * Reconstruye la autorización principal contenida en la respuesta SOAP del SRI.
  *
- * <p>Lee el bloque {@code autorizaciones/autorizacion} y lo transforma al record de dominio
- * {@link Authorization}, preservando solo la información relevante para el SDK.
+ * <p>Lee el bloque {@code autorizaciones/autorizacion} y lo transforma al record de dominio {@link
+ * Authorization}, preservando solo la información relevante para el SDK.
  */
 public final class AuthorizationParser {
 

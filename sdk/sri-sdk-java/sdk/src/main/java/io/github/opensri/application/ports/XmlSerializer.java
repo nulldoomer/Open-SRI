@@ -7,24 +7,25 @@ import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.enums.Environment;
 
 /**
- * Serializes a domain document into its XML representation.
+ * Serializa un documento de dominio en su representación XML.
  *
- * <p>This port abstracts the transformation of a document model into XML without exposing JAXB or
- * any other serialization technology to the application layer. Implementations are expected to
- * produce XML that matches the corresponding SRI schema and version for the selected environment.
+ * <p>Este puerto abstrae la transformación de un modelo de documento a XML sin exponer JAXB ni
+ * cualquier otra tecnología de serialización a la capa de aplicación. Se espera que las
+ * implementaciones produzcan un XML que coincida con el esquema y la versión del SRI
+ * correspondientes para el entorno seleccionado.
  *
- * @param <T> type of document accepted by the serializer
+ * @param <T> tipo de documento aceptado por el serializador
  */
 public interface XmlSerializer<T> {
 
   /**
-   * Converts the provided document into XML.
+   * Convierte el documento proporcionado en XML.
    *
-   * @param document document instance to serialize
-   * @param accessKey generated access key needed in the serialization
-   * @param environment environment used to set on the XML
-   * @param issuerProfile issuer profile information needed to complete the XML
-   * @return XML representation of the given document
+   * @param document instancia del documento a serializar
+   * @param accessKey clave de acceso generada necesaria en la serialización
+   * @param environment entorno utilizado para establecer en el XML
+   * @param issuerProfile información del perfil del emisor necesaria para completar el XML
+   * @return representación XML del documento dado
    */
   String serialize(
       T document, String accessKey, Environment environment, IssuerProfile issuerProfile);

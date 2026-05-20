@@ -11,10 +11,11 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Consulta el servicio SOAP de autorización del SRI mediante llamadas HTTP directas.
+ * Cliente especializado en la consulta del servicio SOAP de autorización del SRI.
  *
- * <p>Construye manualmente la operación {@code autorizacionComprobante} y devuelve el envelope SOAP
- * crudo para que la infraestructura lo traduzca después al modelo de dominio del SDK.
+ * <p>Esta clase construye manualmente la petición SOAP para la operación {@code
+ * autorizacionComprobante} y procesa la respuesta HTTP, devolviendo el XML crudo para su posterior
+ * mapeo al dominio.
  */
 public final class AuthorizationSoapClient {
 

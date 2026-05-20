@@ -11,6 +11,8 @@ import io.github.opensri.domain.valueobjects.ClientIdentification;
  * <p>Agrupa la identificación fiscal del cliente y el nombre que debe constar en la factura u otro
  * documento tributario emitido por el SDK.
  *
+ * @param identification identificación fiscal del cliente (RUC, Cédula, Pasaporte, etc.)
+ * @param names nombre o razón social del cliente
  * @see io.github.opensri.domain.valueobjects.ClientIdentification
  */
 public record Client(ClientIdentification identification, String names) {}

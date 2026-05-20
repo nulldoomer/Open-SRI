@@ -6,6 +6,10 @@ package io.github.opensri.application;
 import io.github.opensri.application.ports.SRIGateway;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 
+/**
+ * Use case responsible for querying the authorization status of an electronic document from the
+ * SRI.
+ */
 class CheckAuthorizationUseCase {
   private final SRIGateway sriGateway;
 
@@ -13,6 +17,12 @@ class CheckAuthorizationUseCase {
     this.sriGateway = sriGateway;
   }
 
+  /**
+   * Executes the authorization query via the configured gateway.
+   *
+   * @param accessKey the 49-digit access key of the document to check
+   * @return the authorization response containing the SRI status and messages
+   */
   AuthorizationResponse execute(String accessKey) {
     return sriGateway.sendAuthorization(accessKey);
   }

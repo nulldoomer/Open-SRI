@@ -15,28 +15,26 @@ import jakarta.xml.bind.Marshaller;
 import java.io.StringWriter;
 
 /**
- * Serializes invoices into SRI-compliant XML using JAXB.
+ * Implementación de {@link XmlSerializer} que serializa facturas a formato XML compatible con el
+ * SRI.
  *
- * <p>This infrastructure component transforms an {@link Invoice} plus its serialization context
- * into the final XML payload expected by the SRI. The serializer receives the generated access key,
- * target environment, and issuer profile, while the invoice itself carries the XML document version
- * required by the root element.
- *
- * <p>It implements {@link XmlSerializer}{@code <Invoice>}.
+ * <p>Este componente de infraestructura transforma una {@link Invoice} y su contexto de
+ * serialización en el payload XML final esperado por el SRI, utilizando JAXB para el marshalling de
+ * los datos.
  */
 class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
 
   /**
-   * Produces the XML representation of the given invoice and serialization context.
+   * Produce la representación XML de la factura y su contexto de serialización.
    *
-   * <p>The serializer maps the domain invoice to {@link FacturaXML}, applies the provided access
-   * key, environment, and issuer profile, and then marshals the result as UTF-8 XML through JAXB.
+   * <p>Mapea la factura de dominio a {@link FacturaXML}, aplica la clave de acceso, el ambiente y el
+   * perfil del emisor proporcionados, y genera el XML resultante en codificación UTF-8.
    *
-   * @param invoice domain invoice ready to be serialized
-   * @param accessKey generated access key to embed in the XML
-   * @param environment target SRI environment to encode in the payload
-   * @param issuerProfile issuer profile used to complete fiscal fields
-   * @return serialized XML document
+   * @param invoice factura de dominio lista para ser serializada
+   * @param accessKey clave de acceso generada para incluir en el XML
+   * @param environment ambiente del SRI al que se dirige el comprobante
+   * @param issuerProfile perfil del emisor para completar campos fiscales
+   * @return documento XML serializado
    */
   @Override
   public String serialize(

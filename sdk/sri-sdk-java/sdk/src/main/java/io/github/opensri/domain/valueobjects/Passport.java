@@ -7,12 +7,15 @@ import io.github.opensri.domain.enums.IdentificationType;
 import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
- * Represents a passport identification number.
+ * Representa un número de identificación de pasaporte.
  *
- * <p>This value object ensures that the passport number is non-null, non-blank, and formatted
- * according to general identification requirements.
+ * <p>Este objeto de valor asegura que el número de pasaporte no sea nulo, no esté en blanco y esté
+ * formateado de acuerdo con los requisitos generales de identificación.
  *
- * <p>Validation rules are intentionally flexible to support international formats.
+ * <p>Las reglas de validación son intencionalmente flexibles para soportar formatos
+ * internacionales.
+ *
+ * @param number el número de pasaporte
  */
 public record Passport(String number) implements ClientIdentification {
   public Passport {

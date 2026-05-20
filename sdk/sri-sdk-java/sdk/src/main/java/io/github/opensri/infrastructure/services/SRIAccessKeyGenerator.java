@@ -11,31 +11,28 @@ import io.github.opensri.domain.valueobjects.IssueDate;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Generates SRI access keys for electronic tax documents.
+ * Implementación de {@link AccessKeyGenerator} que genera claves de acceso para comprobantes
+ * electrónicos del SRI.
  *
- * <p>The access key is a 49-digit identifier required by the SRI to uniquely recognize a document
- * before reception and authorization. This implementation builds the key from document metadata,
- * issuer tax information, environment, a generated numeric code, and the final modulo 11 verifier
- * digit.
- *
- * <p>It implements {@link AccessKeyGenerator} and encapsulates the concrete SRI-specific key
- * generation algorithm used by the SDK.
- *
- * @see AccessKeyGenerator
+ * <p>La clave de acceso es un identificador de 49 dígitos requerido por el SRI para identificar de
+ * forma única un comprobante. Esta implementación construye la clave a partir de los metadatos del
+ * documento, información del emisor, ambiente, un código numérico aleatorio y el dígito verificador
+ * obtenido mediante módulo 11.
  */
 class SRIAccessKeyGenerator implements AccessKeyGenerator {
   /**
-   * Generates the complete access key for a document.
+   * Genera la clave de acceso completa para un documento.
    *
-   * <p>The resulting key follows the SRI composition order: issue date, document type, issuer RUC,
-   * environment, series, sequential number, generated numeric code, emission type, and verifier
-   * digit.
+   * <p>La clave resultante sigue la estructura definida por el SRI: fecha de emisión, tipo de
+   * comprobante, RUC del emisor, tipo de ambiente, serie (establecimiento + punto de emisión),
+   * número secuencial, código numérico, tipo de emisión y dígito verificador.
    *
-   * @param date issue date of the document
-   * @param documentNumber document number containing type and sequence data
-   * @param taxInfo issuer tax information used in the access key structure
-   * @param environment target SRI environment
-   * @return complete 49-digit access key including verifier digit
+   * @param date fecha de emisión del comprobante
+   * @param documentNumber número del documento que contiene el establecimiento, punto de emisión y
+   *     secuencial
+   * @param taxInfo información tributaria del emisor utilizada en la estructura de la clave
+   * @param environment ambiente del SRI al que se dirige el comprobante
+   * @return clave de acceso completa de 49 dígitos incluyendo el dígito verificador
    */
   @Override
   public String generate(

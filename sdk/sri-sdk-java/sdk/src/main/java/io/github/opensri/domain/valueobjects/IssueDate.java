@@ -10,13 +10,15 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
 /**
- * Represents the issuance date of a tax document.
+ * Representa la fecha de emisión de un documento tributario.
  *
- * <p>This value object ensures that the date is valid and formatted according to tax authority
- * requirements.
+ * <p>Este objeto de valor asegura que la fecha sea válida y esté formateada de acuerdo con los
+ * requisitos de la autoridad tributaria.
  *
- * <p>Instances are immutable, validated at creation time, and guaranteed not to represent a future
- * date.
+ * <p>Las instancias son inmutables, se validan al momento de su creación y se garantiza que no
+ * representan una fecha futura.
+ *
+ * @param date objeto LocalDate que representa la fecha de emisión
  */
 public record IssueDate(LocalDate date) {
   public IssueDate {

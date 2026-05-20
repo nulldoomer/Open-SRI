@@ -9,26 +9,28 @@ import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.IssueDate;
 
 /**
- * Generates the SRI access key for an electronic tax document.
+ * Genera la clave de acceso del SRI para un documento tributario electrónico.
  *
- * <p>This port defines the contract for producing the 49-digit access key required by the SRI to
- * identify a document before submission and authorization checks. Implementations are responsible
- * for combining the document metadata, environment, and verification digit according to SRI rules.
+ * <p>Este puerto define el contrato para producir la clave de acceso de 49 dígitos requerida por el
+ * SRI para identificar un documento antes de su envío y controles de autorización. Las
+ * implementaciones son responsables de combinar los metadatos del documento, el entorno y el dígito
+ * verificador de acuerdo con las reglas del SRI.
  */
 public interface AccessKeyGenerator {
 
   /**
-   * Produces the access key for the provided document context.
+   * Produce la clave de acceso para el contexto del documento proporcionado.
    *
-   * <p>The generated value must be suitable for inclusion in the document XML and for later
-   * authorization lookups against the SRI services.
+   * <p>El valor generado debe ser adecuado para su inclusión en el XML del documento y para
+   * posteriores consultas de autorización ante los servicios del SRI.
    *
-   * @param date issue date of the document being identified
-   * @param documentNumber document numbering data, including code, establishment, emission point,
-   *     and sequential number
-   * @param taxInfo issuer tax information required by the SRI access key format
-   * @param environment target SRI environment for which the key is generated
-   * @return complete access key with verification digit
+   * @param date fecha de emisión del documento que se está identificando
+   * @param documentNumber datos de numeración del documento, incluyendo código, establecimiento,
+   *     punto de emisión y número secuencial
+   * @param taxInfo información tributaria del emisor requerida por el formato de clave de acceso
+   *     del SRI
+   * @param environment entorno del SRI de destino para el cual se genera la clave
+   * @return clave de acceso completa con dígito verificador
    */
   String generate(
       IssueDate date, DocumentNumber documentNumber, TaxInfo taxInfo, Environment environment);

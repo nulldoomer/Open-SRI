@@ -7,13 +7,15 @@ import io.github.opensri.domain.enums.IdentificationType;
 import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
- * Represents a foreign identification number.
+ * Representa un número de identificación para extranjeros.
  *
- * <p>This value object encapsulates identification values used for non-national clients in tax
- * documents.
+ * <p>Este objeto de valor encapsula los valores de identificación utilizados para clientes no
+ * nacionales en los documentos tributarios.
  *
- * <p>Instances are validated to ensure they meet the required structural constraints while
- * remaining flexible enough for foreign identification formats.
+ * <p>Las instancias se validan para asegurar que cumplen con las restricciones estructurales
+ * requeridas, manteniendo la flexibilidad para los formatos de identificación extranjeros.
+ *
+ * @param number el número de identificación extranjera
  */
 public record ForeignId(String number) implements ClientIdentification {
 

@@ -16,6 +16,16 @@ import java.util.List;
  *
  * <p>Las colecciones asociadas al detalle se almacenan como copias inmutables para preservar la
  * consistencia del documento una vez creado.
+ *
+ * @param mainCode código principal del producto o servicio
+ * @param auxCode código auxiliar opcional
+ * @param description descripción del bien o servicio
+ * @param quantity cantidad facturada
+ * @param unitPrice precio unitario antes de impuestos
+ * @param discount descuento total aplicado a esta línea
+ * @param totalPriceWithoutTax precio total de la línea sin impuestos
+ * @param additionalDetails detalles adicionales (par nombre-valor) para el ítem
+ * @param taxes lista de impuestos aplicados a este producto (IVA, ICE, IRBPNR)
  */
 public record InvoiceItem(
     String mainCode,

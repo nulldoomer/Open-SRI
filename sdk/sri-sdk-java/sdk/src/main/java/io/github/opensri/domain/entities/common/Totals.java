@@ -21,6 +21,11 @@ import java.util.Map;
  * en una sola estructura los valores que luego se reflejan en la sección de totales del XML del
  * comprobante.
  *
+ * @param totalValue valor total final del comprobante incluyendo impuestos
+ * @param totalWithoutTaxes base imponible total sin impuestos ni descuentos
+ * @param totalDiscount descuento total aplicado sobre el subtotal
+ * @param totalTipValue valor opcional de propina
+ * @param totalTaxes resumen de impuestos agrupados por tipo y tarifa
  * @see TotalTax
  */
 public record Totals(

@@ -7,12 +7,14 @@ import io.github.opensri.domain.enums.IdentificationType;
 import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
 /**
- * Represents a taxpayer identification number (RUC).
+ * Representa un número de identificación del Registro Único de Contribuyentes (RUC).
  *
- * <p>This value object validates the structure and format according to tax authority (SRI) rules.
+ * <p>Este objeto de valor valida la estructura y el formato de acuerdo con las reglas del SRI.
  *
- * <p>Instances are immutable and guaranteed to contain a valid RUC number, including province,
- * verifier digit, and establishment code constraints.
+ * <p>Las instancias son inmutables y se garantiza que contienen un número de RUC válido, incluyendo
+ * las restricciones de provincia, dígito verificador y código de establecimiento.
+ *
+ * @param number el número de RUC (13 dígitos)
  */
 public record Ruc(String number) implements ClientIdentification {
 

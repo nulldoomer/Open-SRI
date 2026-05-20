@@ -5,6 +5,14 @@ package io.github.opensri.domain.valueobjects;
 
 import io.github.opensri.shared.exceptions.OpenSRIValidationException;
 
+/**
+ * Representa el plazo de pago de una obligación.
+ *
+ * <p>Define el tiempo, expresado en días, con el que cuenta el receptor para liquidar el pago del
+ * comprobante electrónico.
+ *
+ * @param termDays número de días del plazo
+ */
 public record Term(int termDays) {
   public Term {
     if (termDays <= 0) {

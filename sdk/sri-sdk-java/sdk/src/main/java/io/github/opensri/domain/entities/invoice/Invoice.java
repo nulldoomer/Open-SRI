@@ -22,6 +22,18 @@ import java.util.List;
  * la sección {@code infoAdicional} del XML del SRI. La versión XML del documento se conserva como
  * parte de la entidad para que el flujo de serialización no tenga que recibirla como un parámetro
  * separado.
+ *
+ * @param issueDate fecha de emisión del comprobante
+ * @param establishmentDirection dirección de la sucursal o establecimiento emisor
+ * @param taxInfo información tributaria base del emisor (RUC, ambiente, etc.)
+ * @param documentNumber numeración fiscal (establecimiento, punto de emisión, secuencial)
+ * @param documentVersion versión del esquema XML a utilizar
+ * @param client información del comprador
+ * @param totals resumen de valores monetarios e impuestos
+ * @param items lista de productos o servicios facturados
+ * @param additionalInfo información adicional personalizada del documento
+ * @param payments formas de pago aplicadas
+ * @param currency moneda en la que se emite la factura
  */
 public record Invoice(
     IssueDate issueDate,

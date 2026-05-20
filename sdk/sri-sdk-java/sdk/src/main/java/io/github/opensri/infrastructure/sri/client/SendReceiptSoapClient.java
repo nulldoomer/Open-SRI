@@ -12,14 +12,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- * Envía comprobantes firmados al servicio SOAP de recepción del SRI usando {@link HttpClient}.
+ * Cliente especializado en el envío de comprobantes firmados al servicio SOAP de recepción del SRI.
  *
- * <p>Este cliente construye manualmente el envelope SOAP de {@code validarComprobante} para evitar
- * dependencias con DTOs generados desde WSDL y devolver el XML crudo de la respuesta al mapper de
- * infraestructura.
- *
- * <p>La serialización del comprobante se envía en Base64, tal como lo exige la operación de
- * recepción del SRI.
+ * <p>Construye manualmente el envelope SOAP para la operación {@code validarComprobante}, enviando
+ * el contenido del comprobante codificado en Base64 según los requerimientos técnicos del SRI.
  */
 public final class SendReceiptSoapClient {
   private final HttpClient httpClient;

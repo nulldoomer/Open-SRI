@@ -14,16 +14,23 @@ import io.github.opensri.shared.exceptions.OpenSRICommunicationException;
 import java.io.IOException;
 
 /**
- * Implementa {@link SRIGateway} usando los web services SOAP oficiales del SRI.
+ * Implementación de {@link SRIGateway} que gestiona la comunicación con los servicios SOAP del SRI.
  *
- * <p>Convierte el XML firmado a bytes UTF-8 para el servicio de recepción y delega la
- * transformación de las respuestas SOAP hacia el modelo de dominio mediante mappers especializados.
+ * <p>Esta clase orquesta el envío de comprobantes y la consulta de autorizaciones, delegando la
+ * comunicación técnica a clientes SOAP específicos y la transformación de datos hacia el modelo de
+ * dominio mediante mappers especializados.
  */
 public class SRISOAPGateway implements SRIGateway {
 
   private final SendReceiptSoapClient sendReceiptSoapClient;
   private final AuthorizationSoapClient authorizationSoapClient;
 
+  /**
+   * Crea una instancia de la pasarela con los clientes SOAP requeridos.
+   *
+   * @param sendReceiptSoapClient cliente para el servicio de recepción de comprobantes
+   * @param authorizationSoapClient cliente para el servicio de autorización de comprobantes
+   */
   public SRISOAPGateway(
       SendReceiptSoapClient sendReceiptSoapClient,
       AuthorizationSoapClient authorizationSoapClient) {

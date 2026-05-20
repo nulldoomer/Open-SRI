@@ -36,6 +36,14 @@ class SendInvoiceUseCase {
   //  Important: do not recover the access key by parsing the XML.
   //  It should remain an explicit value of the application flow.
 
+  /**
+   * Orchestrates the preparation and submission of an invoice.
+   *
+   * @param invoice the invoice domain object
+   * @param environment the target environment (DEV/PROD)
+   * @param issuerProfile the tax profile of the document issuer
+   * @return the combined result of the generation and submission
+   */
   SendInvoiceResult execute(Invoice invoice, Environment environment, IssuerProfile issuerProfile) {
 
     String accessKey =

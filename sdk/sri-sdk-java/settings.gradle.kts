@@ -6,4 +6,3 @@
  */
 
 rootProject.name = "sri-sdk-java"
-include("sdk")

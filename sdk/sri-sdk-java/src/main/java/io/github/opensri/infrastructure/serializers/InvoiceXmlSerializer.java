@@ -27,8 +27,8 @@ class InvoiceXmlSerializer implements XmlSerializer<Invoice> {
   /**
    * Produce la representación XML de la factura y su contexto de serialización.
    *
-   * <p>Mapea la factura de dominio a {@link FacturaXML}, aplica la clave de acceso, el ambiente y el
-   * perfil del emisor proporcionados, y genera el XML resultante en codificación UTF-8.
+   * <p>Mapea la factura de dominio a {@link FacturaXML}, aplica la clave de acceso, el ambiente y
+   * el perfil del emisor proporcionados, y genera el XML resultante en codificación UTF-8.
    *
    * @param invoice factura de dominio lista para ser serializada
    * @param accessKey clave de acceso generada para incluir en el XML

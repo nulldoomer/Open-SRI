@@ -130,6 +130,10 @@ val generateTestCertificate by tasks.registering(Exec::class) {
     )
 }
 
+tasks.named("processTestResources") {
+    dependsOn(generateTestCertificate)
+}
+
 tasks.named("test") {
     dependsOn(generateTestCertificate)
 }

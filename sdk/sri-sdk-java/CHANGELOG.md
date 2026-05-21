@@ -14,3 +14,9 @@ en este archivo.
 - MVP actual mantiene soporte para la emisión de facturas (v1.0.0).
 - Firma electrónica XAdES-BES.
 - Clientes SOAP para servicios del SRI (Recepción y Autorización).
+
+## [1.0.1] - 2026-05-20
+
+### Arreglado
+
+- Fix del JavaDoc para un clean build de java usando gradlew.

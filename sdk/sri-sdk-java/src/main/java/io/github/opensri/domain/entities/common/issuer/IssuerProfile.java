@@ -14,6 +14,9 @@ import io.github.opensri.domain.valueobjects.SpecialTaxPayer;
  * documento, pero sí afectan su contenido fiscal, como la obligación de llevar contabilidad y la
  * condición de contribuyente especial.
  *
+ * @param ruc Registro Único de Contribuyentes del emisor
+ * @param specialTaxPayer registro de contribuyente especial si el emisor posee dicha calificación
+ * @param accountingObligation indica si el emisor está obligado a llevar contabilidad
  * @see AccountingObligation
  */
 public record IssuerProfile(

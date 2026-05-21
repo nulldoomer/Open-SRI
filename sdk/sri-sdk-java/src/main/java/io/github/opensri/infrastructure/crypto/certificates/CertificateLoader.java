@@ -21,6 +21,9 @@ import java.security.cert.X509Certificate;
  */
 public class CertificateLoader {
 
+  /** Constructor privado para evitar la instanciación de la clase de utilidad. */
+  private CertificateLoader() {}
+
   /**
    * Loads the signing key pair identified by the provided alias.
    *

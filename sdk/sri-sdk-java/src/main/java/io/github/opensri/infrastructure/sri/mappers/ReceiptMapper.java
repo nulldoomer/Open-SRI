@@ -19,6 +19,11 @@ import org.w3c.dom.Element;
  */
 public class ReceiptMapper {
 
+  /** Private constructor to prevent instantiation of this utility class. */
+  private ReceiptMapper() {
+    throw new AssertionError("Utility class");
+  }
+
   /**
    * Convierte un envelope SOAP de recepción en {@link ReceiptResponse}.
    *

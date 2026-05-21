@@ -65,7 +65,7 @@ public class InfoFacturaXML {
   @XmlElement(name = "pago")
   private List<PagosXML> pagos;
 
-  // Constructor vacío para generar la instancia del contexto de JAXB
+  /** Required no-arg constructor for JAXB deserialization. */
   public InfoFacturaXML() {}
 
   /**

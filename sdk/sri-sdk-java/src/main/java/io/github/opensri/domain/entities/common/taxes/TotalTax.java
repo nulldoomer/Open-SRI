@@ -11,6 +11,11 @@ import java.math.BigDecimal;
  * <p>Cada instancia resume la base imponible y el valor total de una combinación específica de tipo
  * de impuesto y código de tarifa, tal como exige el bloque {@code totalConImpuestos} del XML del
  * SRI.
+ *
+ * @param code código del tipo de impuesto (IVA, ICE, etc.)
+ * @param rateCode código de la tarifa o porcentaje aplicado
+ * @param taxableBase monto total sobre el cual se calculó el tributo
+ * @param value valor monetario total del impuesto acumulado
  */
 public record TotalTax(
     // Tabla 16: Tipo de impuesto <codigo>

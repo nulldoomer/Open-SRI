@@ -39,6 +39,17 @@ public record Totals(
     BigDecimal totalTipValue,
     // Resumen acumulado de impuestos agrupados por tipo y tarifa <totalConImpuestos>
     List<TotalTax> totalTaxes) {
+  /**
+   * Canonical constructor.
+   *
+   * <p>Ensures the list of taxes is non-null and immutable by making a defensive copy.
+   *
+   * @param totalValue valor total final del comprobante incluyendo impuestos
+   * @param totalWithoutTaxes base imponible total sin impuestos ni descuentos
+   * @param totalDiscount descuento total aplicado sobre el subtotal
+   * @param totalTipValue valor opcional de propina
+   * @param totalTaxes resumen de impuestos agrupados por tipo y tarifa
+   */
   public Totals {
     totalTaxes = totalTaxes == null ? List.of() : List.copyOf(totalTaxes);
   }

@@ -38,7 +38,7 @@ spotless {
 
 // ========================= VERSIONS ==========================================
 group = "io.github.opensri"
-version = "1.0.0"
+version = "1.0.1"
 
 
 // ========================= VERSIONS ==========================================
@@ -102,4 +102,34 @@ java{
 
 tasks.getByName<Jar>("jar"){
     archiveBaseName.set("open-sri")
+}
+
+// ===================== TEST RESOURCES ==========================================
+val generateTestCertificate by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Generates a dummy PKCS12 certificate for testing if it does not exist."
+
+    val certFile = file("src/test/resources/test-firma.p12")
+    onlyIf { !certFile.exists() }
+
+    doFirst {
+        certFile.parentFile.mkdirs()
+    }
+
+    commandLine(
+        "keytool", "-genkeypair",
+        "-alias", "sri-test-firma",
+        "-keyalg", "RSA",
+        "-keysize", "2048",
+        "-storetype", "PKCS12",
+        "-keystore", certFile.absolutePath,
+        "-storepass", "password",
+        "-keypass", "password",
+        "-dname", "CN=SRI Test Firma, O=OpenSRI, C=EC",
+        "-validity", "365"
+    )
+}
+
+tasks.named("test") {
+    dependsOn(generateTestCertificate)
 }

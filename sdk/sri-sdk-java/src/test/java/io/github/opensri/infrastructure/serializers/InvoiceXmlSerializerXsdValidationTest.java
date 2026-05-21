@@ -55,7 +55,7 @@ class InvoiceXmlSerializerXsdValidationTest {
             throw new IllegalStateException("No se encontró el certificado de prueba /test-firma.p12");
         }
         byte[] p12Bytes = stream.readAllBytes();
-        SigningKey signingKey = CertificateLoader.load(p12Bytes, "password", "SRI-Test-Firma");
+        SigningKey signingKey = CertificateLoader.load(p12Bytes, "password", "sri-test-firma");
 
         documentSigner = XAdEsSignerFactory.create(signingKey);
 
@@ -111,10 +111,9 @@ class InvoiceXmlSerializerXsdValidationTest {
         String signedXml = documentSigner.signDocument(xml);
 
         assertNotNull(signedXml);
-        // Path to the XSD file
-        String xsdPath = Paths.get("", "src", "main",  "resources", "xsd", "factura_V1.0.0.xsd").toString();
+
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = factory.newSchema(new File(xsdPath));
+        Schema schema = factory.newSchema(getClass().getResource("/xsd/factura_V1.0.0.xsd"));
         Validator validator = schema.newValidator();
         try {
             validator.validate(new StreamSource(new StringReader(signedXml)));
@@ -123,5 +122,3 @@ class InvoiceXmlSerializerXsdValidationTest {
         }
     }
 }
-
-

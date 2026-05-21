@@ -11,6 +11,8 @@ package io.github.opensri.domain.enums;
  * fiscal del comprobante.
  */
 public enum AccountingObligation {
+  /** Indica que el emisor está obligado a llevar contabilidad. */
   SI,
+  /** Indica que el emisor no está obligado a llevar contabilidad. */
   NO
 }

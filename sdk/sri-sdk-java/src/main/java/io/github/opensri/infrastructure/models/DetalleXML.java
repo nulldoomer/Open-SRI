@@ -45,7 +45,7 @@ public class DetalleXML {
   @XmlElement(name = "impuesto")
   private List<ImpuestoXML> impuestos;
 
-  // Constructor vacío para generar la instancia del contexto de JAXB
+  /** Required no-arg constructor for JAXB deserialization. */
   public DetalleXML() {}
 
   /**

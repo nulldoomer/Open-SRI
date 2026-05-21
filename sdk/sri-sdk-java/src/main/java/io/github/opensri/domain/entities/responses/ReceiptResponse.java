@@ -10,6 +10,9 @@ import java.util.List;
  *
  * <p>Expone el estado general de validación del XML enviado y la colección de mensajes emitidos por
  * el servicio de recepción después de procesar el comprobante.
+ *
+ * @param status estado general devuelto por el servicio de recepción del SRI
+ * @param messages mensajes asociados al procesamiento del comprobante recibido
  */
 public record ReceiptResponse(
     // Estado general devuelto por el servicio de recepción del SRI.

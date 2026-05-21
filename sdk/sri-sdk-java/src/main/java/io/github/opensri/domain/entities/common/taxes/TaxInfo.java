@@ -12,6 +12,9 @@ import io.github.opensri.domain.entities.common.issuer.Issuer;
  * emisión, el emisor y la dirección matriz. Esta información sirve como insumo para generar claves
  * de acceso y estructuras XML del SRI.
  *
+ * @param emissionType código del tipo de emisión (Normal o Indisponibilidad)
+ * @param issuer información del remitente o emisor del documento electrónico
+ * @param parentAddress dirección de la oficina matriz del negocio
  * @see Issuer
  */
 public record TaxInfo(

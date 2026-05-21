@@ -48,6 +48,21 @@ public record Invoice(
     List<Payment> payments,
     Currency currency) {
 
+  /**
+   * Constructor compacto para inicializar colecciones inmutables.
+   *
+   * @param issueDate fecha de emisión
+   * @param establishmentDirection dirección del establecimiento
+   * @param taxInfo información tributaria
+   * @param documentNumber número de documento
+   * @param documentVersion versión del documento
+   * @param client información del cliente
+   * @param totals totales de la factura
+   * @param items ítems de la factura
+   * @param additionalInfo información adicional
+   * @param payments formas de pago
+   * @param currency moneda
+   */
   public Invoice {
     items = items == null ? List.of() : List.copyOf(items);
     additionalInfo = additionalInfo == null ? List.of() : List.copyOf(additionalInfo);

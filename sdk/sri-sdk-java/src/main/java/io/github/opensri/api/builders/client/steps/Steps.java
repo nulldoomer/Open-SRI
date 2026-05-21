@@ -29,6 +29,9 @@ public final class Steps
         TimeoutStep,
         BuildStep {
 
+  /** Creates a new builder Steps instance. */
+  public Steps() {}
+
   private Environment environment;
   private byte[] certificate;
   private String certificatePassword;
@@ -117,6 +120,13 @@ public final class Steps
     return this;
   }
 
+  /**
+   * Sets the HTTP connection timeout for SRI SOAP requests.
+   *
+   * @param seconds maximum number of seconds to wait for a response; must be greater than zero
+   * @return next step that allows building the client
+   * @throws IllegalArgumentException if {@code seconds} is zero or negative
+   */
   @Override
   public BuildStep timeout(int seconds) {
     if (seconds <= 0) {

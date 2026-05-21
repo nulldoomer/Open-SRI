@@ -21,6 +21,11 @@ import java.time.format.ResolverStyle;
  * @param date objeto LocalDate que representa la fecha de emisión
  */
 public record IssueDate(LocalDate date) {
+  /**
+   * Constructor compacto para validar que la fecha no sea nula ni futura.
+   *
+   * @param date fecha de emisión
+   */
   public IssueDate {
     if (date == null) {
       throw new OpenSRIValidationException("IssueDate cannot be null");

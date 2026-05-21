@@ -9,6 +9,7 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 
+/** XML mapping for payment information used in document serialization. */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PagosXML {
 
@@ -24,8 +25,15 @@ public class PagosXML {
   @XmlElement(name = "unidadTiempo")
   String unidadTiempo;
 
+  /** Default no-arg constructor required by JAXB. */
   public PagosXML() {}
 
+  /**
+   * Converts a domain Payment into its XML representation.
+   *
+   * @param payment the domain payment to convert
+   * @return the converted PagosXML instance
+   */
   public static PagosXML fromDomain(Payment payment) {
     PagosXML xml = new PagosXML();
 

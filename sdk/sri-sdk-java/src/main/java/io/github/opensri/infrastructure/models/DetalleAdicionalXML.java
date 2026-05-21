@@ -21,6 +21,7 @@ public class DetalleAdicionalXML {
 
   @XmlAttribute private String valor;
 
+  /** Required no-arg constructor for JAXB deserialization. */
   public DetalleAdicionalXML() {}
 
   /**

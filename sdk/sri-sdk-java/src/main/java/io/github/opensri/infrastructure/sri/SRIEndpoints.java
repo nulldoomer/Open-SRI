@@ -16,6 +16,9 @@ import java.net.URI;
  */
 public class SRIEndpoints {
 
+  /** Private constructor to prevent instantiation of this constants holder. */
+  private SRIEndpoints() {}
+
   /**
    * URL <a
    * href="https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl">https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl</a>

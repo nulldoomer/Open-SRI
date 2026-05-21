@@ -14,6 +14,11 @@ import io.github.opensri.shared.exceptions.OpenSRIValidationException;
  * @param termDays número de días del plazo
  */
 public record Term(int termDays) {
+  /**
+   * Validates that the payment term is a positive number of days.
+   *
+   * @throws OpenSRIValidationException if {@code termDays} is zero or negative
+   */
   public Term {
     if (termDays <= 0) {
       throw new OpenSRIValidationException("termDays must be greater than zero");

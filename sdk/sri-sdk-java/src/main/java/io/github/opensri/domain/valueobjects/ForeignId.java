@@ -19,6 +19,12 @@ import io.github.opensri.shared.exceptions.OpenSRIValidationException;
  */
 public record ForeignId(String number) implements ClientIdentification {
 
+  /**
+   * Valida el valor de identificación extranjero.
+   *
+   * <p>Lanza {@link OpenSRIValidationException} si el número es nulo, vacío, tiene longitud
+   * inválida o contiene caracteres no alfanuméricos.
+   */
   public ForeignId {
     if (number == null || number.isBlank()) {
       throw new OpenSRIValidationException("Foreign ID cannot be blank");

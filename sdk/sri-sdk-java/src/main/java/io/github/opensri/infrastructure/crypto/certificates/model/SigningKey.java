@@ -12,5 +12,8 @@ import java.security.cert.X509Certificate;
  * <p>This record is the immutable bridge between certificate loading and the XML signing
  * implementation. It keeps the signing material grouped as a single domain-neutral infrastructure
  * value.
+ *
+ * @param privateKey llave privada utilizada para realizar la firma digital
+ * @param certificate certificado X.509 que acompaña a la llave privada
  */
 public record SigningKey(PrivateKey privateKey, X509Certificate certificate) {}

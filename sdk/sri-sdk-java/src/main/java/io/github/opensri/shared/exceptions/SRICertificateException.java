@@ -10,14 +10,30 @@ package io.github.opensri.shared.exceptions;
  * used to produce a valid digital signature.
  */
 public class SRICertificateException extends SRIException {
+  /**
+   * Constructs a SRICertificateException with the specified message.
+   *
+   * @param message detail message describing the certificate error
+   */
   public SRICertificateException(String message) {
     super(message);
   }
 
+  /**
+   * Constructs a SRICertificateException with the specified message and cause.
+   *
+   * @param message detail message describing the certificate error
+   * @param cause underlying cause
+   */
   public SRICertificateException(String message, Throwable cause) {
     super(message, cause);
   }
 
+  /**
+   * Constructs a SRICertificateException with the specified cause.
+   *
+   * @param cause underlying cause
+   */
   public SRICertificateException(Throwable cause) {
     super(cause);
   }

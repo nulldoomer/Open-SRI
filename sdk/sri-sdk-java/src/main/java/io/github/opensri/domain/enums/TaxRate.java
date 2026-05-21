@@ -15,14 +15,23 @@ import java.util.Arrays;
  * numérico aplicable.
  */
 public enum TaxRate {
+  /** Tarifa 0%. */
   PORCENTAJE_0(0, "0%", BigDecimal.ZERO),
+  /** Tarifa 12%. */
   PORCENTAJE_12(2, "12%", BigDecimal.valueOf(12f)),
+  /** Tarifa 14%. */
   PORCENTAJE_14(3, "14%", BigDecimal.valueOf(14f)),
+  /** Tarifa 15%. */
   PORCENTAJE_15(4, "15%", BigDecimal.valueOf(15f)),
+  /** Tarifa 5%. */
   PORCENTAJE_5(5, "5%", BigDecimal.valueOf(5f)),
+  /** No objeto de impuesto. */
   NO_OBJETO_IMPUESTO(6, "No objeto de Impuesto", null),
+  /** Exento de IVA. */
   EXENTO_IVA(7, "Exento de IVA", null),
+  /** IVA diferenciado. */
   IVA_DIFERENCIADO(8, "IVA diferenciado", null),
+  /** Tarifa 13%. */
   PORCENTAJE_13(10, "13%", BigDecimal.valueOf(13f));
 
   private final int code;

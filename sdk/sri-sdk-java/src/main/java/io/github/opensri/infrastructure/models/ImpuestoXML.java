@@ -32,6 +32,7 @@ public class ImpuestoXML {
   @XmlElement(name = "valor")
   private String valor;
 
+  /** Required no-arg constructor for JAXB deserialization. */
   public ImpuestoXML() {}
 
   /**

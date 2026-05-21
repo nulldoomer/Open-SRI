@@ -14,13 +14,21 @@ import java.util.Arrays;
  * códigos tributarios de formas de pago aceptadas.
  */
 public enum PaymentMethod {
+  /** Sin utilización del sistema financiero. */
   SIN_SISTEMA_FINANCIERO("01", "Sin utilización del sistema" + " financiero"),
+  /** Compensación de deudas. */
   COMPENSACION_DE_DEUDAS("15", "Compensación de deudas"),
+  /** Tarjeta de débito. */
   TARJETA_DE_DEBITO("16", "Tarjeta de debito"),
+  /** Dinero electrónico. */
   DINERO_ELECTRONICO("17", "Dinero Electrónico"),
+  /** Tarjeta prepago. */
   TARJETA_PREPAGO("18", "Tarjeta prepago"),
+  /** Tarjeta de crédito. */
   TARJETA_DE_CREDITO("19", "Tarjeta de crédito"),
+  /** Otros con utilización del sistema financiero. */
   OTROS_CON_SISTEMA_FINANCIERO("20", "Otros con utilización" + "del sistema financiero"),
+  /** Endoso de títulos. */
   ENDOSO_DE_TITULOS("21", "Endoso de títulos");
 
   private String code;

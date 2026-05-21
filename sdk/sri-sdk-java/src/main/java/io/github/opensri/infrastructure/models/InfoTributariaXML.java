@@ -49,7 +49,7 @@ public class InfoTributariaXML {
   @XmlElement(name = "dirMatriz")
   private String dirMatriz;
 
-  // Constructor vacío para generar la instancia del contexto de JAXB
+  /** Required no-arg constructor for JAXB deserialization. */
   public InfoTributariaXML() {}
 
   /**

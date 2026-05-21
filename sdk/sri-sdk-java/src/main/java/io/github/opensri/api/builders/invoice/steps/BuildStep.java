@@ -5,6 +5,12 @@ package io.github.opensri.api.builders.invoice.steps;
 
 import io.github.opensri.domain.entities.invoice.Invoice;
 
+/** Paso final del constructor de facturas que permite obtener la instancia configurada. */
 public interface BuildStep {
+  /**
+   * Construye y devuelve una nueva instancia de {@link Invoice}.
+   *
+   * @return instancia de Invoice configurada
+   */
   Invoice build();
 }

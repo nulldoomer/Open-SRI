@@ -3,14 +3,21 @@
 
 package io.github.opensri.domain.entities.responses;
 
+/**
+ * Representa la respuesta de autorización detallada devuelta por el SRI.
+ *
+ * <p>Contiene el estado final del comprobante, el número y fecha de autorización asignados, así
+ * como el XML completo que ha sido autorizado.
+ *
+ * @param status estado de autorización normalizado desde la respuesta SOAP del SRI
+ * @param authorizationNumber número de autorización de 37 o más dígitos asignado por el SRI
+ * @param authorizationDate fecha y hora oficial de autorización del comprobante
+ * @param environment ambiente (PRUEBAS/PRODUCCIÓN) reportado por el SRI
+ * @param authorizedXML contenido XML autorizado devuelto por el SRI
+ */
 public record Authorization(
-    // Estado de autorización normalizado desde la respuesta SOAP del SRI.
     String status,
-    // Número de autorización asignado por el SRI.
     String authorizationNumber,
-    // Fecha y hora en que el SRI autorizó el comprobante.
     String authorizationDate,
-    // Ambiente reportado por el SRI para la autorización.
     String environment,
-    // XML autorizado que el SRI devuelve en la respuesta.
     String authorizedXML) {}

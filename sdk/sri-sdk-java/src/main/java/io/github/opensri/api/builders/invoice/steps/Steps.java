@@ -42,6 +42,9 @@ public final class Steps
         ItemsStep,
         PaymentStep {
 
+  /** Creates a new Steps builder instance. */
+  public Steps() {}
+
   private IssueDate issueDate;
   private String establishmentDirection;
   private TaxInfo taxInfo;
@@ -160,12 +163,30 @@ public final class Steps
     return this;
   }
 
+  /**
+   * Adds the payment methods that cover the invoice total.
+   *
+   * <p>At least one payment must be registered before the invoice can be built. The sum of all
+   * payment totals must equal the invoice total calculated from the registered items.
+   *
+   * @param payments list of payment entries to include in the final document
+   * @return next step that allows building the invoice
+   */
   @Override
   public PaymentStep addPayments(List<Payment> payments) {
     addAllRequired(payments, this.payments, "Payments are required", "Payments cannot be null");
     return this;
   }
 
+  /**
+   * Sets the currency in which the invoice amounts are expressed.
+   *
+   * <p>When omitted, the resulting invoice will have a {@code null} currency field, which is
+   * accepted by the SRI schema when the default currency (USD) applies.
+   *
+   * @param currency currency to associate with the invoice
+   * @return same step so more configuration can follow
+   */
   @Override
   public ItemsStep addCurrency(Currency currency) {
     this.currency = Objects.requireNonNull(currency);

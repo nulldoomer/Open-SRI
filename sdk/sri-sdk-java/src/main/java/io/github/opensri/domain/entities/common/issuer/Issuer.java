@@ -11,6 +11,8 @@ import io.github.opensri.domain.valueobjects.Ruc;
  * <p>Reúne la razón social visible en el comprobante y el RUC con el que el negocio o contribuyente
  * se identifica ante el SRI.
  *
+ * @param socialReason nombre o razón social del establecimiento emisor
+ * @param ruc Registro Único de Contribuyentes (RUC) del emisor
  * @see io.github.opensri.domain.valueobjects.Ruc
  */
 public record Issuer(

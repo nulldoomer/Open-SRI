@@ -42,6 +42,19 @@ public record InvoiceItem(
      */
     List<Tax> taxes) {
 
+  /**
+   * Constructor compacto para inicializar colecciones inmutables de detalles e impuestos.
+   *
+   * @param mainCode código principal
+   * @param auxCode código auxiliar
+   * @param description descripción
+   * @param quantity cantidad
+   * @param unitPrice precio unitario
+   * @param discount descuento
+   * @param totalPriceWithoutTax precio total sin impuestos
+   * @param additionalDetails detalles adicionales
+   * @param taxes impuestos aplicados
+   */
   public InvoiceItem {
     additionalDetails = additionalDetails == null ? List.of() : List.copyOf(additionalDetails);
     taxes = taxes == null ? List.of() : List.copyOf(taxes);

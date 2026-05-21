@@ -22,6 +22,7 @@ public class InfoAdicionalXML {
 
   @XmlValue private String valor;
 
+  /** Required no-arg constructor for JAXB deserialization. */
   public InfoAdicionalXML() {}
 
   /**

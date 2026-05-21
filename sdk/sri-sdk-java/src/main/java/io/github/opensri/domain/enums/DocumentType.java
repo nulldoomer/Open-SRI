@@ -13,14 +13,23 @@ import java.util.Arrays;
  * oficial que debe incluirse en la numeración y en la clave de acceso del documento.
  */
 public enum DocumentType {
+  /** Comprobante de venta tipo factura. */
   FACTURA("01", "Factura"),
+  /** Liquidación de compra de bienes y prestación de servicios. */
   LIQUIDACION_COMPRA("03", "Liquidación de Compra de Bienes" + " y Prestación de Servicios"),
+  /** Comprobante para anular o modificar facturas. */
   NOTA_CREDITO("04", "Nota de Crédito"),
+  /** Comprobante para sustentar costos o gastos adicionales. */
   NOTA_DEBITO("05", "Nota de Débito"),
+  /** Documento que sustenta el traslado de mercaderías. */
   GUIA_REMISION("06", "Guía de Remisión"),
+  /** Comprobante de retención de impuestos. */
   COMPROBANTE_RETENCION("07", "Comprobante de Retención");
 
+  /** Código tributario asignado por el SRI. */
   private String code;
+
+  /** Descripción legible del tipo de documento. */
   private String description;
 
   /**
@@ -41,6 +50,12 @@ public enum DocumentType {
     return description;
   }
 
+  /**
+   * Constructor del tipo de documento.
+   *
+   * @param code código tributario del SRI
+   * @param description nombre funcional del documento
+   */
   DocumentType(String code, String description) {
     this.code = code;
     this.description = description;

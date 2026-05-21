@@ -21,6 +21,9 @@ import org.w3c.dom.Element;
  */
 public class AuthorizationMapper {
 
+  /** Constructor privado para evitar la instanciación de la clase de utilidad. */
+  private AuthorizationMapper() {}
+
   /**
    * Convierte un envelope SOAP de autorización en {@link AuthorizationResponse}.
    *

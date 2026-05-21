@@ -40,7 +40,7 @@ public class FacturaXML {
   @XmlElement(name = "campoAdicional")
   private List<InfoAdicionalXML> infoAdicional;
 
-  // Constructor vacío para generar la instancia del contexto de JAXB
+  /** Required no-arg constructor for JAXB deserialization. */
   public FacturaXML() {}
 
   /**

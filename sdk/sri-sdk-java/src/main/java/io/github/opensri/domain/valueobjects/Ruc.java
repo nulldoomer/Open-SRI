@@ -18,6 +18,16 @@ import io.github.opensri.shared.exceptions.OpenSRIValidationException;
  */
 public record Ruc(String number) implements ClientIdentification {
 
+  /**
+   * Validates the RUC number format and structure according to SRI rules.
+   *
+   * <p>Verifies that the number is exactly 13 digits, that the province code is between 01 and 24,
+   * that the third digit is valid (not 7 or 8), that the verifier digit matches the algorithm for
+   * the corresponding entity type (natural person, public entity, or private company), and that the
+   * establishment code is not {@code 000}.
+   *
+   * @throws OpenSRIValidationException if any validation rule is violated
+   */
   public Ruc {
     if (number == null) {
       throw new OpenSRIValidationException("RUC cannot be null");

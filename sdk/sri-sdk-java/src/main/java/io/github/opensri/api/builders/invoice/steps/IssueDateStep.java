@@ -5,6 +5,13 @@ package io.github.opensri.api.builders.invoice.steps;
 
 import io.github.opensri.domain.valueobjects.IssueDate;
 
+/** Paso inicial del constructor de facturas que permite definir la fecha de emisión. */
 public interface IssueDateStep {
+  /**
+   * Define la fecha de emisión del comprobante.
+   *
+   * @param issueDate fecha de emisión
+   * @return siguiente paso del constructor
+   */
   EstablishmentDirectionStep issueDate(IssueDate issueDate);
 }

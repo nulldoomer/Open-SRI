@@ -8,6 +8,9 @@ package io.github.opensri.domain.entities.invoice;
  *
  * <p>Se utiliza para incorporar información complementaria de un producto o servicio dentro del
  * bloque de detalles, sin alterar la estructura fiscal principal del ítem.
+ *
+ * @param name nombre o etiqueta descriptiva del detalle adicional
+ * @param value valor o contenido asociado al detalle
  */
 public record AdditionalDetail(
     // Nombre del detalle adicional

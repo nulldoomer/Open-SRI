@@ -11,6 +11,11 @@ import java.math.RoundingMode;
  *
  * <p>Modela la combinación entre el tipo de impuesto, la tarifa utilizada y la base imponible sobre
  * la que debe calcularse el valor monetario del tributo conforme a las tablas del SRI.
+ *
+ * @param code código del tipo de impuesto aplicado
+ * @param rateCode código de la tarifa o porcentaje de impuesto
+ * @param rate porcentaje numérico aplicado para el cálculo
+ * @param taxableBase base imponible sobre la que se aplica el impuesto
  */
 public record Tax(
     // Tabla 16: Tipo de impuesto

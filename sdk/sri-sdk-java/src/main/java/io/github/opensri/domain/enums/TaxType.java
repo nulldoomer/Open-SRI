@@ -13,8 +13,11 @@ import java.util.Arrays;
  * oficiales utilizados para identificar cada clase de impuesto.
  */
 public enum TaxType {
+  /** Impuesto a la Renta. */
   RENTA(1, "Renta"),
+  /** Impuesto al Valor Agregado (IVA). */
   IVA(2, "IVA"),
+  /** Impuesto a la Salida de Divisas (ISD). */
   ISD(6, "ISD");
 
   private final int code;

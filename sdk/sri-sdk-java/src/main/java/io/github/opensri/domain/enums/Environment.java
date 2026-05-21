@@ -14,10 +14,15 @@ import java.util.Arrays;
  * los endpoints utilizados por el SDK.
  */
 public enum Environment {
+  /** Ambiente de pruebas o certificación. */
   PRUEBAS(1, "Ambiente de pruebas"),
+  /** Ambiente de producción o real. */
   PRODUCCION(2, "Ambiente de producción");
 
+  /** Código numérico del ambiente asignado por el SRI. */
   private int code;
+
+  /** Descripción funcional del ambiente. */
   private String description;
 
   /**
@@ -38,6 +43,12 @@ public enum Environment {
     return description;
   }
 
+  /**
+   * Constructor del ambiente de operación.
+   *
+   * @param code código del ambiente
+   * @param description descripción del ambiente
+   */
   Environment(int code, String description) {
     this.code = code;
     this.description = description;

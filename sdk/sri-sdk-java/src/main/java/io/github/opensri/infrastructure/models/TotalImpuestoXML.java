@@ -29,7 +29,7 @@ public class TotalImpuestoXML {
   @XmlElement(name = "valor")
   private String valor;
 
-  // Constructor vacío para generar la instancia del contexto de JAXB
+  /** Required no-arg constructor for JAXB deserialization. */
   public TotalImpuestoXML() {}
 
   /**

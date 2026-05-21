@@ -10,14 +10,30 @@ package io.github.opensri.shared.exceptions;
  * sending, or processing electronic tax documents.
  */
 public class SRIException extends RuntimeException {
+  /**
+   * Constructs a new SRIException with the specified detail message.
+   *
+   * @param message the detail message
+   */
   public SRIException(String message) {
     super(message);
   }
 
+  /**
+   * Constructs a new SRIException with the specified detail message and cause.
+   *
+   * @param message the detail message
+   * @param cause the cause of this exception
+   */
   public SRIException(String message, Throwable cause) {
     super(message, cause);
   }
 
+  /**
+   * Constructs a new SRIException with the specified cause.
+   *
+   * @param cause the cause of this exception
+   */
   public SRIException(Throwable cause) {
     super(cause);
   }

@@ -13,8 +13,19 @@ import io.github.opensri.shared.exceptions.OpenSRIValidationException;
  * checksum algorithm.
  *
  * <p>An instance of this class always contains a valid and properly formatted national ID.
+ *
+ * @param number número de cédula de identidad nacional validado
  */
 public record NationalId(String number) implements ClientIdentification {
+  /**
+   * Validates the cedula de identidad against the SRI rules.
+   *
+   * <p>Checks that the number is exactly 10 digits, that the province code is between 01 and 24,
+   * that the third digit is between 0 and 5, and that the verifier digit matches the Luhn-like
+   * checksum algorithm.
+   *
+   * @throws OpenSRIValidationException if any validation rule is violated
+   */
   public NationalId {
     if (number == null) {
       throw new OpenSRIValidationException("National ID cannot be null");

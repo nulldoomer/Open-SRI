@@ -18,6 +18,14 @@ import io.github.opensri.shared.exceptions.OpenSRIValidationException;
  * @param number el número de pasaporte
  */
 public record Passport(String number) implements ClientIdentification {
+  /**
+   * Validates the passport number format.
+   *
+   * <p>Ensures the number is non-null, non-blank, between 6 and 20 characters in length, and
+   * contains only alphanumeric characters to support international passport formats.
+   *
+   * @throws OpenSRIValidationException if any validation rule is violated
+   */
   public Passport {
     if (number == null) {
       throw new OpenSRIValidationException("Passport cannot be null");

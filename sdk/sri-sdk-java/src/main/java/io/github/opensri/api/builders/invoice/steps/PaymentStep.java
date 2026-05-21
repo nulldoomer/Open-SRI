@@ -3,4 +3,8 @@
 
 package io.github.opensri.api.builders.invoice.steps;
 
+/**
+ * Paso del constructor que representa la fase de configuración de pagos y permite la construcción
+ * del documento.
+ */
 public interface PaymentStep extends BuildStep {}

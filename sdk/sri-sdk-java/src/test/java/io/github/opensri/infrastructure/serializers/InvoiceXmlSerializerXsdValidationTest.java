@@ -62,12 +62,12 @@ class InvoiceXmlSerializerXsdValidationTest {
 
         environment = Environment.PRUEBAS;
         accessKey = "1234567890123456789012345678901234567890123456789";
-        Ruc ruc = new Ruc("1004456727001");
+        Ruc ruc = new Ruc("1710034065001");
         Issuer issuer = new Issuer("Empresa Test SA", ruc);
         issuerProfile = new IssuerProfile(ruc, null, AccountingObligation.SI);
         TaxInfo taxInfo = new TaxInfo(1, issuer, "Calle Principal 123");
         DocumentNumber documentNumber = new DocumentNumber("01", "001", "001", "000000001");
-        ClientIdentification id = new NationalId("1004456727");
+        ClientIdentification id = new NationalId("1710034065");
         Client client = new Client(id, "Cliente Ejemplo");
         AdditionalDetail addDet = new AdditionalDetail(
                 "a",

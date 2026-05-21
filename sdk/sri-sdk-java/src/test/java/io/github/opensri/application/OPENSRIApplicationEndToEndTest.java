@@ -32,7 +32,6 @@ import io.github.opensri.domain.enums.PaymentMethod;
 import io.github.opensri.domain.valueobjects.IssueDate;
 import io.github.opensri.domain.valueobjects.NationalId;
 import io.github.opensri.domain.valueobjects.Ruc;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -175,15 +174,14 @@ class OPENSRIApplicationEndToEndTest {
     private String signedXmlSeen;
 
     @Override
-    public ReceiptResponse sendDocument(String signedXML) throws IOException, InterruptedException {
+    public ReceiptResponse sendDocument(String signedXML) {
       this.signedXmlSeen = signedXML;
       return new ReceiptResponse(
           "RECIBIDA", List.of(new SRIMessage("0", "Comprobante recibido", null, "INFO")));
     }
 
     @Override
-    public AuthorizationResponse sendAuthorization(String accessKey)
-        throws IOException, InterruptedException {
+    public AuthorizationResponse sendAuthorization(String accessKey) {
       return new AuthorizationResponse(
           "1",
           new Authorization(

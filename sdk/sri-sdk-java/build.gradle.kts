@@ -38,7 +38,7 @@ spotless {
 
 // ========================= VERSIONS ==========================================
 group = "io.github.opensri"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0"
 
 
 // ========================= VERSIONS ==========================================
@@ -93,3 +93,13 @@ tasks.named<Test>("test") {
     jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
 // ===================== TEST PLATFORM ==========================================
+
+// ===================== RELEASE TASKS ==========================================
+java{
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.getByName<Jar>("jar"){
+    archiveBaseName.set("open-sri")
+}

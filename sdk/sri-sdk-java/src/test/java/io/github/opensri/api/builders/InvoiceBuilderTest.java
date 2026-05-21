@@ -28,7 +28,7 @@ class InvoiceBuilderTest {
   // =================== HELPERS =============================================
 
   private TaxInfo dummyTaxInfo() {
-    Ruc ruc = new Ruc("1004456727001");
+    Ruc ruc = new Ruc("1710034065001");
     Issuer issuer = new Issuer("Clínica", ruc);
     return new TaxInfo(1, issuer, "Calle A 8392835");
   }
@@ -38,21 +38,23 @@ class InvoiceBuilderTest {
   }
 
   private Client dummyClient() {
-    ClientIdentification id = new NationalId("1004456727");
+    ClientIdentification id = new NationalId("1710034065");
     return new Client(id, "Won XD");
   }
 
   private Invoice buildInvoice(InvoiceItem first, InvoiceItem... rest) {
     List<InvoiceItem> items = new java.util.ArrayList<>();
+    items.add(first);
+    items.addAll(List.of(rest));
+
+    Totals totals = Totals.from(items);
     List<Payment> payments = new java.util.ArrayList<>();
 
     ImmediatePayment payment = new ImmediatePayment(
             PaymentMethod.SIN_SISTEMA_FINANCIERO,
-            BigDecimal.valueOf(115)
+            totals.totalValue()
     );
     payments.add(payment);
-    items.add(first);
-    items.addAll(List.of(rest));
 
     return InvoiceBuilder.builder()
         .issueDate(IssueDate.now())
@@ -62,7 +64,7 @@ class InvoiceBuilderTest {
         .documentVersion(DocumentVersion.VERSION_100)
         .client(dummyClient())
         .addItems(items)
-            .addPayments(payments)
+        .addPayments(payments)
         .build();
   }
 
@@ -190,9 +192,10 @@ class InvoiceBuilderTest {
             List.of(),
             List.of(new Tax("2", "2", new BigDecimal("15.00"), new BigDecimal("50.00"))));
 
+    Totals totals = Totals.from(List.of(item));
     Payment payment = new ImmediatePayment(
             PaymentMethod.SIN_SISTEMA_FINANCIERO,
-            BigDecimal.valueOf(115)
+            totals.totalValue()
     );
 
 

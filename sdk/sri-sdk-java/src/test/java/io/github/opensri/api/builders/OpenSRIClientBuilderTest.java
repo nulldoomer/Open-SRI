@@ -9,25 +9,28 @@ import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.domain.valueobjects.Ruc;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 
 class OpenSRIClientBuilderTest {
   @Test
-  void builder() {
+  void builder() throws Exception {
 
     // Arrange
-    Ruc issuerRuc = new Ruc("1004456727001");
+    Ruc issuerRuc = new Ruc("1710034065001");
     DocumentVersion version = DocumentVersion.VERSION_100;
 
     IssuerProfile profileUnderTest = new IssuerProfile(issuerRuc, null, AccountingObligation.SI);
 
+    InputStream stream = getClass().getResourceAsStream("/test-firma.p12");
+    byte[] certBytes = stream.readAllBytes();
+
     OpenSRIClient openSRIClientUnderTest =
         OpenSRIClientBuilder.builder()
             .environment(Environment.PRUEBAS)
-            .certificate("fake-certificate".getBytes(StandardCharsets.UTF_8))
-            .certificatePassword("LOL")
-            .certificateAlias("fake-fake")
+            .certificate(certBytes)
+            .certificatePassword("password")
+            .certificateAlias("sri-test-firma")
             .issuerProfile(profileUnderTest)
             .timeout(200)
             .build(); // ========= ACT ==============

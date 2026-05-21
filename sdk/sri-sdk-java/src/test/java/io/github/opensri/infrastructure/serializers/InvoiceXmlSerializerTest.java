@@ -41,7 +41,7 @@ class InvoiceXmlSerializerTest {
         environment = Environment.PRUEBAS;
         accessKey = "1234567890123456789012345678901234567890123456789"; // 49 dígitos
 
-        Ruc ruc = new Ruc("1004456727001");
+        Ruc ruc = new Ruc("1710034065001");
         Issuer issuer = new Issuer("Empresa Test SA", ruc);
         issuerProfile = new IssuerProfile(ruc, null, AccountingObligation.SI);
 
@@ -49,7 +49,7 @@ class InvoiceXmlSerializerTest {
 
         DocumentNumber documentNumber = new DocumentNumber("01", "001", "001", "000000001");
 
-        ClientIdentification id = new NationalId("1004456727");
+        ClientIdentification id = new NationalId("1710034065");
         Client client = new Client(id, "Cliente Ejemplo");
 
         InvoiceItem item = new InvoiceItem(
@@ -214,7 +214,6 @@ class InvoiceXmlSerializerTest {
         String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
 
         // Assert
-        // Tip: xml.split("<detalle>", -1).length - 1 == 1
         int count = xml.split("<detalle>", -1).length - 1;
         assertEquals(1, count,
                 "Debe haber exactamente un <detalle> para una factura con un ítem");
@@ -223,13 +222,10 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_contain_two_detalles_when_invoice_has_two_items() {
         // Arrange
-
-        String xml = serializer.serialize(invoiceBase, accessKey, environment, issuerProfile);
+        String xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
 
         // Assert
-
         int count = xml.split("<detalle>", -1).length - 1;
-
         assertEquals(2, count,
                 "Debe haber exactamente 2 <detalle>");
     }
@@ -241,27 +237,25 @@ class InvoiceXmlSerializerTest {
     @Test
     void should_group_same_tax_codes_in_totalConImpuestos() {
         // Arrange
-        // Esperado: en totalConImpuestos debe aparecer exactamente UN bloque para ese código
-        String  xml = serializer.serialize(invoiceTwoTaxes, accessKey, environment, issuerProfile);
+        // invoiceTwoItems usa item (Tax 2) e item2 (Tax 2) -> debe haber 1 bloque totalImpuesto
+        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
 
         // Assert
-
         int count = xml.split("<totalImpuesto>", -1).length - 1;
-
         assertEquals(1, count,
-                "Se espera un bloque de agrupacion de impuestos");
+                "Se espera un bloque de agrupacion de impuestos para impuestos del mismo codigo");
     }
 
     @Test
     void should_separate_different_tax_codes_in_totalConImpuestos() {
         // Arrange
-
-        String  xml = serializer.serialize(invoiceTwoItems, accessKey, environment, issuerProfile);
+        // invoiceTwoTaxes usa item (Tax 2) e item3 (Tax 3) -> debe haber 2 bloques totalImpuesto
+        String  xml = serializer.serialize(invoiceTwoTaxes, accessKey, environment, issuerProfile);
 
         // Assert
         int count = xml.split("<totalImpuesto>", -1).length - 1;
-        assertEquals(2,count,
-                "Deben existir 2 bloques de impuestos");
+        assertEquals(2, count,
+                "Deben existir 2 bloques de impuestos para codigos diferentes");
     }
 
     // =========================================================================

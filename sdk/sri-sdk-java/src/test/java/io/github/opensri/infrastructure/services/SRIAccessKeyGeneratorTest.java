@@ -32,7 +32,7 @@ class SRIAccessKeyGeneratorTest {
 
     documentNumber = new DocumentNumber("01", "001", "001", "001032058");
 
-    Ruc ruc = new Ruc("1001111111001");
+    Ruc ruc = new Ruc("1710034065001");
     Issuer issuer = new Issuer("Clinica", ruc);
     taxInfo = new TaxInfo(1, issuer, "Calle A 8392835");
   }

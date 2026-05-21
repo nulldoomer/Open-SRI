@@ -20,3 +20,9 @@ en este archivo.
 ### Arreglado
 
 - Fix del JavaDoc para un clean build de java usando gradlew.
+
+## [1.0.2] - 2026-05-20
+
+### Arreglado
+
+- Orden de creación de los recursos para los test solucionado.

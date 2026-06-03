@@ -1,33 +1,22 @@
-"use client";
+import CodeBlock from "@/components/ui/CodeBlock";
+import CopyButton from "./CopyButton";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-
-interface CodeBlockProps {
+interface DocsCodeBlockProps {
   code: string;
   language?: string;
+  lang?: string;
 }
 
-export default function CodeBlock({ code, language = "java" }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
-
-  const copy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
+export default function DocsCodeBlock({ code, language = "java", lang }: DocsCodeBlockProps) {
+  // `language` is the display label; `lang` is the Shiki language id (falls back to language)
+  const shikiLang = lang ?? language;
   return (
     <div className="relative group border border-border rounded-sm overflow-hidden">
       <div className="flex items-center justify-between px-4 py-2 bg-muted/50 border-b border-border">
         <span className="text-xs text-muted-foreground font-mono">{language}</span>
-        <Button variant="ghost" size="xs" onClick={copy}>
-          {copied ? "Copiado" : "Copiar"}
-        </Button>
+        <CopyButton code={code} />
       </div>
-      <pre className="p-4 overflow-x-auto text-sm font-mono leading-relaxed bg-muted/20">
-        <code>{code}</code>
-      </pre>
+      <CodeBlock code={code} lang={shikiLang} />
     </div>
   );
 }

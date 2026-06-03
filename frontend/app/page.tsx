@@ -14,27 +14,30 @@ import {
 } from "@hugeicons/core-free-icons";
 import HeroSection from "@/components/landing/HeroSection";
 import FeatureCard from "@/components/landing/FeatureCard";
+import CodeBlock from "@/components/ui/CodeBlock";
 
 const features = [
   {
     icon: Alert01Icon,
     title: "El Problema",
     description:
-      "Clave de acceso de 49 dígitos (módulo 11), XML con XSD, firma XAdES-BES con P12 y SOAP al SRI. Cada equipo reinventa el mismo flujo. Semanas perdidas, errores silenciosos en producción.",
+      "Integrar facturación electrónica implica implementar validaciones, generación de XML, firma digital y comunicación con el SRI. Ante la falta de herramientas abiertas y documentación unificada, muchos equipos terminan dependiendo de servicios de terceros para acelerar la integración."
+    ,
     accent: "red" as const,
   },
   {
     icon: ArrowRight01Icon,
     title: "La Solución",
     description:
-      "OpenSRI encapsula el pipeline completo. client.sendInvoice(invoice) reemplaza semanas de integración. El Playground te muestra cada paso — XML, firma y respuesta del SRI — en tiempo real.",
+      "OpenSRI ofrece una alternativa open source para integrar facturación electrónica sin depender de proveedores externos. Su objetivo es convertir un conocimiento fragmentado en herramientas accesibles para toda la comunidad de desarrolladores, intentando parar la privatización injustificada de estos servicios."
+    ,
     accent: "amber" as const,
   },
   {
     icon: CheckmarkCircle01Icon,
     title: "Open Source",
     description:
-      "Apache 2.0. Arquitectura limpia por capas, cobertura de tests > 70%, documentación completa. Java estable, C# y Go en progreso. Contribuye.",
+      "Licencia Apache 2.0. Arquitectura limpia por capas, más del 70% de cobertura de pruebas y documentación completa. SDK estable para Java, con soporte para C# y Go en desarrollo.",
     accent: "emerald" as const,
   },
 ];
@@ -96,8 +99,9 @@ export default function Home() {
               <span> RESUELTO</span>
             </h2>
             <p className="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-6">
-              El SDK maneja internamente la generación de clave de acceso, serialización XML,
-              firma digital y la comunicación SOAP. Tu código se mantiene limpio.
+              Una herramienta que maneja toda la implementación de clave de acceso, serialización XML,
+              firma del XML y la comunicación SOAP, mientras tu solo
+              tienes que implementar el SDK.
             </p>
             <Link
               href="/doc"
@@ -109,17 +113,15 @@ export default function Home() {
           </div>
 
           <div className="border border-neutral-200 dark:border-neutral-800 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-900">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
               <span className="w-2.5 h-2.5 rounded-full bg-orange-400" />
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span className="font-mono text-[10px] text-neutral-400 dark:text-neutral-600 ml-2 uppercase tracking-widest">
+              <span className="font-mono text-[10px] text-neutral-500 ml-2 uppercase tracking-widest">
                 OpenSRIClient.java
               </span>
             </div>
-            <pre className="p-5 text-xs font-mono leading-relaxed overflow-x-auto text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/80">
-              <code>{codeAfter}</code>
-            </pre>
+            <CodeBlock code={codeAfter} lang="java" />
           </div>
         </div>
       </section>
@@ -132,9 +134,10 @@ export default function Home() {
               // PIPELINE INTERNO
             </p>
             <h2 className="font-heading font-black uppercase text-neutral-900 dark:text-white text-4xl lg:text-5xl leading-[0.9] mb-4">
-              6 PASOS.
+              6 PASOS
               <br />
-              <span className="text-red-600">CERO CONFIG.</span>
+              <span className="text-red-600">SIN</span>
+              <span> IMPLEMENTACIONES </span>
             </h2>
             <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
               El SDK ejecuta el pipeline completo internamente. El Playground te lo muestra
@@ -206,7 +209,7 @@ export default function Home() {
               // SIGUIENTE PASO
             </p>
             <p className="font-heading font-bold text-neutral-900 dark:text-neutral-100 text-xl">
-              Genera tu primera factura en 5 minutos.
+              Mira el flujo pipeline del SDK trabajando
             </p>
           </div>
           <div className="flex gap-3 shrink-0">

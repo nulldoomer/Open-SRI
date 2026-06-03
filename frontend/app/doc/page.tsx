@@ -45,7 +45,7 @@ export default function Docs() {
             <h2 className="font-heading font-semibold text-xl mb-4">
               1. Agregar dependencia
             </h2>
-            <CodeBlock code={mavenCode} language="xml (Maven)" />
+            <CodeBlock code={mavenCode} language="xml (Maven)" lang="xml" />
             <p className="text-sm text-muted-foreground mt-3">
               También disponible en Gradle. Ver{" "}
               <a

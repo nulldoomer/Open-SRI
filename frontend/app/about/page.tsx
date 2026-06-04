@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
@@ -27,8 +26,18 @@ export default function About() {
       <div className="mb-12">
         <h1 className="font-heading text-4xl font-bold mb-3">Sobre OpenSRI</h1>
         <p className="text-muted-foreground text-lg">
-          Un proyecto open-source para acabar con el sufrimiento de integrar
-          facturación electrónica en Ecuador.
+          Esta iniciativa surge de mi experiencia al implementar por primera vez
+          un sistema de facturación electrónica. Durante el proceso encontré
+          documentación dispersa, referencias inconsistentes y una gran cantidad
+          de material desactualizado enfocado en tecnologías heredadas.
+        </p>
+        <p className="text-muted-foreground text-lg">
+          Además, muchas de las soluciones disponibles se basan en servicios de
+          terceros bajo modelos de suscripción, lo que puede representar una barrera
+          para desarrolladores independientes y pequeñas empresas. Como respuesta
+          a estas dificultades, decidí crear una alternativa abierta que facilite la
+          integración de facturación electrónica y reduzca el tiempo necesario
+          para comprender e implementar los requerimientos del SRI.
         </p>
       </div>
 
@@ -39,20 +48,27 @@ export default function About() {
           </h2>
           <div className="space-y-3 text-muted-foreground leading-relaxed">
             <p>
-              Integrar facturación electrónica con el SRI es un proceso técnicamente
-              complejo: hay que generar una clave de acceso de 49 dígitos con módulo 11,
-              serializar la factura a XML validado contra los XSD del SRI, firmar el
-              documento con XAdES-BES usando un certificado P12, y finalmente enviarla
-              via SOAP al webservice del SRI.
+              Integrar facturación electrónica con el SRI implica mucho más que
+              generar una factura. Es necesario construir una clave de acceso
+              válida, generar documentos XML que cumplan con los esquemas oficiales,
+              firmarlos digitalmente con certificados electrónicos y comunicarse
+              con los servicios SOAP del SRI para su validación y autorización.
             </p>
             <p>
-              No existe una librería oficial. Cada empresa, startup y equipo independiente
-              reinventa la misma solución desde cero, acumulando errores difíciles de
-              diagnosticar y semanas de tiempo perdido.
+              A pesar de ser un requisito común para miles de sistemas en Ecuador,
+              no existe una librería oficial que abstraiga este proceso. Como
+              resultado, cada empresa, startup o desarrollador independiente
+              termina implementando la misma lógica una y otra vez, invirtiendo
+              tiempo en resolver problemas ya conocidos.
             </p>
             <p>
-              OpenSRI encapsula ese flujo completo en un SDK open-source, bien testeado
-              y documentado. Con una sola llamada se puede generar y enviar una factura.
+              OpenSRI encapsula todo ese flujo en un SDK open source, documentado
+              y probado, permitiendo generar, firmar y enviar comprobantes
+              electrónicos mediante una API simple y consistente.
+            </p>
+            <p>
+              El objetivo es que los desarrolladores puedan concentrarse en construir
+              sus productos, no en descifrar los detalles internos de la integración con el SRI.
             </p>
           </div>
         </section>

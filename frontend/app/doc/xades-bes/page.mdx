@@ -1,0 +1,67 @@
+import Callout from '@/components/docs/Callout'
+
+# Firma XAdES-BES
+
+El SRI exige que todos los comprobantes electrónicos estén firmados digitalmente con el estándar **XAdES-BES** (XML Advanced Electronic Signatures — Basic Electronic Signature) antes de ser enviados al servicio de recepción.
+
+## ¿Qué es XAdES-BES?
+
+XAdES-BES es un perfil de firma XML definido por ETSI (European Telecommunications Standards Institute) que garantiza:
+
+- **Autenticidad** — el documento fue firmado por el titular del certificado
+- **Integridad** — el contenido no fue alterado tras la firma
+- **No repudio** — el emisor no puede negar haber firmado el documento
+
+La firma se incrusta directamente dentro del XML del comprobante, en un nodo `<Signature>` que cumple con el esquema del SRI.
+
+## Certificado requerido
+
+El SRI acepta certificados PKCS#12 (`.p12`) emitidos por entidades de certificación acreditadas en Ecuador:
+
+- **Banco Central del Ecuador (BCE)** — la más común para personas jurídicas
+- **Security Data** — alternativa reconocida por el SRI
+
+El certificado debe estar vigente y ser del tipo **firma electrónica**, no solo cifrado.
+
+## Cómo lo maneja Open-SRI
+
+Open-SRI firma el XML de forma automática antes de enviarlo al SRI. Solo necesitas proporcionar el archivo P12, la contraseña y el alias de la entrada de clave privada:
+
+```java
+byte[] cert = Files.readAllBytes(Paths.get("certificado.p12"));
+
+OpenSRIClient client = OpenSRIClientBuilder.builder()
+    .environment(Environment.PRUEBAS)
+    .certificate(cert)
+    .certificatePassword("mi-contraseña")
+    .certificateAlias("mi-alias")   // alias dentro del keystore P12
+    .issuerProfile(issuerProfile)
+    .timeout(30)
+    .build();
+```
+
+El SDK usa la librería BouncyCastle para cargar el keystore, extraer la clave privada y firmar el XML con XAdES-BES antes de cada envío.
+
+## Obtener el alias del certificado
+
+Si no conoces el alias de tu certificado, puedes listarlo con la herramienta `keytool` incluida en el JDK:
+
+```bash
+keytool -list -keystore certificado.p12 -storetype PKCS12
+```
+
+El alias aparece en la primera columna de la salida. Para certificados del BCE, el alias suele ser el nombre del titular.
+
+## XML firmado
+
+El resultado de `sendInvoice()` incluye el XML firmado completo, útil para auditorías o para guardar una copia local:
+
+```java
+SendInvoiceResult result = client.sendInvoice(invoice);
+String signedXml = result.signedXml();
+Files.writeString(Paths.get("factura-firmada.xml"), signedXml);
+```
+
+<Callout type="warning">
+El certificado P12 es una credencial sensible. No lo incluyas en el control de versiones. Usa variables de entorno o un gestor de secretos (AWS Secrets Manager, Vault, etc.) para cargarlo en producción.
+</Callout>

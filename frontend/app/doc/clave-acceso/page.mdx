@@ -1,0 +1,54 @@
+import Callout from '@/components/docs/Callout'
+
+# Clave de acceso
+
+La clave de acceso es el identificador único de 49 dígitos que el SRI asigna a cada comprobante electrónico. Es generada por el emisor y enviada junto con el XML firmado en el proceso de recepción.
+
+## Estructura de los 49 dígitos
+
+La clave se compone de 10 campos concatenados:
+
+| Campo | Longitud | Descripción |
+|-------|----------|-------------|
+| Fecha de emisión | 8 | Formato `ddmmaaaa` |
+| Tipo de comprobante | 2 | `01` = factura, `04` = nota de crédito, `05` = nota de débito |
+| RUC del emisor | 13 | RUC con 3 dígitos de establecimiento |
+| Tipo de ambiente | 1 | `1` = pruebas, `2` = producción |
+| Establecimiento | 3 | Código del punto de venta |
+| Punto de emisión | 3 | Código del punto de emisión |
+| Número secuencial | 9 | Correlativo del comprobante |
+| Código numérico | 8 | Número aleatorio para unicidad |
+| Tipo de emisión | 1 | `1` = emisión normal |
+| Dígito verificador | 1 | Calculado con módulo 11 |
+
+## Dígito verificador (módulo 11)
+
+El último dígito verifica la integridad de los 48 anteriores. El algoritmo multiplica cada dígito por un factor que cicla entre 2 y 7, suma los productos y calcula `11 − (suma % 11)`. Si el resultado es 10 se usa `1`; si es 11 se usa `0`.
+
+<Callout type="info">
+Open-SRI genera la clave de acceso automáticamente en cada llamada a `sendInvoice()`. No necesitas calcularla ni gestionarla manualmente.
+</Callout>
+
+## Generación automática
+
+El SDK construye la clave a partir de los datos de la factura, el perfil del emisor y el ambiente configurado en el cliente:
+
+```java
+SendInvoiceResult result = client.sendInvoice(invoice);
+
+// Clave de acceso de 49 dígitos
+String accessKey = result.accessKey();
+System.out.println(accessKey.length()); // 49
+```
+
+## Consultar autorización
+
+Una vez recibido el comprobante, puedes usar la clave para consultar si el SRI lo autorizó:
+
+```java
+AuthorizationResponse auth = client.checkAuthorization(result.accessKey());
+
+System.out.println(auth.authorization().status()); // AUTORIZADO
+```
+
+El SRI puede tardar unos segundos en autorizar tras la recepción. Consulta [SendInvoiceResult](/doc/api/send-invoice-result) para ver todos los campos disponibles en la respuesta.

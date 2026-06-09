@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useDocLanguage, type SdkLang } from "@/contexts/docs-language";
 
 const sections = [
   {
@@ -28,22 +29,52 @@ const sections = [
       { href: "/doc/api/send-invoice-result", label: "SendInvoiceResult" },
     ],
   },
-  {
-    label: "Lenguajes",
-    items: [
-      { href: "/doc/java", label: "Java" },
-      { href: "/doc/csharp", label: "C#" },
-      { href: "/doc/go", label: "Go" },
-    ],
-  },
+];
+
+const languages: { lang: SdkLang; label: string; available: boolean }[] = [
+  { lang: "java", label: "Java", available: true },
+  { lang: "csharp", label: "C#", available: false },
+  { lang: "go", label: "Go", available: false },
 ];
 
 export default function DocsSidebar() {
   const pathname = usePathname();
+  const { lang, setLang } = useDocLanguage();
 
   return (
     <aside className="w-56 shrink-0">
       <nav className="sticky top-8 space-y-6">
+        {/* Language selector */}
+        <div>
+          <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2">
+            SDK
+          </p>
+          <div className="flex gap-1">
+            {languages.map((l) => (
+              <button
+                key={l.lang}
+                onClick={() => setLang(l.lang)}
+                title={l.available ? undefined : "Próximamente"}
+                className={cn(
+                  "relative px-3 py-1 text-xs font-mono rounded-sm border transition-colors",
+                  lang === l.lang
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/40",
+                  !l.available && "opacity-50"
+                )}
+              >
+                {l.label}
+                {!l.available && (
+                  <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none bg-muted text-muted-foreground border border-border rounded px-0.5">
+                    soon
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Nav sections */}
         {sections.map((section) => (
           <div key={section.label}>
             <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2">

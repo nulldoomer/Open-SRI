@@ -120,7 +120,10 @@ class OPENSRIApplicationEndToEndTest {
         List.of(item),
         List.of(),
         List.of(new ImmediatePayment(PaymentMethod.SIN_SISTEMA_FINANCIERO, totals.totalValue())),
-        Currency.USD);
+        Currency.USD,
+        List.of(),
+        null,
+        List.of());
   }
 
   private static final class FakeAccessKeyGenerator implements AccessKeyGenerator {

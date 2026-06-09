@@ -114,7 +114,10 @@ class SRISOAPGatewayIntegrationTest {
                     List.of(item),
                     List.of(),
                     List.of(payment),
-                    Currency.USD);
+                    Currency.USD,
+                    List.of(),
+                    null,
+                    List.of());
 
     accessKey =
         accessKeyGenerator.generate(

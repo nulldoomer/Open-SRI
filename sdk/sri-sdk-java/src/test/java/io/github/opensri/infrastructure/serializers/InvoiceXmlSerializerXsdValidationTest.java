@@ -8,10 +8,7 @@ import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.common.payment.ImmediatePayment;
 import io.github.opensri.domain.entities.common.taxes.Tax;
 import io.github.opensri.domain.entities.common.taxes.TaxInfo;
-import io.github.opensri.domain.entities.invoice.AdditionalDetail;
-import io.github.opensri.domain.entities.invoice.AdditionalInfo;
-import io.github.opensri.domain.entities.invoice.Invoice;
-import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.entities.invoice.*;
 import io.github.opensri.domain.enums.*;
 import io.github.opensri.domain.valueobjects.ClientIdentification;
 import io.github.opensri.domain.valueobjects.IssueDate;
@@ -28,11 +25,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.nio.file.Paths;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -119,6 +114,106 @@ class InvoiceXmlSerializerXsdValidationTest {
             validator.validate(new StreamSource(new StringReader(signedXml)));
         } catch (Exception e) {
             fail("XML did not validate against XSD: " + e.getMessage() + "\nXML:\n" + signedXml);
+        }
+    }
+
+    @Test
+    void xml_v110_with_retenciones_should_validate_against_xsd() throws Exception {
+        Retention retencion = new Retention("4", "1", new BigDecimal("2.75"), new BigDecimal("2.75"));
+        Invoice invoice = InvoiceBuilder.builder()
+                .issueDate(invoiceBase.issueDate())
+                .establishmentDirection(invoiceBase.establishmentDirection())
+                .taxInfo(invoiceBase.taxInfo())
+                .documentNumber(invoiceBase.documentNumber())
+                .documentVersion(DocumentVersion.VERSION_110)
+                .client(invoiceBase.client())
+                .addItems(invoiceBase.items())
+                .addRetenciones(List.of(retencion))
+                .addPayments(invoiceBase.payments())
+                .build();
+
+        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String signedXml = documentSigner.signDocument(xml);
+
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = factory.newSchema(getClass().getResource("/xsd/factura_V1.1.0.xsd"));
+        Validator validator = schema.newValidator();
+        try {
+            validator.validate(new StreamSource(new StringReader(signedXml)));
+        } catch (Exception e) {
+            fail("XML did not validate against V1.1.0 XSD: " + e.getMessage() + "\nXML:\n" + signedXml);
+        }
+    }
+
+    @Test
+    void xml_v200_with_transport_fields_should_validate_against_xsd() throws Exception {
+        Destination destino = new Destination("Venta", null, null, null);
+        RemisionGuideSubstituteInfo guia = new RemisionGuideSubstituteInfo(
+                "Quito", "Guayaquil", "01/01/2026", "02/01/2026",
+                "Transportes SA", "04", "1710034065001", "ABC-1234",
+                List.of(destino));
+        OtherThirdCategory rubro = new OtherThirdCategory("Flete", new BigDecimal("5.00"));
+
+        Invoice invoice = InvoiceBuilder.builder()
+                .issueDate(invoiceBase.issueDate())
+                .establishmentDirection(invoiceBase.establishmentDirection())
+                .taxInfo(invoiceBase.taxInfo())
+                .documentNumber(invoiceBase.documentNumber())
+                .documentVersion(DocumentVersion.VERSION_200)
+                .client(invoiceBase.client())
+                .addItems(invoiceBase.items())
+                .addInfoSustitutivaGuiaRemision(guia)
+                .addOtrosRubrosTerceros(List.of(rubro))
+                .addPayments(invoiceBase.payments())
+                .build();
+
+        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String signedXml = documentSigner.signDocument(xml);
+
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = factory.newSchema(getClass().getResource("/xsd/factura_V2.0.0.xsd"));
+        Validator validator = schema.newValidator();
+        try {
+            validator.validate(new StreamSource(new StringReader(signedXml)));
+        } catch (Exception e) {
+            fail("XML did not validate against V2.0.0 XSD: " + e.getMessage() + "\nXML:\n" + signedXml);
+        }
+    }
+
+    @Test
+    void xml_v210_with_all_optional_sections_should_validate_against_xsd() throws Exception {
+        Retention retencion = new Retention("4", "1", new BigDecimal("2.75"), new BigDecimal("2.75"));
+        Destination destino = new Destination("Venta", null, null, null);
+        RemisionGuideSubstituteInfo guia = new RemisionGuideSubstituteInfo(
+                "Quito", "Guayaquil", "01/01/2026", "02/01/2026",
+                "Transportes SA", "04", "1710034065001", "ABC-1234",
+                List.of(destino));
+        OtherThirdCategory rubro = new OtherThirdCategory("Flete", new BigDecimal("5.00"));
+
+        Invoice invoice = InvoiceBuilder.builder()
+                .issueDate(invoiceBase.issueDate())
+                .establishmentDirection(invoiceBase.establishmentDirection())
+                .taxInfo(invoiceBase.taxInfo())
+                .documentNumber(invoiceBase.documentNumber())
+                .documentVersion(DocumentVersion.VERSION_210)
+                .client(invoiceBase.client())
+                .addItems(invoiceBase.items())
+                .addRetenciones(List.of(retencion))
+                .addInfoSustitutivaGuiaRemision(guia)
+                .addOtrosRubrosTerceros(List.of(rubro))
+                .addPayments(invoiceBase.payments())
+                .build();
+
+        String xml = serializer.serialize(invoice, accessKey, environment, issuerProfile);
+        String signedXml = documentSigner.signDocument(xml);
+
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = factory.newSchema(getClass().getResource("/xsd/factura_V2.1.0.xsd"));
+        Validator validator = schema.newValidator();
+        try {
+            validator.validate(new StreamSource(new StringReader(signedXml)));
+        } catch (Exception e) {
+            fail("XML did not validate against V2.1.0 XSD: " + e.getMessage() + "\nXML:\n" + signedXml);
         }
     }
 }

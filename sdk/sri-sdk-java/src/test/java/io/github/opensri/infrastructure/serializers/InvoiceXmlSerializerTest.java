@@ -100,7 +100,10 @@ class InvoiceXmlSerializerTest {
                 List.of(item),
                 List.of(),
                 List.of(payment),
-                io.github.opensri.domain.enums.Currency.USD
+                io.github.opensri.domain.enums.Currency.USD,
+                List.of(),
+                null,
+                List.of()
         );
 
         Totals totalsTwoItems = Totals.from(List.of(item, item2));

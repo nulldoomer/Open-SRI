@@ -5,6 +5,7 @@ package io.github.opensri.infrastructure.models;
 
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
 import io.github.opensri.domain.entities.invoice.Invoice;
+import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.enums.Environment;
 import jakarta.xml.bind.annotation.*;
 import java.util.List;
@@ -36,6 +37,17 @@ public class FacturaXML {
   @XmlElement(name = "detalle")
   private List<DetalleXML> detalles;
 
+  @XmlElementWrapper(name = "retenciones")
+  @XmlElement(name = "retencion")
+  private List<RetencionXML> retenciones;
+
+  @XmlElement(name = "remisionGuideSubstituteInfo")
+  private InfoSustitutivaGuiaRemisionXML infoSustitutivaGuiaRemision;
+
+  @XmlElementWrapper(name = "otrosRubrosTerceros")
+  @XmlElement(name = "rubro")
+  private List<RubroXML> otrosRubrosTerceros;
+
   @XmlElementWrapper(name = "infoAdicional")
   @XmlElement(name = "campoAdicional")
   private List<InfoAdicionalXML> infoAdicional;
@@ -64,6 +76,26 @@ public class FacturaXML {
     xml.infoFactura = InfoFacturaXML.fromDomain(invoice, profile);
 
     xml.detalles = invoice.items().stream().map(DetalleXML::fromDomain).toList();
+
+    DocumentVersion v = invoice.documentVersion();
+    boolean supportsRetenciones =
+        v == DocumentVersion.VERSION_110 || v == DocumentVersion.VERSION_210;
+    boolean supportsTransportFields =
+        v == DocumentVersion.VERSION_200 || v == DocumentVersion.VERSION_210;
+
+    if (supportsRetenciones && !invoice.retenciones().isEmpty()) {
+      xml.retenciones = invoice.retenciones().stream().map(RetencionXML::fromDomain).toList();
+    }
+
+    if (supportsTransportFields && invoice.remisionGuideSubstituteInfo() != null) {
+      xml.infoSustitutivaGuiaRemision =
+          InfoSustitutivaGuiaRemisionXML.fromDomain(invoice.remisionGuideSubstituteInfo());
+    }
+
+    if (supportsTransportFields && !invoice.otrosRubrosTerceros().isEmpty()) {
+      xml.otrosRubrosTerceros =
+          invoice.otrosRubrosTerceros().stream().map(RubroXML::fromDomain).toList();
+    }
 
     if (invoice.additionalInfo() != null && !invoice.additionalInfo().isEmpty()) {
       xml.infoAdicional =

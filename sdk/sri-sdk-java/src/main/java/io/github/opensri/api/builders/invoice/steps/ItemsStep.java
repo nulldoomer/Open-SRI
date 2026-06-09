@@ -4,8 +4,7 @@
 package io.github.opensri.api.builders.invoice.steps;
 
 import io.github.opensri.domain.entities.common.payment.Payment;
-import io.github.opensri.domain.entities.invoice.AdditionalInfo;
-import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.entities.invoice.*;
 import io.github.opensri.domain.enums.Currency;
 import java.util.List;
 
@@ -42,6 +41,39 @@ public interface ItemsStep {
    * @return esta misma instancia para seguir configurando la factura
    */
   ItemsStep addInfos(List<AdditionalInfo> infos);
+
+  /**
+   * Agrega retenciones en la fuente a la factura.
+   *
+   * <p>Solo tiene efecto en documentos con versión 1.1.0 o 2.1.0. En otras versiones el campo es
+   * ignorado durante la serialización XML.
+   *
+   * @param retenciones lista de retenciones aplicadas
+   * @return esta misma instancia para seguir configurando la factura
+   */
+  ItemsStep addRetenciones(List<Retention> retenciones);
+
+  /**
+   * Establece la información sustitutiva de guía de remisión.
+   *
+   * <p>Solo tiene efecto en documentos con versión 2.0.0 o 2.1.0. En otras versiones el campo es
+   * ignorado durante la serialización XML.
+   *
+   * @param info datos de transporte a incluir como guía sustitutiva
+   * @return esta misma instancia para seguir configurando la factura
+   */
+  ItemsStep addInfoSustitutivaGuiaRemision(RemisionGuideSubstituteInfo info);
+
+  /**
+   * Agrega rubros cobrados por cuenta de terceros a la factura.
+   *
+   * <p>Solo tiene efecto en documentos con versión 2.0.0 o 2.1.0. En otras versiones el campo es
+   * ignorado durante la serialización XML.
+   *
+   * @param rubros lista de rubros de terceros a incluir
+   * @return esta misma instancia para seguir configurando la factura
+   */
+  ItemsStep addOtrosRubrosTerceros(List<OtherThirdCategory> rubros);
 
   /**
    * Agrega las formas de pago de la factura.

@@ -999,7 +999,7 @@
 							<xsd:element name="destinos">
 								<xsd:complexType>	
 									<xsd:sequence>
-										<xsd:element name="destino" type="destino"  minOccurs="1" maxOccurs="unbounded"/>						
+										<xsd:element name="destino" type="destino"  minOccurs="1" maxOccurs="unbounded"/>
 									</xsd:sequence>
 								</xsd:complexType>	
 							</xsd:element>

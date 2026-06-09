@@ -26,3 +26,13 @@ en este archivo.
 ### Arreglado
 
 - Orden de creación de los recursos para los test solucionado.
+
+
+## [1.1.0] - 2026-06-09
+
+### Añadido
+
+- Implementación de todas las versiones de facturas para la creación y serialización 1.0.0, 1.1.0, 2.0.0 y 2.1.0.
+- Actualización de fluid builder de Invoice para los nuevos campos de las versiones variantes.
+- Actualización del dominio de Invoice.
+- Actualización de los tests unitarios, de integración y test E2E.

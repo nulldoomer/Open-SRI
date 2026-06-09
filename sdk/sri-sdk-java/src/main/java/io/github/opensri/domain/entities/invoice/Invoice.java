@@ -34,6 +34,11 @@ import java.util.List;
  * @param additionalInfo información adicional personalizada del documento
  * @param payments formas de pago aplicadas
  * @param currency moneda en la que se emite la factura
+ * @param retenciones retenciones aplicadas; solo aplica en versiones 1.1.0 y 2.1.0
+ * @param remisionGuideSubstituteInfo datos de transporte sustitutivos; solo aplica en versiones
+ *     2.0.0 y 2.1.0
+ * @param otrosRubrosTerceros rubros cobrados por cuenta de terceros; solo aplica en versiones 2.0.0
+ *     y 2.1.0
  */
 public record Invoice(
     IssueDate issueDate,
@@ -46,7 +51,10 @@ public record Invoice(
     List<InvoiceItem> items,
     List<AdditionalInfo> additionalInfo,
     List<Payment> payments,
-    Currency currency) {
+    Currency currency,
+    List<Retention> retenciones,
+    RemisionGuideSubstituteInfo remisionGuideSubstituteInfo,
+    List<OtherThirdCategory> otrosRubrosTerceros) {
 
   /**
    * Constructor compacto para inicializar colecciones inmutables.
@@ -62,10 +70,16 @@ public record Invoice(
    * @param additionalInfo información adicional
    * @param payments formas de pago
    * @param currency moneda
+   * @param retenciones retenciones de la factura
+   * @param remisionGuideSubstituteInfo datos de guía sustitutiva
+   * @param otrosRubrosTerceros rubros de terceros
    */
   public Invoice {
     items = items == null ? List.of() : List.copyOf(items);
     additionalInfo = additionalInfo == null ? List.of() : List.copyOf(additionalInfo);
     payments = payments == null ? List.of() : List.copyOf(payments);
+    retenciones = retenciones == null ? List.of() : List.copyOf(retenciones);
+    otrosRubrosTerceros =
+        otrosRubrosTerceros == null ? List.of() : List.copyOf(otrosRubrosTerceros);
   }
 }

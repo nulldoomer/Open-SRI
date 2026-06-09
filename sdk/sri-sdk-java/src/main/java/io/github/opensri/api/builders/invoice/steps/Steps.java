@@ -6,9 +6,7 @@ package io.github.opensri.api.builders.invoice.steps;
 import io.github.opensri.domain.entities.common.*;
 import io.github.opensri.domain.entities.common.payment.Payment;
 import io.github.opensri.domain.entities.common.taxes.TaxInfo;
-import io.github.opensri.domain.entities.invoice.AdditionalInfo;
-import io.github.opensri.domain.entities.invoice.Invoice;
-import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.entities.invoice.*;
 import io.github.opensri.domain.enums.Currency;
 import io.github.opensri.domain.enums.DocumentVersion;
 import io.github.opensri.domain.valueobjects.IssueDate;
@@ -55,6 +53,9 @@ public final class Steps
   private final List<AdditionalInfo> additionalInfos = new ArrayList<>();
   private final List<Payment> payments = new ArrayList<>();
   private Currency currency;
+  private final List<Retention> retenciones = new ArrayList<>();
+  private RemisionGuideSubstituteInfo remisionGuideSubstituteInfo;
+  private final List<OtherThirdCategory> otrosRubrosTerceros = new ArrayList<>();
 
   /**
    * Stores the issue date of the invoice being built.
@@ -164,6 +165,54 @@ public final class Steps
   }
 
   /**
+   * Adds a collection of retentions to the invoice being built.
+   *
+   * <p>Only serialized for schema versions 1.1.0 and 2.1.0.
+   *
+   * @param retenciones retention entries to register
+   * @return same step so more configuration can follow
+   */
+  @Override
+  public ItemsStep addRetenciones(List<Retention> retenciones) {
+    addAllRequired(
+        retenciones, this.retenciones, "Retenciones list is required", "Retention cannot be null");
+    return this;
+  }
+
+  /**
+   * Sets the substitutive shipping guide data for the invoice being built.
+   *
+   * <p>Only serialized for schema versions 2.0.0 and 2.1.0.
+   *
+   * @param info shipping guide data to register
+   * @return same step so more configuration can follow
+   */
+  @Override
+  public ItemsStep addInfoSustitutivaGuiaRemision(RemisionGuideSubstituteInfo info) {
+    this.remisionGuideSubstituteInfo =
+        Objects.requireNonNull(info, "RemisionGuideSubstituteInfo is required");
+    return this;
+  }
+
+  /**
+   * Adds a collection of third-party charges to the invoice being built.
+   *
+   * <p>Only serialized for schema versions 2.0.0 and 2.1.0.
+   *
+   * @param rubros third-party charge entries to register
+   * @return same step so more configuration can follow
+   */
+  @Override
+  public ItemsStep addOtrosRubrosTerceros(List<OtherThirdCategory> rubros) {
+    addAllRequired(
+        rubros,
+        this.otrosRubrosTerceros,
+        "OtrosRubrosTerceros list is required",
+        "OtherThirdCategory cannot be null");
+    return this;
+  }
+
+  /**
    * Adds the payment methods that cover the invoice total.
    *
    * <p>At least one payment must be registered before the invoice can be built. The sum of all
@@ -225,7 +274,10 @@ public final class Steps
         List.copyOf(items),
         List.copyOf(additionalInfos),
         List.copyOf(payments),
-        currency);
+        currency,
+        List.copyOf(retenciones),
+            remisionGuideSubstituteInfo,
+        List.copyOf(otrosRubrosTerceros));
   }
 
   private static <T> void addAllRequired(

@@ -1,32 +1,13 @@
-import { createHighlighter, type Highlighter } from "shiki";
+import { getSingletonHighlighter } from "shiki";
 
-// Module-level singleton — created once per server process, reused across renders
-let _highlighter: Highlighter | null = null;
+const LANGS = [
+  "java", "xml", "typescript", "bash", "json", "csharp", "go", "python",
+  "php", "groovy", "kotlin",
+] as const;
 
-async function getHighlighter(): Promise<Highlighter> {
-
-  if (!_highlighter) {
-
-    _highlighter = await createHighlighter({
-
-      themes: ["everforest-dark"],
-
-      langs: [
-        "java", "xml", "typescript", "bash", "json", "csharp", "go", "python",
-        "php", "groovy", "kotlin",
-      ],
-
-    });
-
-  }
-
-  return _highlighter;
-
-}
+const THEME = "everforest-dark";
 
 export async function highlight(code: string, lang: string): Promise<string> {
-
-  const hl = await getHighlighter();
-
-  return hl.codeToHtml(code, { lang, theme: "everforest-dark" });
+  const hl = await getSingletonHighlighter({ themes: [THEME], langs: [...LANGS] });
+  return hl.codeToHtml(code, { lang, theme: THEME });
 }

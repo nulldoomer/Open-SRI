@@ -1,0 +1,46 @@
+import Callout from '@/components/docs/Callout'
+
+# C\#
+
+El SDK de Open-SRI para C# está actualmente en desarrollo.
+
+<Callout type="warning">
+Esta página corresponde a un SDK que aún no ha sido publicado. La API y los ejemplos que aparecen aquí son preliminares y pueden cambiar.
+</Callout>
+
+## Estado actual
+
+| Característica | Estado |
+|----------------|--------|
+| Generación de clave de acceso | Planificado |
+| Serialización XML | Planificado |
+| Firma XAdES-BES | Planificado |
+| Comunicación SOAP | Planificado |
+| Publicación en NuGet | Planificado |
+
+## API planeada
+
+El SDK de C# seguirá la misma estructura de builder en pasos que la versión Java, adaptada a las convenciones de .NET:
+
+```csharp
+// API preliminar — sujeta a cambios
+var client = OpenSriClientBuilder.Create()
+    .WithEnvironment(SriEnvironment.Testing)
+    .WithCertificate(File.ReadAllBytes("certificado.p12"), "contraseña", "alias")
+    .WithIssuerProfile(issuerProfile)
+    .WithTimeout(TimeSpan.FromSeconds(30))
+    .Build();
+```
+
+## Seguimiento
+
+Puedes seguir el progreso del SDK de C# en el [repositorio de GitHub](https://github.com/nulldoomer/Open-SRI).
+
+Mientras tanto, desde aplicaciones .NET puedes invocar el SDK de Java mediante:
+
+- **JNI / JVM interop** (soluciones como [IKVM](https://github.com/ikvm-revived/ikvm))
+- **Microservicio Java** expuesto como REST o gRPC, consumido desde .NET
+
+---
+
+Si necesitas soporte de C# con urgencia, abre un issue en el repositorio indicando tu caso de uso.

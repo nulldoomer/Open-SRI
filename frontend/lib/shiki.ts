@@ -9,11 +9,11 @@ async function getHighlighter(): Promise<Highlighter> {
 
     _highlighter = await createHighlighter({
 
-      themes: ["gruvbox-dark-medium"],
+      themes: ["everforest-dark"],
 
       langs: [
         "java", "xml", "typescript", "bash", "json", "csharp", "go", "python",
-        "php"
+        "php", "groovy", "kotlin",
       ],
 
     });
@@ -28,5 +28,5 @@ export async function highlight(code: string, lang: string): Promise<string> {
 
   const hl = await getHighlighter();
 
-  return hl.codeToHtml(code, { lang, theme: "gruvbox-dark-medium" });
+  return hl.codeToHtml(code, { lang, theme: "everforest-dark" });
 }

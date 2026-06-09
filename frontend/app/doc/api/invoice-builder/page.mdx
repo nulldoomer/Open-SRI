@@ -1,0 +1,137 @@
+import Callout from '@/components/docs/Callout'
+
+# InvoiceBuilder
+
+`InvoiceBuilder` construye instancias inmutables de `Invoice` mediante un flujo de pasos que impone el orden correcto de configuración en tiempo de compilación. Cada paso devuelve solo la interfaz del siguiente, por lo que es imposible llamar a `build()` sin haber completado todos los campos obligatorios.
+
+## Iniciar el builder
+
+```java
+import io.github.opensri.api.builders.invoice.InvoiceBuilder;
+
+InvoiceBuilder.builder() // → IssueDateStep
+```
+
+## Pasos del builder
+
+### `.issueDate(IssueDate)`
+
+Fecha de emisión del comprobante.
+
+```java
+.issueDate(IssueDate.now())         // fecha actual del sistema
+.issueDate(IssueDate.of(2026, 6, 9)) // fecha específica
+```
+
+### `.establishmentDirection(String)`
+
+Dirección del establecimiento emisor. Se imprime en el XML del comprobante.
+
+```java
+.establishmentDirection("Av. Amazonas N37-29")
+```
+
+### `.taxInfo(TaxInfo)`
+
+Datos tributarios del emisor: número de emisión, entidad emisora y dirección.
+
+```java
+Issuer issuer = new Issuer("MI EMPRESA S.A.", new Ruc("1791248678001"));
+TaxInfo taxInfo = new TaxInfo(1, issuer, "Av. Amazonas N37-29");
+
+.taxInfo(taxInfo)
+```
+
+El primer argumento de `TaxInfo` es el tipo de emisión (`1` = emisión normal).
+
+### `.documentNumber(DocumentNumber)`
+
+Numeración del comprobante: código de tipo, establecimiento, punto de emisión y secuencial.
+
+```java
+// DocumentNumber(documentCode, establishment, emissionPoint, sequential)
+.documentNumber(new DocumentNumber("01", "001", "001", "000000001"))
+```
+
+El campo `documentCode` identifica el tipo de comprobante. `01` corresponde a factura.
+
+### `.documentVersion(DocumentVersion)`
+
+Versión del esquema XML que usará el SRI para validar el comprobante.
+
+```java
+.documentVersion(DocumentVersion.VERSION_100)
+```
+
+### `.client(Client)`
+
+Datos del comprador: identificación y nombre comercial.
+
+```java
+// Cédula nacional
+Client buyer = new Client(new NationalId("1234567890"), "JUAN PÉREZ");
+
+// RUC
+Client empresa = new Client(new Ruc("1790000000001"), "EMPRESA ABC S.A.");
+
+// Consumidor final
+Client consumidor = new Client(FinalConsumer.INSTANCE, "CONSUMIDOR FINAL");
+```
+
+### `.addItems(List<InvoiceItem>)`
+
+Líneas de detalle de la factura. Se puede llamar varias veces para agregar lotes adicionales. Debe haber al menos un ítem.
+
+```java
+InvoiceItem item = new InvoiceItem(
+    "P001",                          // código principal
+    null,                            // código auxiliar (opcional)
+    "Servicio de consultoría",       // descripción
+    BigDecimal.ONE,                  // cantidad
+    new BigDecimal("100.00"),        // precio unitario
+    BigDecimal.ZERO,                 // descuento
+    new BigDecimal("100.00"),        // total sin impuestos
+    List.of(),                       // detalles adicionales
+    List.of(new Tax("2", "0",        // impuestos (IVA 0%)
+        BigDecimal.ZERO, new BigDecimal("100.00")))
+);
+
+.addItems(List.of(item))
+```
+
+### `.addPayments(List<Payment>)`
+
+Formas de pago que cubren el total de la factura. La suma de los pagos debe igualar el total calculado desde los ítems.
+
+```java
+.addPayments(List.of(
+    new ImmediatePayment(
+        PaymentMethod.SIN_SISTEMA_FINANCIERO,
+        new BigDecimal("100.00"))
+))
+```
+
+### `.build()`
+
+Valida que existan ítems y pagos, calcula los totales automáticamente y devuelve una `Invoice` inmutable.
+
+```java
+Invoice invoice = InvoiceBuilder.builder()
+    .issueDate(IssueDate.now())
+    .establishmentDirection("Av. Amazonas N37-29")
+    .taxInfo(taxInfo)
+    .documentNumber(new DocumentNumber("01", "001", "001", "000000001"))
+    .documentVersion(DocumentVersion.VERSION_100)
+    .client(new Client(new NationalId("1234567890"), "JUAN PÉREZ"))
+    .addItems(List.of(item))
+    .addPayments(List.of(payment))
+    .build();
+```
+
+## Excepciones
+
+| Excepción | Motivo |
+|-----------|--------|
+| `NullPointerException` | Un campo obligatorio fue `null` |
+| `IllegalStateException` | No se añadieron ítems o pagos, o el total de pagos no coincide con el total de la factura |
+| `OpenSRIValidationException` | El RUC o la cédula no superan la validación de módulo 11 |

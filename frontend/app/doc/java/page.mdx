@@ -1,0 +1,170 @@
+import LanguageTabs from '@/components/docs/LanguageTabs'
+import Callout from '@/components/docs/Callout'
+
+export const mavenCode = `<dependency>
+  <groupId>io.github.nulldoomer</groupId>
+  <artifactId>opensri-java-sdk</artifactId>
+  <version>1.0.0</version>
+</dependency>`
+
+export const gradleCode = `implementation 'io.github.nulldoomer:opensri-java-sdk:1.0.0'`
+
+export const gradleKotlinCode = `implementation("io.github.nulldoomer:opensri-java-sdk:1.0.0")`
+
+export const fullExampleCode = `import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
+import io.github.opensri.api.builders.invoice.InvoiceBuilder;
+import io.github.opensri.api.client.OpenSRIClient;
+import io.github.opensri.domain.entities.common.Client;
+import io.github.opensri.domain.entities.common.DocumentNumber;
+import io.github.opensri.domain.entities.common.issuer.Issuer;
+import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
+import io.github.opensri.domain.entities.common.payment.ImmediatePayment;
+import io.github.opensri.domain.entities.common.taxes.Tax;
+import io.github.opensri.domain.entities.common.taxes.TaxInfo;
+import io.github.opensri.domain.entities.invoice.InvoiceItem;
+import io.github.opensri.domain.entities.responses.SendInvoiceResult;
+import io.github.opensri.domain.enums.*;
+import io.github.opensri.domain.valueobjects.*;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class EjemploFactura {
+
+    public static void main(String[] args) throws Exception {
+
+        // 1. Cargar el certificado de firma
+        byte[] cert = Files.readAllBytes(Paths.get("certificado.p12"));
+
+        // 2. Perfil del emisor
+        IssuerProfile issuerProfile = new IssuerProfile(
+            new Ruc("1791248678001"),
+            null,                       // sin contribuyente especial
+            AccountingObligation.SI
+        );
+
+        // 3. Crear el cliente
+        OpenSRIClient client = OpenSRIClientBuilder.builder()
+            .environment(Environment.PRUEBAS)
+            .certificate(cert)
+            .certificatePassword("mi-contraseña")
+            .certificateAlias("mi-alias")
+            .issuerProfile(issuerProfile)
+            .timeout(30)
+            .build();
+
+        // 4. Datos del emisor para la factura
+        Issuer issuer = new Issuer("MI EMPRESA S.A.", new Ruc("1791248678001"));
+        TaxInfo taxInfo = new TaxInfo(1, issuer, "Av. Amazonas N37-29");
+        DocumentNumber docNumber = new DocumentNumber("01", "001", "001", "000000001");
+
+        // 5. Comprador
+        Client buyer = new Client(new NationalId("1234567890"), "JUAN PÉREZ");
+
+        // 6. Ítem de la factura (IVA 0%)
+        InvoiceItem item = new InvoiceItem(
+            "P001", null, "Servicio de consultoría",
+            BigDecimal.ONE,
+            new BigDecimal("100.00"),
+            BigDecimal.ZERO,
+            new BigDecimal("100.00"),
+            List.of(),
+            List.of(new Tax("2", "0", BigDecimal.ZERO, new BigDecimal("100.00")))
+        );
+
+        // 7. Construir la factura
+        var invoice = InvoiceBuilder.builder()
+            .issueDate(IssueDate.now())
+            .establishmentDirection("Av. Amazonas N37-29")
+            .taxInfo(taxInfo)
+            .documentNumber(docNumber)
+            .documentVersion(DocumentVersion.VERSION_100)
+            .client(buyer)
+            .addItems(List.of(item))
+            .addPayments(List.of(new ImmediatePayment(
+                PaymentMethod.SIN_SISTEMA_FINANCIERO, new BigDecimal("100.00"))))
+            .build();
+
+        // 8. Enviar al SRI
+        SendInvoiceResult result = client.sendInvoice(invoice);
+
+        System.out.println("Estado:       " + result.response().status()); // RECIBIDA
+        System.out.println("Clave acceso: " + result.accessKey());
+
+        // 9. Consultar autorización (el SRI tarda algunos segundos)
+        Thread.sleep(3000);
+        var auth = client.checkAuthorization(result.accessKey());
+        System.out.println("Autorización: " + auth.authorization().status()); // AUTORIZADO
+
+        // 10. Guardar el XML firmado (opcional)
+        Files.writeString(Paths.get("factura-" + result.accessKey() + ".xml"), result.signedXml());
+    }
+}`
+
+export const errorHandlingCode = `try {
+    SendInvoiceResult result = client.sendInvoice(invoice);
+
+    if ("DEVUELTA".equals(result.response().status())) {
+        // El XML no pasó la validación del SRI
+        result.response().messages().forEach(msg ->
+            System.err.printf("[%s] %s: %s%n",
+                msg.type(), msg.identifier(), msg.message()));
+        return;
+    }
+
+    // Comprobante recibido correctamente
+    System.out.println(result.accessKey());
+
+} catch (SRICertificateException e) {
+    // Certificado inválido, contraseña incorrecta o alias no encontrado
+    System.err.println("Error de certificado: " + e.getMessage());
+} catch (OpenSRICommunicationException e) {
+    // Timeout o error de red con el SRI
+    System.err.println("Error de comunicación: " + e.getMessage());
+} catch (XmlSerializationException e) {
+    // No se pudo generar el XML de la factura
+    System.err.println("Error de serialización: " + e.getMessage());
+}`
+
+# Java
+
+El SDK de Open-SRI está escrito en Java y su primera versión soporta Java 17+. Esta guía cubre el flujo completo desde la configuración hasta el manejo de errores.
+
+## Requisitos
+
+- Java 17 o superior
+- Certificado P12 emitido por el BCE o Security Data
+- RUC válido con módulo 11
+
+## Dependencia
+
+<LanguageTabs tabs={[
+  { label: "Maven", code: mavenCode, lang: "xml" },
+  { label: "Gradle (Groovy)", code: gradleCode, lang: "groovy" },
+  { label: "Gradle (Kotlin)", code: gradleKotlinCode, lang: "kotlin" },
+]} />
+
+## Ejemplo completo
+
+```java
+{fullExampleCode}
+```
+
+## Manejo de errores
+
+```java
+{errorHandlingCode}
+```
+
+## Buenas prácticas
+
+- **Reutiliza el cliente** — `OpenSRIClient` es thread-safe. Crea una instancia por emisor al inicio de la aplicación.
+- **No guardes el P12 en el repositorio** — usa variables de entorno o un gestor de secretos.
+- **Número secuencial único** — el SRI rechaza comprobantes con el mismo número secuencial. Asegúrate de incrementarlo correctamente.
+- **Maneja `DEVUELTA`** — siempre revisa `result.response().status()` antes de asumir que el comprobante fue aceptado.
+- **Guarda el XML firmado** — `result.signedXml()` es la evidencia legal del comprobante enviado.
+
+<Callout type="warning">
+El SDK actualmente soporta únicamente el ambiente de pruebas (`Environment.PRUEBAS`). El soporte de producción está en el roadmap.
+</Callout>

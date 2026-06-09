@@ -1,0 +1,97 @@
+import Callout from '@/components/docs/Callout'
+
+# SendInvoiceResult
+
+`SendInvoiceResult` es el record Java devuelto por `client.sendInvoice()`. Agrupa la clave de acceso generada, el XML firmado completo y la respuesta de recepción del SRI.
+
+## Definición
+
+```java
+public record SendInvoiceResult(
+    String accessKey,        // clave de acceso de 49 dígitos
+    String signedXml,        // XML firmado enviado al SRI
+    ReceiptResponse response // respuesta del servicio de recepción
+) {}
+```
+
+## Campos
+
+### `accessKey()`
+
+Clave de acceso de 49 dígitos generada para el comprobante. Úsala para consultar el estado de autorización con `checkAuthorization()`.
+
+```java
+String key = result.accessKey();
+System.out.println(key.length()); // 49
+```
+
+### `signedXml()`
+
+Contenido XML completo del comprobante firmado con XAdES-BES. Guárdalo si necesitas una copia local o enviarlo al cliente.
+
+```java
+String xml = result.signedXml();
+Files.writeString(Paths.get("factura-" + result.accessKey() + ".xml"), xml);
+```
+
+### `response()`
+
+Respuesta del servicio de recepción SOAP del SRI. Contiene el estado y los mensajes de validación.
+
+```java
+ReceiptResponse receipt = result.response();
+System.out.println(receipt.status()); // "RECIBIDA" o "DEVUELTA"
+```
+
+## ReceiptResponse
+
+```java
+public record ReceiptResponse(
+    String status,           // "RECIBIDA" o "DEVUELTA"
+    List<SRIMessage> messages
+) {}
+```
+
+### Estados
+
+| Status | Significado |
+|--------|-------------|
+| `RECIBIDA` | El XML es válido; el SRI lo procesará para autorización |
+| `DEVUELTA` | El XML tiene errores; ver `messages()` para el detalle |
+
+### `messages()`
+
+Lista de mensajes emitidos por el SRI. Cada mensaje incluye el identificador, la descripción, el tipo y la información adicional.
+
+```java
+result.response().messages().forEach(msg -> {
+    System.out.printf("[%s] %s — %s%n",
+        msg.type(),        // "ERROR", "ADVERTENCIA", "INFO"
+        msg.identifier(),  // código del mensaje
+        msg.message()      // descripción
+    );
+});
+```
+
+## AuthorizationResponse
+
+Devuelto por `client.checkAuthorization()`. Contiene el estado definitivo del comprobante.
+
+```java
+public record AuthorizationResponse(
+    String documentsNumber,       // cantidad de comprobantes en la respuesta
+    Authorization authorization,  // datos del nodo de autorización
+    List<SRIMessage> messages
+) {}
+```
+
+```java
+AuthorizationResponse auth = client.checkAuthorization(result.accessKey());
+
+// "AUTORIZADO", "NO AUTORIZADO" o "EN PROCESO"
+System.out.println(auth.authorization().status());
+```
+
+<Callout type="info">
+Si `authorization().status()` devuelve `EN PROCESO`, el SRI aún no terminó de validar el comprobante. Espera unos segundos y vuelve a consultar.
+</Callout>

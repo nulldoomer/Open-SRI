@@ -1,0 +1,53 @@
+import Callout from '@/components/docs/Callout'
+
+# Go
+
+El SDK de Open-SRI para Go está actualmente en desarrollo.
+
+<Callout type="warning">
+Esta página corresponde a un SDK que aún no ha sido publicado. La API y los ejemplos que aparecen aquí son preliminares y pueden cambiar.
+</Callout>
+
+## Estado actual
+
+| Característica | Estado |
+|----------------|--------|
+| Generación de clave de acceso | Planificado |
+| Serialización XML | Planificado |
+| Firma XAdES-BES | Planificado |
+| Comunicación SOAP | Planificado |
+| Publicación en pkg.go.dev | Planificado |
+
+## API planeada
+
+El SDK de Go seguirá los patrones idiomáticos del lenguaje: opciones funcionales para la configuración y retorno explícito de errores:
+
+```go
+// API preliminar — sujeta a cambios
+client, err := opensri.NewClient(
+    opensri.WithEnvironment(opensri.Testing),
+    opensri.WithCertificate("certificado.p12", "contraseña", "alias"),
+    opensri.WithIssuerProfile(profile),
+    opensri.WithTimeout(30 * time.Second),
+)
+if err != nil {
+    log.Fatal(err)
+}
+
+result, err := client.SendInvoice(ctx, invoice)
+if err != nil {
+    log.Fatal(err)
+}
+
+fmt.Println(result.AccessKey)
+```
+
+## Seguimiento
+
+Puedes seguir el progreso del SDK de Go en el [repositorio de GitHub](https://github.com/nulldoomer/Open-SRI).
+
+Mientras tanto, desde aplicaciones Go puedes llamar al servicio SOAP del SRI directamente usando el paquete estándar `encoding/xml` y las URLs documentadas en [SOAP del SRI](/doc/soap-sri).
+
+---
+
+Si necesitas soporte de Go con urgencia, abre un issue en el repositorio indicando tu caso de uso.

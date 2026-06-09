@@ -1,0 +1,111 @@
+import Callout from '@/components/docs/Callout'
+
+# OpenSRIClient
+
+`OpenSRIClient` es el punto de entrada principal del SDK. Encapsula la generación de la clave de acceso, la serialización XML, la firma XAdES-BES y la comunicación SOAP con el SRI en dos métodos simples.
+
+## Crear el cliente
+
+El cliente se construye mediante `OpenSRIClientBuilder.builder()`. Los pasos son obligatorios y están ordenados por el compilador:
+
+```java
+import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
+import io.github.opensri.api.client.OpenSRIClient;
+
+byte[] cert = Files.readAllBytes(Paths.get("certificado.p12"));
+
+OpenSRIClient client = OpenSRIClientBuilder.builder()
+    .environment(Environment.PRUEBAS)
+    .certificate(cert)
+    .certificatePassword("contraseña-del-p12")
+    .certificateAlias("alias-de-la-clave-privada")
+    .issuerProfile(issuerProfile)
+    .timeout(30)
+    .build();
+```
+
+## Pasos del builder
+
+### `.environment(Environment)`
+
+Selecciona el ambiente SRI y determina los endpoints SOAP que se usarán.
+
+| Valor | Endpoints |
+|-------|-----------|
+| `Environment.PRUEBAS` | `celcer.sri.gob.ec` |
+| `Environment.PRODUCCION` | `cel.sri.gob.ec` |
+
+### `.certificate(byte[])`
+
+Bytes del archivo PKCS#12 (`.p12`) que contiene el certificado de firma.
+
+```java
+byte[] cert = Files.readAllBytes(Paths.get("ruta/al/certificado.p12"));
+.certificate(cert)
+```
+
+### `.certificatePassword(String)`
+
+Contraseña para desbloquear el keystore P12.
+
+### `.certificateAlias(String)`
+
+Alias de la entrada de clave privada dentro del P12. Para ver los alias disponibles:
+
+```bash
+keytool -list -keystore certificado.p12 -storetype PKCS12
+```
+
+### `.issuerProfile(IssuerProfile)`
+
+Perfil tributario del emisor. Incluye el RUC, la condición de contribuyente especial y la obligación de llevar contabilidad.
+
+```java
+IssuerProfile profile = new IssuerProfile(
+    new Ruc("1791248678001"),
+    null,                       // null si no es contribuyente especial
+    AccountingObligation.SI     // obligado a llevar contabilidad
+);
+```
+
+### `.timeout(int)`
+
+Segundos de timeout para cada llamada SOAP. Debe ser mayor que cero. Se recomienda entre 30 y 60 segundos.
+
+## Métodos
+
+### `sendInvoice(Invoice)`
+
+Ejecuta el pipeline completo: genera la clave de acceso, serializa el XML, firma con XAdES-BES y envía al servicio de recepción del SRI.
+
+```java
+SendInvoiceResult result = client.sendInvoice(invoice);
+
+System.out.println(result.response().status()); // RECIBIDA
+System.out.println(result.accessKey());          // 49 dígitos
+```
+
+Lanza `OpenSRICommunicationException` si hay un error de red o el SRI no responde dentro del timeout.
+
+### `checkAuthorization(String)`
+
+Consulta el estado de autorización de un comprobante usando su clave de acceso de 49 dígitos.
+
+```java
+AuthorizationResponse auth = client.checkAuthorization(result.accessKey());
+
+System.out.println(auth.authorization().status()); // AUTORIZADO
+System.out.println(auth.documentsNumber());         // "1"
+```
+
+<Callout type="info">
+El cliente es seguro para reutilizarse. Crea una sola instancia por emisor y reutilízala a lo largo del ciclo de vida de tu aplicación.
+</Callout>
+
+## Excepciones
+
+| Excepción | Motivo |
+|-----------|--------|
+| `SRICertificateException` | No se puede cargar el P12, contraseña incorrecta o alias no encontrado |
+| `OpenSRICommunicationException` | Error de red, timeout o respuesta SOAP inválida del SRI |
+| `XmlSerializationException` | Error al generar el XML del comprobante |

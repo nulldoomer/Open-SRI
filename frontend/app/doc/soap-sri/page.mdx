@@ -1,0 +1,83 @@
+import Callout from '@/components/docs/Callout'
+
+# SOAP del SRI
+
+El SRI expone sus servicios de comprobantes electrónicos mediante dos operaciones SOAP: **recepción** y **autorización**. Open-SRI encapsula ambas detrás de métodos simples en `OpenSRIClient`.
+
+## Flujo de un comprobante
+
+El proceso de emisión de una factura electrónica tiene dos fases:
+
+1. **Recepción** — el SRI valida el XML firmado y devuelve `RECIBIDA` si la estructura es correcta
+2. **Autorización** — el SRI procesa el comprobante y devuelve `AUTORIZADO` con el número de autorización
+
+Ambas fases se realizan con llamadas SOAP sobre HTTPS.
+
+## Endpoints
+
+| Ambiente | Servicio | URL |
+|----------|----------|-----|
+| Pruebas | Recepción | `https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline` |
+| Pruebas | Autorización | `https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline` |
+| Producción | Recepción | `https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline` |
+| Producción | Autorización | `https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline` |
+
+Open-SRI selecciona el endpoint correcto según el `Environment` configurado en el cliente. No necesitas gestionar las URLs manualmente.
+
+## Recepción: `sendInvoice()`
+
+```java
+SendInvoiceResult result = client.sendInvoice(invoice);
+
+// Estado de recepción
+System.out.println(result.response().status()); // RECIBIDA o DEVUELTA
+
+// Mensajes del SRI (errores o advertencias)
+result.response().messages().forEach(msg -> {
+    System.out.printf("[%s] %s: %s%n",
+        msg.type(), msg.identifier(), msg.message());
+});
+```
+
+### Estados de recepción
+
+| Estado | Significado |
+|--------|-------------|
+| `RECIBIDA` | El XML es válido y fue aceptado para procesamiento |
+| `DEVUELTA` | El XML tiene errores de estructura o firma; ver `messages()` |
+
+## Autorización: `checkAuthorization()`
+
+La autorización no es inmediata. El SRI puede tardar algunos segundos en procesar el comprobante recibido.
+
+```java
+AuthorizationResponse auth = client.checkAuthorization(result.accessKey());
+
+System.out.println(auth.authorization().status()); // AUTORIZADO o EN PROCESO
+System.out.println(auth.documentsNumber());        // "1"
+```
+
+### Estados de autorización
+
+| Estado | Significado |
+|--------|-------------|
+| `AUTORIZADO` | Comprobante válido y autorizado por el SRI |
+| `NO AUTORIZADO` | Rechazado; ver `messages()` para el motivo |
+| `EN PROCESO` | El SRI aún no ha terminado de procesarlo |
+
+<Callout type="info">
+Si recibes `EN PROCESO`, espera unos segundos y vuelve a llamar a `checkAuthorization()`. Para producción, implementa un mecanismo de reintento con backoff exponencial.
+</Callout>
+
+## Timeout
+
+El timeout se configura en el builder del cliente y aplica a cada llamada SOAP individualmente:
+
+```java
+OpenSRIClientBuilder.builder()
+    // ...
+    .timeout(30)  // segundos; valor recomendado: 30-60
+    .build();
+```
+
+En el ambiente de pruebas del SRI los tiempos de respuesta pueden ser variables. Un timeout de 30 segundos es suficiente para la mayoría de los casos.

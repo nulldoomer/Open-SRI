@@ -5,7 +5,7 @@ const LANGS = [
   "php", "groovy", "kotlin",
 ] as const;
 
-const THEME = "everforest-dark";
+const THEME = "catppuccin-mocha";
 
 export async function highlight(code: string, lang: string): Promise<string> {
   const hl = await getSingletonHighlighter({ themes: [THEME], langs: [...LANGS] });

@@ -2,6 +2,25 @@ plugins {
 	java
 	id("org.springframework.boot") version "4.0.6"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("com.diffplug.spotless") version "6.25.0"
+}
+
+
+spotless {
+	java {
+		target("src/**/*.java")
+		targetExclude("build/**/*.java")
+		targetExclude("src/test/**/*.java")
+		licenseHeader(
+			"""// SPDX-License-Identifier: Apache-2.0
+            // Copyright (c) 2026 Nulldoomer
+
+            """
+		)
+
+		removeUnusedImports()
+		googleJavaFormat()
+	}
 }
 
 group = "io.github.opensri"
@@ -18,16 +37,31 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
-	implementation("org.springframework.boot:spring-boot-starter-security")
+	// Web and Security
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-redis-reactive-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+
+	// Redis reactive — TODO: re-enable when caching is integrated
+	// implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+
+	// Reactive PostgreSQL — TODO: re-enable when persistence is integrated
+	// implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+	// runtimeOnly("org.postgresql:r2dbc-postgresql")
+
+	// Observability
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-tracing-bridge-otel")
+	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+
+	// Rate Limit
+	implementation("com.bucket4j:bucket4j-core:8.10.1")
+	implementation("com.github.ben-manes.caffeine:caffeine")
+
+	// Tests
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.projectreactor:reactor-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

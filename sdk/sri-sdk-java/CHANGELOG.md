@@ -57,3 +57,9 @@ en este archivo.
 
 - Actualizada la version del build en gradle.
 
+## [1.2.2] - 2026-06-22
+
+### Arreglado
+
+- Cambio del nombre del package para consistencia con el namespace de maven central.
+- Configuración del `build.gradle.kts` para la publicación de la librería en maven central.

@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Nulldoomer
+
+package io.github.nulldoomer.opensri.domain.entities.common.issuer;
+
+import io.github.nulldoomer.opensri.domain.enums.AccountingObligation;
+import io.github.nulldoomer.opensri.domain.valueobjects.Ruc;
+import io.github.nulldoomer.opensri.domain.valueobjects.SpecialTaxPayer;
+
+/**
+ * Agrupa la configuración tributaria complementaria del emisor.
+ *
+ * <p>Este perfil concentra datos reutilizables que no forman parte directa de la numeración del
+ * documento, pero sí afectan su contenido fiscal, como la obligación de llevar contabilidad y la
+ * condición de contribuyente especial.
+ *
+ * @param ruc Registro Único de Contribuyentes del emisor
+ * @param specialTaxPayer registro de contribuyente especial si el emisor posee dicha calificación
+ * @param accountingObligation indica si el emisor está obligado a llevar contabilidad
+ * @see AccountingObligation
+ */
+public record IssuerProfile(
+    Ruc ruc, SpecialTaxPayer specialTaxPayer, AccountingObligation accountingObligation) {}

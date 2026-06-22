@@ -50,3 +50,10 @@ en este archivo.
 - Implementación de `ElectronicDocument`, abstracción genérica de atributos generales en todos los documentos 
   electrónicos en la capa de dominio.
 - Creación de Test Unitarios de validación con los documentos XSD de cada tipo de comprobante.
+
+## [1.2.1] - 2026-06-21
+
+### Arreglado
+
+- Actualizada la version del build en gradle.
+

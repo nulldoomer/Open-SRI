@@ -35,3 +35,5 @@ jobs:
         with:
           files: sdk/sri-sdk-java/build/libs/*.jar
           generate_release_notes: true
+
+# TODO: Add step to check the gradle version to ensure it's the same as the github tag version, to keep the build sync.

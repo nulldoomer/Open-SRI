@@ -41,6 +41,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
+	// SRI Java SDK — resolved from source via the composite build declared in settings.gradle.kts
+	implementation("io.github.opensri:sri-sdk-java")
+
 	// Redis reactive — TODO: re-enable when caching is integrated
 	// implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
@@ -67,4 +70,11 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// The SDK brings JAXB on the runtime classpath, and a couple of its transitive artifacts
+// (e.g. jaxb-core) resolve to the same file more than once. They are identical, so exclude
+// the duplicates when assembling the executable jar.
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

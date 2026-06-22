@@ -9,8 +9,6 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import java.time.Duration;
-
-import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,7 +45,7 @@ public class RateLimiter {
    *
    * @param clientKey stable identifier of the caller (typically the resolved client IP).
    * @return an allowed result with the remaining tokens, or a rejected result carrying the wait
-   * time until the next refill.
+   *     time until the next refill.
    */
   public RateLimitResult tryConsume(String clientKey) {
     Bucket bucket = buckets.get(clientKey, key -> newBucket());

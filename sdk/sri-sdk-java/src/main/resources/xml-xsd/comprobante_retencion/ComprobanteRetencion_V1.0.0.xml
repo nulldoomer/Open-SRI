@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<comprobanteRetencion xmlns:ns1="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/C:/borrar/xsd/5-xsd-6_V1.0.0.xsd" id="comprobante" version="version0">
+    <infoTributaria>
+        <ambiente>1</ambiente>
+        <tipoEmision>1</tipoEmision>
+        <razonSocial>razonSocial0</razonSocial>
+        <nombreComercial>nombreComercial0</nombreComercial>
+        <ruc>0000000000001</ruc>
+        <claveAcceso>0000000000000000000000000000000000000000000000000</claveAcceso>
+        <codDoc>00</codDoc>
+        <estab>000</estab>
+        <ptoEmi>000</ptoEmi>
+        <secuencial>000000000</secuencial>
+        <dirMatriz>dirMatriz0</dirMatriz>
+        <agenteRetencion>0</agenteRetencion>
+        <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+    </infoTributaria>
+    <infoCompRetencion>
+        <fechaEmision>01/01/2000</fechaEmision>
+        <dirEstablecimiento>dirEstablecimiento0</dirEstablecimiento>
+        <contribuyenteEspecial>contribuyente</contribuyenteEspecial>
+        <obligadoContabilidad>SI</obligadoContabilidad>
+        <tipoIdentificacionSujetoRetenido>04</tipoIdentificacionSujetoRetenido>
+        <razonSocialSujetoRetenido>razonSocialSujetoRetenido0</razonSocialSujetoRetenido>
+        <identificacionSujetoRetenido>identificacionSujeto</identificacionSujetoRetenido>
+        <periodoFiscal>00/0000</periodoFiscal>
+    </infoCompRetencion>
+    <impuestos>
+        <impuesto>
+            <codigo>0</codigo>
+            <codigoRetencion>codig</codigoRetencion>
+            <baseImponible>50.00</baseImponible>
+            <porcentajeRetener>4.50</porcentajeRetener>
+            <valorRetenido>50.00</valorRetenido>
+            <codDocSustento>00</codDocSustento>
+            <numDocSustento>000000000000000</numDocSustento>
+            <fechaEmisionDocSustento>01/01/2000</fechaEmisionDocSustento>
+        </impuesto>
+        <impuesto>
+            <codigo>0</codigo>
+            <codigoRetencion>codig</codigoRetencion>
+            <baseImponible>50.00</baseImponible>
+            <porcentajeRetener>4.50</porcentajeRetener>
+            <valorRetenido>50.00</valorRetenido>
+            <codDocSustento>00</codDocSustento>
+            <numDocSustento>000000000000000</numDocSustento>
+            <fechaEmisionDocSustento>01/01/2000</fechaEmisionDocSustento>
+        </impuesto>
+    </impuestos>
+    <maquinaFiscal>
+        <marca>marca0</marca>
+        <modelo>modelo0</modelo>
+        <serie>serie0</serie>
+    </maquinaFiscal>
+    <infoAdicional>
+        <campoAdicional nombre="nombre0">campoAdicional0</campoAdicional>
+        <campoAdicional nombre="nombre1">campoAdicional1</campoAdicional>
+    </infoAdicional>
+</comprobanteRetencion>

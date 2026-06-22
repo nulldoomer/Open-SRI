@@ -11,8 +11,8 @@ import java.net.URI;
  * <p>Estas constantes permiten configurar clientes HTTP sin repetir direcciones del servicio en
  * varios puntos del SDK y distinguen explícitamente entre los ambientes de pruebas y producción.
  *
- * <p>Aunque los nombres conservan la referencia histórica al WSDL, las URIs se usan como destinations
- * directos de los envelopes SOAP enviados por {@code infrastructure.sri.client}.
+ * <p>Aunque los nombres conservan la referencia histórica al WSDL, las URIs se usan como
+ * destinations directos de los envelopes SOAP enviados por {@code infrastructure.sri.client}.
  */
 public class SRIEndpoints {
 

@@ -33,6 +33,20 @@ en este archivo.
 ### Añadido
 
 - Implementación de todas las versiones de facturas para la creación y serialización 1.0.0, 1.1.0, 2.0.0 y 2.1.0.
-- Actualización de fluid builder de Invoice para los nuevos campos de las versiones variantes.
+- Actualización de fluent builder de Invoice para los nuevos campos de las versiones variantes.
 - Actualización del dominio de Invoice.
 - Actualización de los tests unitarios, de integración y test E2E.
+
+
+## [1.2.0] - 2026-06-21
+
+### Añadido
+
+- Implementación de todos los documentos electrónicos para la creación y serialización de todas sus versiones.
+- Creación de fluent builder para cada tipo de documento.
+- Creación del dominio de cada documento.
+- Implementación de modelos para la serialización XML de cada documento.
+- Desacoplamiento del `SendoDocumentUseCase` a una abstracción genérica para cualquier tipo de documento electrónico.
+- Implementación de `ElectronicDocument`, abstracción genérica de atributos generales en todos los documentos 
+  electrónicos en la capa de dominio.
+- Creación de Test Unitarios de validación con los documentos XSD de cada tipo de comprobante.

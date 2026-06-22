@@ -22,7 +22,7 @@ import io.github.opensri.domain.entities.invoice.InvoiceItem;
 import io.github.opensri.domain.entities.responses.Authorization;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
 import io.github.opensri.domain.entities.responses.ReceiptResponse;
-import io.github.opensri.domain.entities.responses.SendInvoiceResult;
+import io.github.opensri.domain.entities.responses.SendDocumentResult;
 import io.github.opensri.domain.entities.responses.SRIMessage;
 import io.github.opensri.domain.enums.AccountingObligation;
 import io.github.opensri.domain.enums.Currency;
@@ -46,14 +46,14 @@ class OPENSRIApplicationEndToEndTest {
     FakeSriGateway gateway = new FakeSriGateway();
 
     OPENSRIApplication application =
-        new OPENSRIApplication(accessKeyGenerator, serializer, signer, gateway);
+        new OPENSRIApplication(accessKeyGenerator, signer, gateway);
 
     Invoice invoice = sampleInvoice();
     IssuerProfile issuerProfile =
         new IssuerProfile(new Ruc("1791248678001"), null, AccountingObligation.SI);
 
-    SendInvoiceResult result =
-        application.sendInvoice(invoice, Environment.PRUEBAS, issuerProfile);
+    SendDocumentResult result =
+        application.send(invoice, serializer, Environment.PRUEBAS, issuerProfile);
 
     assertEquals("ACCESS-KEY-TEST", result.accessKey());
     assertEquals("<signed><invoice accessKey=\"ACCESS-KEY-TEST\"/></signed>", result.signedXml());
@@ -75,10 +75,7 @@ class OPENSRIApplicationEndToEndTest {
   void checkAuthorization_should_delegate_to_gateway() {
     OPENSRIApplication application =
         new OPENSRIApplication(
-            new FakeAccessKeyGenerator(),
-            new FakeXmlSerializer(),
-            new FakeDocumentSigner(),
-            new FakeSriGateway());
+            new FakeAccessKeyGenerator(), new FakeDocumentSigner(), new FakeSriGateway());
 
     AuthorizationResponse response = application.checkAuthorization("ACCESS-KEY-TEST");
 

@@ -54,7 +54,8 @@ public record Invoice(
     Currency currency,
     List<Retention> retenciones,
     RemisionGuideSubstituteInfo remisionGuideSubstituteInfo,
-    List<OtherThirdCategory> otrosRubrosTerceros) {
+    List<OtherThirdCategory> otrosRubrosTerceros)
+    implements ElectronicDocument {
 
   /**
    * Constructor compacto para inicializar colecciones inmutables.

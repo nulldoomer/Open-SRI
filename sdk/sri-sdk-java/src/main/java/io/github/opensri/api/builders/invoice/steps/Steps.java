@@ -276,7 +276,7 @@ public final class Steps
         List.copyOf(payments),
         currency,
         List.copyOf(retenciones),
-            remisionGuideSubstituteInfo,
+        remisionGuideSubstituteInfo,
         List.copyOf(otrosRubrosTerceros));
   }
 

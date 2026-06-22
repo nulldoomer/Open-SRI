@@ -6,13 +6,24 @@ package io.github.opensri.api.client;
 import io.github.opensri.application.OPENSRIApplication;
 import io.github.opensri.application.ports.DocumentSigner;
 import io.github.opensri.application.ports.SRIGateway;
+import io.github.opensri.application.ports.XmlSerializer;
 import io.github.opensri.domain.entities.common.issuer.IssuerProfile;
+import io.github.opensri.domain.entities.creditnote.CreditNote;
+import io.github.opensri.domain.entities.debitnote.DebitNote;
 import io.github.opensri.domain.entities.invoice.Invoice;
+import io.github.opensri.domain.entities.purchasesettlement.PurchaseSettlement;
+import io.github.opensri.domain.entities.remissionguide.RemissionGuide;
 import io.github.opensri.domain.entities.responses.AuthorizationResponse;
-import io.github.opensri.domain.entities.responses.SendInvoiceResult;
+import io.github.opensri.domain.entities.responses.SendDocumentResult;
+import io.github.opensri.domain.entities.withholding.WithholdingReceipt;
 import io.github.opensri.domain.enums.Environment;
 import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
-import io.github.opensri.infrastructure.serializers.InvoiceXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.creditnote.CreditNoteXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.debitnote.DebitNoteXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.invoice.InvoiceXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.purchasesettlement.PurchaseSettlementXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.remissionguide.RemissionGuideXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.withholding.WithholdingReceiptXmlSerializerFactory;
 import io.github.opensri.infrastructure.services.SRIAccessKeyGeneratorFactory;
 import io.github.opensri.infrastructure.sri.SRIGatewayFactory;
 
@@ -28,6 +39,17 @@ public final class OpenSRIClient {
   private final Environment environment;
   private final IssuerProfile issuerProfile;
   private final OPENSRIApplication applicationFacade;
+  private final XmlSerializer<Invoice> invoiceSerializer = InvoiceXmlSerializerFactory.create();
+  private final XmlSerializer<CreditNote> creditNoteSerializer =
+      CreditNoteXmlSerializerFactory.create();
+  private final XmlSerializer<DebitNote> debitNoteSerializer =
+      DebitNoteXmlSerializerFactory.create();
+  private final XmlSerializer<PurchaseSettlement> purchaseSettlementSerializer =
+      PurchaseSettlementXmlSerializerFactory.create();
+  private final XmlSerializer<RemissionGuide> remissionGuideSerializer =
+      RemissionGuideXmlSerializerFactory.create();
+  private final XmlSerializer<WithholdingReceipt> withholdingReceiptSerializer =
+      WithholdingReceiptXmlSerializerFactory.create();
 
   /**
    * Initializes the client with the required security and environment settings.
@@ -56,11 +78,7 @@ public final class OpenSRIClient {
     SRIGateway gateway = SRIGatewayFactory.create(environment, timeoutSeconds);
 
     this.applicationFacade =
-        new OPENSRIApplication(
-            SRIAccessKeyGeneratorFactory.create(),
-            InvoiceXmlSerializerFactory.create(),
-            signer,
-            gateway);
+        new OPENSRIApplication(SRIAccessKeyGeneratorFactory.create(), signer, gateway);
   }
 
   /**
@@ -69,8 +87,61 @@ public final class OpenSRIClient {
    * @param invoice the invoice domain model to be sent
    * @return the result of the submission, including the access key and signed XML
    */
-  public SendInvoiceResult sendInvoice(Invoice invoice) {
-    return applicationFacade.sendInvoice(invoice, environment, issuerProfile);
+  public SendDocumentResult sendInvoice(Invoice invoice) {
+    return applicationFacade.send(invoice, invoiceSerializer, environment, issuerProfile);
+  }
+
+  /**
+   * Sends an electronic credit note to the SRI for reception.
+   *
+   * @param creditNote the credit-note domain model to be sent
+   * @return the result of the submission, including the access key and signed XML
+   */
+  public SendDocumentResult sendCreditNote(CreditNote creditNote) {
+    return applicationFacade.send(creditNote, creditNoteSerializer, environment, issuerProfile);
+  }
+
+  /**
+   * Sends an electronic debit note to the SRI for reception.
+   *
+   * @param debitNote the debit-note domain model to be sent
+   * @return the result of the submission, including the access key and signed XML
+   */
+  public SendDocumentResult sendDebitNote(DebitNote debitNote) {
+    return applicationFacade.send(debitNote, debitNoteSerializer, environment, issuerProfile);
+  }
+
+  /**
+   * Sends an electronic purchase settlement to the SRI for reception.
+   *
+   * @param purchaseSettlement the purchase-settlement domain model to be sent
+   * @return the result of the submission, including the access key and signed XML
+   */
+  public SendDocumentResult sendPurchaseSettlement(PurchaseSettlement purchaseSettlement) {
+    return applicationFacade.send(
+        purchaseSettlement, purchaseSettlementSerializer, environment, issuerProfile);
+  }
+
+  /**
+   * Sends an electronic remission guide to the SRI for reception.
+   *
+   * @param remissionGuide the remission-guide domain model to be sent
+   * @return the result of the submission, including the access key and signed XML
+   */
+  public SendDocumentResult sendRemissionGuide(RemissionGuide remissionGuide) {
+    return applicationFacade.send(
+        remissionGuide, remissionGuideSerializer, environment, issuerProfile);
+  }
+
+  /**
+   * Sends an electronic withholding receipt to the SRI for reception.
+   *
+   * @param withholdingReceipt the withholding-receipt domain model to be sent
+   * @return the result of the submission, including the access key and signed XML
+   */
+  public SendDocumentResult sendWithholdingReceipt(WithholdingReceipt withholdingReceipt) {
+    return applicationFacade.send(
+        withholdingReceipt, withholdingReceiptSerializer, environment, issuerProfile);
   }
 
   /**

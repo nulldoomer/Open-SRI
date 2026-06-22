@@ -22,7 +22,7 @@ import io.github.opensri.domain.entities.responses.ReceiptResponse;
 import io.github.opensri.domain.enums.*;
 import io.github.opensri.domain.valueobjects.*;
 import io.github.opensri.infrastructure.crypto.signing.XAdEsSignerFactory;
-import io.github.opensri.infrastructure.serializers.InvoiceXmlSerializerFactory;
+import io.github.opensri.infrastructure.serializers.invoice.InvoiceXmlSerializerFactory;
 import io.github.opensri.infrastructure.services.SRIAccessKeyGeneratorFactory;
 import java.io.IOException;
 import java.math.BigDecimal;

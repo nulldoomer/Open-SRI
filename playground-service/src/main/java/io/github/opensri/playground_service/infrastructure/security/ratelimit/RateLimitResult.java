@@ -29,5 +29,4 @@ public record RateLimitResult(boolean allowed, long remainingTokens, Duration re
 
     return new RateLimitResult(false, 0, retryAfter);
   }
-
 }

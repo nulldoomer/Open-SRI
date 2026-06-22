@@ -22,7 +22,6 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  */
 @ConfigurationProperties(prefix = "rate-limit")
 public record RateLimitProperties(
-
     @DefaultValue("true") boolean enabled,
     @DefaultValue("20") int capacity,
     @DefaultValue("1m") Duration refillPeriod,

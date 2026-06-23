@@ -70,3 +70,10 @@ en este archivo.
 ### Arreglado
 
 - Eliminar `publishingTimeout` por que crea error en el build de github actions.
+
+
+## [1.2.4] - 2026-06-22
+
+### Arreglado
+
+- Corrección del versionado de maven central y los tags de github.

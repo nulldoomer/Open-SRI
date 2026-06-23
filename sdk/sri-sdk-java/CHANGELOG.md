@@ -63,3 +63,10 @@ en este archivo.
 
 - Cambio del nombre del package para consistencia con el namespace de maven central.
 - Configuración del `build.gradle.kts` para la publicación de la librería en maven central.
+
+
+## [1.2.3] - 2026-06-22
+
+### Arreglado
+
+- Eliminar `publishingTimeout` por que crea error en el build de github actions.

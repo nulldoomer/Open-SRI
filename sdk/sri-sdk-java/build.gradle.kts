@@ -140,7 +140,6 @@ nmcp {
         publishingType.set("USER_MANAGED")
         publicationName.set("${project.name}-${project.version}")
         validationTimeout.set(Duration.ofMinutes(10))
-        publishingTimeout.set(Duration.ofMinutes(10))
     }
 }
 // ============================================================================

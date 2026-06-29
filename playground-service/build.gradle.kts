@@ -42,14 +42,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	// SRI Java SDK — resolved from source via the composite build declared in settings.gradle.kts
-	implementation("io.github.opensri:sri-sdk-java")
+	implementation("io.github.nulldoomer:opensri:1.2.4")
 
-	// Redis reactive — TODO: re-enable when caching is integrated
-	// implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
-	// Reactive PostgreSQL — TODO: re-enable when persistence is integrated
-	// implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	// runtimeOnly("org.postgresql:r2dbc-postgresql")
 
 	// Observability
 	implementation("org.springframework.boot:spring-boot-starter-actuator")

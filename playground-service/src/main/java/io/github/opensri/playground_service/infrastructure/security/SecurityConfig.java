@@ -49,7 +49,7 @@ public class SecurityConfig {
             auth ->
                 auth.pathMatchers("/actuator/health", "/actuator/prometheus")
                     .permitAll()
-                    .pathMatchers("/playground/**", "/validator/**")
+                    .pathMatchers("/sessions/**", "/validator/**")
                     .permitAll()
                     .anyExchange()
                     .denyAll())

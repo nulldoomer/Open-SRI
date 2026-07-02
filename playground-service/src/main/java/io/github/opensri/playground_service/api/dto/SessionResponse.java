@@ -3,9 +3,7 @@
 
 package io.github.opensri.playground_service.api.dto;
 
-import io.github.opensri.playground_service.domain.model.SdkLanguage;
-import io.github.opensri.playground_service.domain.model.SessionLog;
-import io.github.opensri.playground_service.domain.model.SessionStatus;
+import io.github.opensri.playground_service.domain.model.*;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,7 +16,28 @@ public record SessionResponse(
     Instant startedAt,
     Instant completedAt,
     Long durationMs,
-    String requestPayload,
+    InvoicePayload requestPayload,
     String responsePayload,
     List<SessionLog> logs,
-    String errorMessage) {}
+    String errorMessage) {
+
+  public SessionResponse {
+    logs = logs == null ? List.of() : List.copyOf(logs);
+  }
+
+  public static SessionResponse from(PlaygroundSession session) {
+    return new SessionResponse(
+        session.id(),
+        session.language(),
+        session.sdkVersion(),
+        session.status(),
+        session.createdAt(),
+        session.startedAt(),
+        session.completedAt(),
+        session.durationsMs(),
+        session.requestPayload(),
+        session.responsePayload(),
+        session.logs(),
+        session.errorMessage());
+  }
+}

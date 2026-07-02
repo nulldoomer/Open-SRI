@@ -4,11 +4,11 @@
 package io.github.opensri.playground_service.api;
 
 import io.github.opensri.playground_service.api.dto.RunSessionRequest;
+import io.github.opensri.playground_service.api.dto.RunSessionResponse;
 import io.github.opensri.playground_service.api.dto.SessionResponse;
 import io.github.opensri.playground_service.application.GetSessionUseCase;
 import io.github.opensri.playground_service.application.RunSessionUseCase;
-import io.github.opensri.playground_service.infrastructure.sse.SessionEventPublisher;
-import java.util.Map;
+import io.github.opensri.playground_service.shared.exceptions.SessionNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,60 +36,33 @@ public class PlaygroundController {
 
   private final RunSessionUseCase runSessionUseCase;
   private final GetSessionUseCase getSessionUseCase;
-  private final SessionEventPublisher eventPublisher;
 
   public PlaygroundController(
-      RunSessionUseCase runSessionUseCase,
-      GetSessionUseCase getSessionUseCase,
-      SessionEventPublisher eventPublisher) {
+      RunSessionUseCase runSessionUseCase, GetSessionUseCase getSessionUseCase) {
     this.runSessionUseCase = runSessionUseCase;
     this.getSessionUseCase = getSessionUseCase;
-    this.eventPublisher = eventPublisher;
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<ResponseEntity<Map<String, String>>> runSession(
+  public Mono<ResponseEntity<RunSessionResponse>> runSession(
       @RequestBody RunSessionRequest request) {
+
     return runSessionUseCase
         .run(request)
         .map(
             sessionId ->
-                ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("sessionId", sessionId)));
+                ResponseEntity.status(HttpStatus.ACCEPTED).body(new RunSessionResponse(sessionId)));
   }
 
   @GetMapping(value = "/{id}/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<ServerSentEvent<SessionResponse>> streamSessionEvents(@PathVariable String id) {
+
     return getSessionUseCase
-        .get(id)
-        .switchIfEmpty(
-            Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found")))
-        .flatMapMany(
-            initialSession -> {
-              Flux<ServerSentEvent<SessionResponse>> initial =
-                  Mono.just(ServerSentEvent.builder(initialSession).build()).flux();
-
-              Flux<ServerSentEvent<SessionResponse>> updates =
-                  eventPublisher
-                      .subscribe(id)
-                      .map(
-                          session ->
-                              new SessionResponse(
-                                  session.id(),
-                                  session.language(),
-                                  session.sdkVersion(),
-                                  session.status(),
-                                  session.createdAt(),
-                                  session.startedAt(),
-                                  session.completedAt(),
-                                  session.durationsMs(),
-                                  session.requestPayload(),
-                                  session.responsePayload(),
-                                  session.logs(),
-                                  session.errorMessage()))
-                      .map(response -> ServerSentEvent.builder(response).build());
-
-              return initial.concatWith(updates);
-            });
+        .streamEvents(id)
+        .map(response -> ServerSentEvent.<SessionResponse>builder(response).build())
+        .onErrorMap(
+            SessionNotFoundException.class,
+            e -> new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage()));
   }
 
   @GetMapping("/{id}")

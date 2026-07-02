@@ -4,8 +4,11 @@
 package io.github.opensri.playground_service.application;
 
 import io.github.opensri.playground_service.api.dto.SessionResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface GetSessionUseCase {
   Mono<SessionResponse> get(String sessionId);
+
+  Flux<SessionResponse> streamEvents(String id);
 }

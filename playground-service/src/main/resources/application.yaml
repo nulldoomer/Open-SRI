@@ -1,10 +1,33 @@
 spring:
   application:
     name: playground-service
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USER}
+      password: ${REDIS_PWD}
+      timeout: 2000ms        # Formato correcto para duración
+      ssl:
+        enabled: false
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+        shutdown-timeout: 200ms
 
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    io.lettuce.core: DEBUG
+
+# Nota: Asegúrate de que tu librería personalizada de rate-limit
+# mapee correctamente estos sufijos de tiempo personalizados ('1m', '10m')
 rate-limit:
   enabled: true
-  capacity: 20          # requests allowed per window, per client
-  refill-period: 1m     # window over which tokens are replenished
-  idle-expiry: 10m      # a client's bucket is evicted after this much inactivity
-  max-clients: 100000   # cap on live buckets in memory (bounds by count, not only by time)
+  capacity: 20
+  refill-period: 1m
+  idle-expiry: 10m
+  max-clients: 100000

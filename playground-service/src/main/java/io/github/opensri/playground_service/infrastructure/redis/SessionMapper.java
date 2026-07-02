@@ -3,15 +3,18 @@
 
 package io.github.opensri.playground_service.infrastructure.redis;
 
+import io.github.opensri.playground_service.domain.model.InvoicePayload;
 import io.github.opensri.playground_service.domain.model.PlaygroundSession;
 import io.github.opensri.playground_service.domain.model.SdkLanguage;
 import io.github.opensri.playground_service.domain.model.SessionLog;
 import io.github.opensri.playground_service.domain.model.SessionStatus;
+import io.github.opensri.playground_service.infrastructure.redis.utils.InvoicePayloadSerializer;
+import io.github.opensri.playground_service.infrastructure.redis.utils.SessionLogSerializer;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,51 +33,48 @@ public class SessionMapper {
   private static final String LOGS = "logs";
   private static final String ERROR_MESSAGE = "errorMessage";
 
-  public Map<String, String> toMap(PlaygroundSession session) {
-    Map<String, String> map = new HashMap<>();
+  private final InvoicePayloadSerializer payloadSerializer;
+
+  public SessionMapper(InvoicePayloadSerializer payloadSerializer) {
+    this.payloadSerializer = payloadSerializer;
+  }
+
+  public Map<String, Object> toMap(PlaygroundSession session) {
+
+    // Map object to store data key - value data on Redis
+    Map<String, Object> map = new HashMap<>();
     map.put(ID, session.id());
     map.put(LANGUAGE, session.language().name());
     map.put(SDK_VERSION, session.sdkVersion());
     map.put(STATUS, session.status().name());
     map.put(CREATED_AT, session.createdAt().toString());
+    map.put(REQUEST_PAYLOAD, payloadSerializer.serialize(session.requestPayload()));
 
-    if (session.startedAt() != null) {
-      map.put(STARTED_AT, session.startedAt().toString());
-    }
-    if (session.completedAt() != null) {
-      map.put(COMPLETED_AT, session.completedAt().toString());
-    }
-    if (session.durationsMs() != null) {
-      map.put(DURATION_MS, session.durationsMs().toString());
-    }
-
-    map.put(REQUEST_PAYLOAD, session.requestPayload());
-
-    if (session.responsePayload() != null) {
-      map.put(RESPONSE_PAYLOAD, session.responsePayload());
-    }
+    putIfPresent(map, STARTED_AT, session.startedAt(), Instant::toString);
+    putIfPresent(map, COMPLETED_AT, session.completedAt(), Instant::toString);
+    putIfPresent(map, DURATION_MS, session.durationsMs(), Object::toString);
+    putIfPresent(map, RESPONSE_PAYLOAD, session.responsePayload(), Function.identity());
+    putIfPresent(map, ERROR_MESSAGE, session.errorMessage(), Function.identity());
 
     if (!session.logs().isEmpty()) {
-      StringBuilder logsBuilder = new StringBuilder();
-      for (int i = 0; i < session.logs().size(); i++) {
-        SessionLog log = session.logs().get(i);
-        if (i > 0) {
-          logsBuilder.append("|||");
-        }
-        logsBuilder.append(log.timeStamp()).append("::").append(log.message());
-      }
-      map.put(LOGS, logsBuilder.toString());
+      map.put(LOGS, SessionLogSerializer.serialize(session.logs()));
     }
-
-    if (session.errorMessage() != null) {
-      map.put(ERROR_MESSAGE, session.errorMessage());
-    }
-
     return map;
   }
 
+  // Generic method to handle null validation
+  private <T> void putIfPresent(
+      Map<String, Object> map, String key, T value, Function<T, String> toString) {
+
+    if (value != null) {
+      map.put(key, toString.apply(value));
+    }
+  }
+
   public PlaygroundSession fromMap(Map<String, String> map) {
-    List<SessionLog> logs = parseLogs(map.get(LOGS));
+
+    InvoicePayload payload = payloadSerializer.deserialize(map.get(REQUEST_PAYLOAD));
+    List<SessionLog> logs = SessionLogSerializer.deserialize(map.get(LOGS));
 
     return new PlaygroundSession(
         map.get(ID),
@@ -85,26 +85,9 @@ public class SessionMapper {
         map.get(STARTED_AT) != null ? Instant.parse(map.get(STARTED_AT)) : null,
         map.get(COMPLETED_AT) != null ? Instant.parse(map.get(COMPLETED_AT)) : null,
         map.get(DURATION_MS) != null ? Long.parseLong(map.get(DURATION_MS)) : null,
-        map.get(REQUEST_PAYLOAD),
+        payload,
         map.get(RESPONSE_PAYLOAD),
         logs,
         map.get(ERROR_MESSAGE));
-  }
-
-  private List<SessionLog> parseLogs(String logsString) {
-    List<SessionLog> logs = new ArrayList<>();
-    if (logsString == null || logsString.isEmpty()) {
-      return logs;
-    }
-
-    String[] logEntries = logsString.split("\\|\\|\\|");
-    for (String entry : logEntries) {
-      String[] parts = entry.split("::", 2);
-      if (parts.length == 2) {
-        logs.add(new SessionLog(Instant.parse(parts[0]), parts[1]));
-      }
-    }
-
-    return logs;
   }
 }

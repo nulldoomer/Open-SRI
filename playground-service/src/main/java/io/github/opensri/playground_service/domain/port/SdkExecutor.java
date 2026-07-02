@@ -4,8 +4,8 @@
 package io.github.opensri.playground_service.domain.port;
 
 import io.github.opensri.playground_service.domain.model.SdkLanguage;
-import io.github.opensri.playground_service.infrastructure.sdk.SdkExecutionRequest;
-import io.github.opensri.playground_service.infrastructure.sdk.SdkExecutionResult;
+import io.github.opensri.playground_service.infrastructure.sdk.dto.SdkExecutionRequest;
+import io.github.opensri.playground_service.infrastructure.sdk.dto.SdkExecutionResult;
 import reactor.core.publisher.Mono;
 
 public interface SdkExecutor {

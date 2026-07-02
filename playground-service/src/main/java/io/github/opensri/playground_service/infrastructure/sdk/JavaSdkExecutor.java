@@ -3,8 +3,18 @@
 
 package io.github.opensri.playground_service.infrastructure.sdk;
 
+import io.github.nulldoomer.opensri.api.client.OpenSRIClient;
+import io.github.nulldoomer.opensri.domain.entities.invoice.Invoice;
+import io.github.nulldoomer.opensri.domain.entities.responses.SendDocumentResult;
+import io.github.nulldoomer.opensri.shared.exceptions.OpenSRICommunicationException;
+import io.github.nulldoomer.opensri.shared.exceptions.OpenSRIInfrastructureException;
+import io.github.nulldoomer.opensri.shared.exceptions.OpenSRIValidationException;
+import io.github.opensri.playground_service.domain.model.InvoicePayload;
 import io.github.opensri.playground_service.domain.model.SdkLanguage;
 import io.github.opensri.playground_service.domain.port.SdkExecutor;
+import io.github.opensri.playground_service.infrastructure.sdk.dto.SdkExecutionRequest;
+import io.github.opensri.playground_service.infrastructure.sdk.dto.SdkExecutionResult;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -13,6 +23,14 @@ import reactor.core.publisher.Mono;
 @Component
 public class JavaSdkExecutor implements SdkExecutor {
 
+  private final OpenSRIClientFactory clientFactory;
+  private final InvoicePayloadMapper invoiceMapper;
+
+  public JavaSdkExecutor(OpenSRIClientFactory clientFactory, InvoicePayloadMapper invoiceMapper) {
+    this.clientFactory = clientFactory;
+    this.invoiceMapper = invoiceMapper;
+  }
+
   @Override
   public SdkLanguage supports() {
     return SdkLanguage.JAVA;
@@ -20,45 +38,68 @@ public class JavaSdkExecutor implements SdkExecutor {
 
   @Override
   public Mono<SdkExecutionResult> execute(SdkExecutionRequest request) {
-    return Mono.fromCallable(this::executeSync).onErrorResume(this::handleError);
+    long startTime = System.currentTimeMillis();
+    return Mono.fromCallable(() -> executeSync(request, startTime))
+        .onErrorResume(error -> handleError(error, startTime));
   }
 
-  private SdkExecutionResult executeSync() {
-    long startTime = System.currentTimeMillis();
-    List<String> logs = new ArrayList<>();
+  private SdkExecutionResult executeSync(SdkExecutionRequest request, long startTime) {
 
-    logs.add("Iniciando ejecución del SDK Java...");
-    logs.add("Versión SDK: " + "1.2.4");
-    logs.add("Lenguaje: JAVA");
+    List<String> logs = new ArrayList<>();
+    logs.add("[SDK] Iniciando ejecución del SDK Java OpenSRI...");
+    logs.add("[SDK] Versión: " + request.sdkVersion());
 
     try {
-      logs.add("Validando payload del comprobante...");
+      InvoicePayload payload = request.invoicePayload();
+      OpenSRIClient client = clientFactory.create(payload.issuerRuc());
+      Invoice invoice = invoiceMapper.toInvoice(payload);
 
-      logs.add("Creando cliente OpenSRI...");
-
-      logs.add("Ejecutando solicitud SOAP...");
-
-      String responsePayload = "<sri-response>Simulado por ahora</sri-response>";
-
-      logs.add("Respuesta recibida.");
+      logs.add("[SDK] Enviando documento al SRI...");
+      SendDocumentResult result = client.sendInvoice(invoice);
+      logs.add("[SDK] Documento enviado, estado: " + result.response().status());
 
       long executionTime = System.currentTimeMillis() - startTime;
+      String responsePayload =
+          "accessKey="
+              + result.accessKey()
+              + ", status="
+              + result.response().status()
+              + ", messages="
+              + result.response().messages();
 
       return new SdkExecutionResult(responsePayload, logs, executionTime, null, true);
-    } catch (Exception e) {
-      long executionTime = System.currentTimeMillis() - startTime;
-      logs.add("Error durante la ejecución: " + e.getMessage());
 
-      return new SdkExecutionResult(null, logs, executionTime, e.getMessage(), false);
+    } catch (OpenSRIValidationException
+        | OpenSRICommunicationException
+        | OpenSRIInfrastructureException
+        | IOException e) {
+      logs.add("[SDK] " + errorLabel(e) + ": " + e.getMessage());
+      return failedResult(logs, e, startTime);
     }
   }
 
-  private Mono<SdkExecutionResult> handleError(Throwable error) {
+  // ------------ Handle multi catching with a switch ----------------------
+  private String errorLabel(Exception e) {
+
+    return switch (e) {
+      case OpenSRIValidationException ignored -> "Error de validación";
+      case OpenSRICommunicationException ignored -> "Error de comunicación con SRI";
+      case OpenSRIInfrastructureException ignored -> "Error de infraestructura";
+      case IOException ignored -> "Error al cargar la firma";
+      default -> "Error";
+    };
+  }
+
+  private SdkExecutionResult failedResult(List<String> logs, Exception error, long startTime) {
+    long executionTime = System.currentTimeMillis() - startTime;
+    return new SdkExecutionResult(null, logs, executionTime, error.getMessage(), false);
+  }
+
+  private Mono<SdkExecutionResult> handleError(Throwable error, long startTime) {
     List<String> logs = new ArrayList<>();
-    logs.add("Error en ejecución del SDK: " + error.getMessage());
-
-    long executionTime = System.currentTimeMillis();
-
+    logs.add("[SDK] Error fatal en ejecución: " + error.getClass().getSimpleName());
+    logs.add("[SDK] Mensaje: " + error.getMessage());
+    long executionTime = System.currentTimeMillis() - startTime;
     return Mono.just(new SdkExecutionResult(null, logs, executionTime, error.getMessage(), false));
   }
 }

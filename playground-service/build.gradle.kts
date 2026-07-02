@@ -45,7 +45,7 @@ dependencies {
 	implementation("io.github.nulldoomer:opensri:1.2.4")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
-
+	implementation("com.fasterxml.jackson.core:jackson-databind")
 
 	// Observability
 	implementation("org.springframework.boot:spring-boot-starter-actuator")

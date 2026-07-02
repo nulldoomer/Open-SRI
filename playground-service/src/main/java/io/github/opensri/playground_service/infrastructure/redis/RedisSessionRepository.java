@@ -6,7 +6,7 @@ package io.github.opensri.playground_service.infrastructure.redis;
 import io.github.opensri.playground_service.domain.model.PlaygroundSession;
 import io.github.opensri.playground_service.domain.port.SessionRepository;
 import java.time.Duration;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -16,11 +16,11 @@ public class RedisSessionRepository implements SessionRepository {
   private static final String REDIS_KEY_PREFIX = "session:";
   private static final Duration SESSION_TTL = Duration.ofHours(1);
 
-  private final ReactiveRedisTemplate<String, String> redisTemplate;
+  private final ReactiveStringRedisTemplate redisTemplate;
   private final SessionMapper sessionMapper;
 
   public RedisSessionRepository(
-      ReactiveRedisTemplate<String, String> redisTemplate, SessionMapper sessionMapper) {
+      ReactiveStringRedisTemplate redisTemplate, SessionMapper sessionMapper) {
     this.redisTemplate = redisTemplate;
     this.sessionMapper = sessionMapper;
   }

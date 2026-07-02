@@ -90,7 +90,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <p className="font-mono text-[11px] text-neutral-400 dark:text-neutral-600 uppercase tracking-widest mb-4">
-              // SDK SURFACE
+              ■■■ SDK SURFACE
             </p>
             <h2 className="font-heading font-black uppercase text-neutral-900 dark:text-white text-4xl lg:text-5xl leading-[0.9] mb-6">
               UNA LLAMADA
@@ -105,7 +105,7 @@ export default function Home() {
             </p>
             <Link
               href="/doc"
-              className="inline-flex items-center gap-1.5 font-mono text-xs text-neutral-500 uppercase tracking-widest hover:text-red-600 dark:hover:text-red-500 transition-colors"
+              className="inline-flex items-center gap-1.5 font-mono text-xs text-neutral-500 uppercase tracking-widest hover:text-red-600 dark:hover:text-red-300 transition-colors"
             >
               Ver documentación
               <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2} />
@@ -131,7 +131,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-xl mb-12">
             <p className="font-mono text-[11px] text-neutral-400 dark:text-neutral-600 uppercase tracking-widest mb-4">
-              // PIPELINE INTERNO
+              ■■■ PIPELINE INTERNO
             </p>
             <h2 className="font-heading font-black uppercase text-neutral-900 dark:text-white text-4xl lg:text-5xl leading-[0.9] mb-4">
               6 PASOS
@@ -176,7 +176,7 @@ export default function Home() {
 
           <Link
             href="/playground"
-            className="inline-flex items-center gap-2 border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-red-600 hover:text-red-600 dark:hover:border-red-600 dark:hover:text-red-500 px-6 py-3 text-xs font-mono uppercase tracking-widest transition-colors"
+            className="inline-flex items-center gap-2 border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-red-600 hover:text-red-600 dark:hover:border-red-300 dark:hover:text-red-300 px-6 py-3 text-xs font-mono uppercase tracking-widest transition-colors"
           >
             <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2} />
             Ver en el Playground

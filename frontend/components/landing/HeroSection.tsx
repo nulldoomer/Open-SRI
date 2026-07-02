@@ -4,7 +4,7 @@ import { GithubIcon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 
 const version = "v1.0.0";
-const javaSDKVersion = "v1.2.0";
+const javaSDKVersion = "v1.2.4";
 
 export default function HeroSection() {
   return (
@@ -19,7 +19,7 @@ export default function HeroSection() {
 
         {/* System status bar */}
         <div className="flex items-center gap-3 font-mono text-[11px] text-neutral-400 dark:text-neutral-600 uppercase tracking-widest mb-16 lg:mb-20">
-          <span className="text-red-600 text-xs">■■■</span>
+          <span className="text-red-300 text-xs">■■■</span>
           <span> NULL-PRIVATIZATION / OPENSRI</span>
           <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-800" />
           <span className="hidden sm:inline">{version}</span>

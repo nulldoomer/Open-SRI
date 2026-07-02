@@ -184,8 +184,7 @@ bun dev
 ## Roadmap
 
 - [x] SDK Java — publicado en Maven Central
-- [x] Backend Spring Boot (modo en-memoria)
-- [ ] Integración Redis (queue + pub/sub)
+- [x] SSE Backend reactivo con conexion a Redis
 - [ ] Conexión frontend ↔ backend
 - [ ] SDK C#
 - [ ] SDK Go

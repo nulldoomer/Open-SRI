@@ -23,11 +23,9 @@ logging:
     org.springframework.data.redis: DEBUG
     io.lettuce.core: DEBUG
 
-# Nota: Asegúrate de que tu librería personalizada de rate-limit
-# mapee correctamente estos sufijos de tiempo personalizados ('1m', '10m')
 rate-limit:
   enabled: true
-  capacity: 20
-  refill-period: 1m
-  idle-expiry: 10m
+  capacity: 10
+  refill-period: 60000ms
+  idle-expiry: 10000ms
   max-clients: 100000

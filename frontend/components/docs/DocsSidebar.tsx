@@ -26,7 +26,7 @@ const sections = [
     items: [
       { href: "/doc/api/invoice-builder", label: "InvoiceBuilder" },
       { href: "/doc/api/opensri-client", label: "OpenSRIClient" },
-      { href: "/doc/api/send-invoice-result", label: "SendInvoiceResult" },
+      { href: "/doc/api/send-invoice-result", label: "SendDocumentResult" },
     ],
   },
 ];

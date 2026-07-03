@@ -3,12 +3,9 @@
 
 package io.github.opensri.playground_service.infrastructure.redis;
 
-import io.github.opensri.playground_service.domain.model.InvoicePayload;
-import io.github.opensri.playground_service.domain.model.PlaygroundSession;
-import io.github.opensri.playground_service.domain.model.SdkLanguage;
-import io.github.opensri.playground_service.domain.model.SessionLog;
-import io.github.opensri.playground_service.domain.model.SessionStatus;
+import io.github.opensri.playground_service.domain.model.*;
 import io.github.opensri.playground_service.infrastructure.redis.utils.InvoicePayloadSerializer;
+import io.github.opensri.playground_service.infrastructure.redis.utils.ResponsePayloadSerializer;
 import io.github.opensri.playground_service.infrastructure.redis.utils.SessionLogSerializer;
 import java.time.Instant;
 import java.util.HashMap;
@@ -34,9 +31,11 @@ public class SessionMapper {
   private static final String ERROR_MESSAGE = "errorMessage";
 
   private final InvoicePayloadSerializer payloadSerializer;
+  private final ResponsePayloadSerializer responsePayloadSerializer;
 
-  public SessionMapper(InvoicePayloadSerializer payloadSerializer) {
+  public SessionMapper(InvoicePayloadSerializer payloadSerializer, ResponsePayloadSerializer responsePayloadSerializer) {
     this.payloadSerializer = payloadSerializer;
+      this.responsePayloadSerializer = responsePayloadSerializer;
   }
 
   public Map<String, Object> toMap(PlaygroundSession session) {
@@ -53,7 +52,8 @@ public class SessionMapper {
     putIfPresent(map, STARTED_AT, session.startedAt(), Instant::toString);
     putIfPresent(map, COMPLETED_AT, session.completedAt(), Instant::toString);
     putIfPresent(map, DURATION_MS, session.durationsMs(), Object::toString);
-    putIfPresent(map, RESPONSE_PAYLOAD, session.responsePayload(), Function.identity());
+    putIfPresent(map, RESPONSE_PAYLOAD, responsePayloadSerializer.serialize(session.responsePayload()),
+            Function.identity());
     putIfPresent(map, ERROR_MESSAGE, session.errorMessage(), Function.identity());
 
     if (!session.logs().isEmpty()) {
@@ -74,6 +74,7 @@ public class SessionMapper {
   public PlaygroundSession fromMap(Map<String, String> map) {
 
     InvoicePayload payload = payloadSerializer.deserialize(map.get(REQUEST_PAYLOAD));
+    ResponsePayload responsePayload = responsePayloadSerializer.deserialize(map.get(RESPONSE_PAYLOAD));
     List<SessionLog> logs = SessionLogSerializer.deserialize(map.get(LOGS));
 
     return new PlaygroundSession(
@@ -86,7 +87,7 @@ public class SessionMapper {
         map.get(COMPLETED_AT) != null ? Instant.parse(map.get(COMPLETED_AT)) : null,
         map.get(DURATION_MS) != null ? Long.parseLong(map.get(DURATION_MS)) : null,
         payload,
-        map.get(RESPONSE_PAYLOAD),
+        responsePayload,
         logs,
         map.get(ERROR_MESSAGE));
   }

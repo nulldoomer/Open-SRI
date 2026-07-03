@@ -10,6 +10,8 @@ import io.github.nulldoomer.opensri.shared.exceptions.OpenSRICommunicationExcept
 import io.github.nulldoomer.opensri.shared.exceptions.OpenSRIInfrastructureException;
 import io.github.nulldoomer.opensri.shared.exceptions.OpenSRIValidationException;
 import io.github.opensri.playground_service.domain.model.InvoicePayload;
+import io.github.opensri.playground_service.domain.model.PayloadMessage;
+import io.github.opensri.playground_service.domain.model.ResponsePayload;
 import io.github.opensri.playground_service.domain.model.SdkLanguage;
 import io.github.opensri.playground_service.domain.port.SdkExecutor;
 import io.github.opensri.playground_service.infrastructure.sdk.dto.SdkExecutionRequest;
@@ -59,13 +61,20 @@ public class JavaSdkExecutor implements SdkExecutor {
       logs.add("[SDK] Documento enviado, estado: " + result.response().status());
 
       long executionTime = System.currentTimeMillis() - startTime;
-      String responsePayload =
-          "accessKey="
-              + result.accessKey()
-              + ", status="
-              + result.response().status()
-              + ", messages="
-              + result.response().messages();
+
+      ResponsePayload responsePayload = new ResponsePayload(
+              result.accessKey(),
+              result.response().status(),
+              result.response().messages()
+                      .stream()
+                      .map(message ->
+                              new PayloadMessage(
+                                      message.identifier(),
+                                      message.message(),
+                                      message.AdditionalInfo(),
+                                      message.type()))
+                      .toList()
+      );
 
       return new SdkExecutionResult(responsePayload, logs, executionTime, null, true);
 

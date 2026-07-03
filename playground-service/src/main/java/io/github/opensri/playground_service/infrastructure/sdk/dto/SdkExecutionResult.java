@@ -3,10 +3,12 @@
 
 package io.github.opensri.playground_service.infrastructure.sdk.dto;
 
+import io.github.opensri.playground_service.domain.model.ResponsePayload;
+
 import java.util.List;
 
 public record SdkExecutionResult(
-    String responsePayload,
+    ResponsePayload responsePayload,
     List<String> logs,
     Long executionTimeMs,
     String errorMessage,

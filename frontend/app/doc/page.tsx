@@ -5,13 +5,13 @@ import LangCodeBlock from "@/components/docs/LangCodeBlock";
 
 const mavenCode = `<dependency>
   <groupId>io.github.nulldoomer</groupId>
-  <artifactId>opensri-java-sdk</artifactId>
-  <version>1.0.0</version>
+  <artifactId>opensri</artifactId>
+  <version>1.2.4</version>
 </dependency>`;
 
-const gradleCode = `implementation 'io.github.nulldoomer:opensri-java-sdk:1.0.0'`;
+const gradleCode = `implementation 'io.github.nulldoomer:opensri:1.2.4'`;
 
-const gradleKotlinCode = `implementation("io.github.nulldoomer:opensri-java-sdk:1.0.0")`;
+const gradleKotlinCode = `implementation("io.github.nulldoomer:opensri:1.2.4")`;
 
 const quickStartCode = `// Leer el certificado P12
 byte[] cert = Files.readAllBytes(Paths.get("certificado.p12"));

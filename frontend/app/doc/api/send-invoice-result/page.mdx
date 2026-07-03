@@ -1,13 +1,13 @@
 import Callout from '@/components/docs/Callout'
 
-# SendInvoiceResult
+# SendDocumentResult
 
-`SendInvoiceResult` es el record Java devuelto por `client.sendInvoice()`. Agrupa la clave de acceso generada, el XML firmado completo y la respuesta de recepción del SRI.
+`SendDocumentResult` es el record Java devuelto por `client.sendInvoice()`. Agrupa la clave de acceso generada, el XML firmado completo y la respuesta de recepción del SRI.
 
 ## Definición
 
 ```java
-public record SendInvoiceResult(
+public record SendDocumentResult(
     String accessKey,        // clave de acceso de 49 dígitos
     String signedXml,        // XML firmado enviado al SRI
     ReceiptResponse response // respuesta del servicio de recepción

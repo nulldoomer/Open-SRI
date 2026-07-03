@@ -3,16 +3,16 @@ import Callout from '@/components/docs/Callout'
 
 export const mavenCode = `<dependency>
   <groupId>io.github.nulldoomer</groupId>
-  <artifactId>opensri-java-sdk</artifactId>
-  <version>1.0.0</version>
+  <artifactId>opensri</artifactId>
+  <version>1.2.4</version>
 </dependency>`
 
-export const gradleGroovyCode = `implementation 'io.github.nulldoomer:opensri-java-sdk:1.0.0'`
+export const gradleGroovyCode = `implementation 'io.github.nulldoomer:opensri:1.2.4'`
 
-export const gradleKotlinCode = `implementation("io.github.nulldoomer:opensri-java-sdk:1.0.0")`
+export const gradleKotlinCode = `implementation("io.github.nulldoomer:opensri:1.2.4")`
 
-export const verifyCode = `import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
-import io.github.opensri.domain.enums.Environment;
+export const verifyCode = `import io.github.nulldoomer.opensri.api.builders.client.OpenSRIClientBuilder;
+import io.github.nulldoomer.opensri.domain.enums.Environment;
 
 // Si compila, la dependencia está correctamente instalada
 System.out.println("Open-SRI SDK listo.");`
@@ -42,8 +42,8 @@ No se requiere configurar repositorios adicionales. Maven Central está incluido
 Después de añadir la dependencia y ejecutar la descarga (`mvn install` o `gradle build`), verifica que el classpath incluye las clases del SDK:
 
 ```java
-import io.github.opensri.api.builders.client.OpenSRIClientBuilder;
-import io.github.opensri.domain.enums.Environment;
+import io.github.nulldoomer.opensri.api.builders.client.OpenSRIClientBuilder;
+import io.github.nulldoomer.opensri.domain.enums.Environment;
 ```
 
 Si el proyecto compila sin errores de importación, la instalación es correcta.

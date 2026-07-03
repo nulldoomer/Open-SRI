@@ -7,7 +7,7 @@ import Callout from '@/components/docs/Callout'
 ## Iniciar el builder
 
 ```java
-import io.github.opensri.api.builders.invoice.InvoiceBuilder;
+import io.github.nulldoomer.opensri.api.builders.invoice.InvoiceBuilder;
 
 InvoiceBuilder.builder() // → IssueDateStep
 ```
@@ -44,13 +44,16 @@ TaxInfo taxInfo = new TaxInfo(1, issuer, "Av. Amazonas N37-29");
 
 El primer argumento de `TaxInfo` es el tipo de emisión (`1` = emisión normal).
 
+***( Nota histórica: En el antiguo esquema "online", existía el código 2 para emisiones por "Indisponibilidad del Sistema", pero quedó obsoleto con la obligatoriedad del esquema fuera de línea actual).***
+
 ### `.documentNumber(DocumentNumber)`
 
 Numeración del comprobante: código de tipo, establecimiento, punto de emisión y secuencial.
 
 ```java
 // DocumentNumber(documentCode, establishment, emissionPoint, sequential)
-.documentNumber(new DocumentNumber("01", "001", "001", "000000001"))
+// DocumentType.getCode() devuelve "01" para facturas
+.documentNumber(new DocumentNumber(DocumentType.getCode(), "001", "001", "000000001"))
 ```
 
 El campo `documentCode` identifica el tipo de comprobante. `01` corresponde a factura.

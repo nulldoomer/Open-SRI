@@ -19,10 +19,10 @@ const sdks: Sdk[] = [
   {
     language: "Java",
     icon: siOpenjdk,
-    version: "1.0.0",
+    version: "1.2.4",
     status: "stable",
     installCode:
-      "<dependency>\n  <groupId>io.github.nulldoomer</groupId>\n  <artifactId>opensri-java-sdk</artifactId>\n  <version>1.0.0</version>\n</dependency>",
+      "<dependency>\n  <groupId>io.github.nulldoomer</groupId>\n  <artifactId>opensri</artifactId>\n  <version>1.2.4</version>\n</dependency>",
     docsUrl: "/docs",
   },
   {

@@ -206,7 +206,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <p className="font-mono text-[11px] text-neutral-400 dark:text-neutral-600 uppercase tracking-widest mb-1">
-              // SIGUIENTE PASO
+              SIGUIENTE PASO
             </p>
             <p className="font-heading font-bold text-neutral-900 dark:text-neutral-100 text-xl">
               Mira el flujo pipeline del SDK trabajando

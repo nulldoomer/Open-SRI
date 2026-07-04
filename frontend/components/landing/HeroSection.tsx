@@ -127,8 +127,8 @@ export default function HeroSection() {
               </div>
               <div className="p-4 font-mono text-[11px] text-neutral-500 space-y-0.5 leading-relaxed">
                 <p className="text-neutral-700 dark:text-neutral-300">client.sendInvoice(invoice);</p>
-                <p>// Una línea.</p>
-                <p>// Status: RECIBIDA</p>
+                <p>Una línea</p>
+                <p>Status: RECIBIDA</p>
               </div>
             </div>
           </div>

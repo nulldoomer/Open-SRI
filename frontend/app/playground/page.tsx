@@ -43,7 +43,6 @@ export default function Playground() {
     pipelineSteps,
     elapsedMs,
     isRunning,
-    error,
     runSession,
   } =
     usePlaygroundSession();

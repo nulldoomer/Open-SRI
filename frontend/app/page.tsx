@@ -10,7 +10,6 @@ import {
   LockKeyIcon,
   Wifi01Icon,
   Clock01Icon,
-  SecurityValidationIcon,
 } from "@hugeicons/core-free-icons";
 import HeroSection from "@/components/landing/HeroSection";
 import FeatureCard from "@/components/landing/FeatureCard";

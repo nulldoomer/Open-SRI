@@ -21,6 +21,12 @@ export interface PipelineStep {
   durationMs?: number;
 }
 
+export interface PipelineStepState {
+  id: PipelineStepId;
+  status: StepStatus;
+  detail?: string;
+}
+
 export type TraceLevel = "INFO" | "OK" | "WARN" | "ERROR";
 
 export interface TraceEvent {
@@ -28,8 +34,6 @@ export interface TraceEvent {
   level: TraceLevel;
   message: string;
 }
-
-export type SriStatus = "RECIBIDA" | "DEVUELTA" | "AUTORIZADO" | "NO_AUTORIZADO";
 
 export interface SriMessage {
   identifier: string;
@@ -39,29 +43,48 @@ export interface SriMessage {
 }
 
 export interface SriResponse {
-  status: SriStatus;
+  status: string;
   accessKey: string;
-  messages: SriMessage[];
   authorizationDate?: string;
+  authorizedXml?: string;
+  messages: SriMessage[];
 }
 
-export type Ambiente = "PRUEBAS" | "PRODUCCION";
-export type Lenguaje = "Java" | "CSharp" | "Go";
+export type PlaygroundLanguage = "JAVA" | "CSHARP" | "GO";
+export type PaymentMethod = "SIN_SISTEMA_FINANCIERO";
+export type DocumentVersion = "VERSION_100";
 
 export interface InvoiceItem {
-  descripcion: string;
-  cantidad: number;
-  precio: number;
+  mainCode: string;
+  auxiliaryCode: string;
+  description: string;
+  quantity: number;
+  price: number;
+  taxCode: string;
+  taxPercentageCode: string;
+  taxRate: number;
 }
 
-export interface InvoiceFormData {
-  rucEmisor: string;
-  nombreEmisor: string;
-  identificacionCliente: string;
-  nombreCliente: string;
-  ambiente: Ambiente;
-  lenguaje: Lenguaje;
+export interface InvoicePayload {
+  issuerRuc: string;
+  issuerName: string;
+  establishmentAddress: string;
+  codDoc: string;
+  estab: string;
+  ptoEmi: string;
+  secuencial: string;
+  buyerName: string;
+  buyerIdentification: string;
+  buyerIdentificationType: string;
+  paymentMethod: PaymentMethod;
+  documentVersion: DocumentVersion;
   items: InvoiceItem[];
+}
+
+export interface PlaygroundSessionRequest {
+  invoicePayload: InvoicePayload;
+  language: PlaygroundLanguage;
+  sdkVersion: string;
 }
 
 export interface PlaygroundResult {

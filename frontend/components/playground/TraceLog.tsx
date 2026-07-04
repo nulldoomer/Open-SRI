@@ -29,15 +29,37 @@ export default function TraceLog({ traces }: TraceLogProps) {
 
   if (traces.length === 0) {
     return (
-      <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-        Las trazas del SDK aparecerán aquí en tiempo real.
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+            Observabilidad
+          </p>
+          <h3 className="text-lg font-semibold text-foreground">Trazas del pipeline</h3>
+          <p className="text-sm text-muted-foreground">
+            Las trazas aparecerán aquí en tiempo real a medida que la sesión avance.
+          </p>
+        </div>
+
+        <div className="flex items-center justify-center py-12 text-muted-foreground text-sm border border-border/70 rounded-xl bg-muted/10">
+          Las trazas del SDK aparecerán aquí en tiempo real.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex gap-2">
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+          Observabilidad
+        </p>
+        <h3 className="text-lg font-semibold text-foreground">Trazas del pipeline</h3>
+        <p className="text-sm text-muted-foreground">
+          Filtra la ejecución por severidad para seguir el flujo paso a paso.
+        </p>
+      </div>
+
+      <div className="flex gap-2 flex-wrap">
         {filters.map((f) => (
           <button
             key={f.value}
@@ -54,7 +76,7 @@ export default function TraceLog({ traces }: TraceLogProps) {
         ))}
       </div>
 
-      <div className="border border-border rounded-sm bg-muted/10 min-h-40 max-h-80 overflow-y-auto p-3 space-y-0.5 font-mono text-xs">
+      <div className="border border-border/70 rounded-xl bg-muted/10 min-h-40 max-h-80 overflow-y-auto p-3 space-y-0.5 font-mono text-xs shadow-sm">
         {visible.length === 0 ? (
           <p className="text-muted-foreground py-4 text-center">
             Sin trazas con este filtro.

@@ -185,7 +185,7 @@ bun dev
 
 - [x] SDK Java — publicado en Maven Central
 - [x] SSE Backend reactivo con conexion a Redis
-- [ ] Conexión frontend ↔ backend
+- [x] Conexión frontend ↔ backend
 - [ ] SDK C#
 - [ ] SDK Go
 

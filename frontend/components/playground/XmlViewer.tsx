@@ -44,7 +44,17 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
   const currentXml = tab === "signed" ? signedXml : unsignedXml;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+          Artefactos
+        </p>
+        <h3 className="text-lg font-semibold text-foreground">XML generado</h3>
+        <p className="text-sm text-muted-foreground">
+          Revisa el XML sin firmar y el XML firmado cuando el backend los exponga.
+        </p>
+      </div>
+
       <Tabs value={tab} onValueChange={setTab}>
         <div className="flex items-center justify-between">
           <TabsList variant="line">
@@ -73,7 +83,7 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
           )}
         </div>
 
-        <div className="mt-3 border border-border rounded-sm bg-muted/10 min-h-64 max-h-96 overflow-y-auto">
+        <div className="mt-3 border border-border/70 rounded-xl bg-muted/10 min-h-64 max-h-96 overflow-y-auto shadow-sm">
           <TabsContent value="unsigned">
             <XmlCode xml={unsignedXml} />
           </TabsContent>

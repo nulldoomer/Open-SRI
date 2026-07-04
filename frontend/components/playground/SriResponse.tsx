@@ -22,25 +22,53 @@ interface SriResponseProps {
 export default function SriResponse({ response }: SriResponseProps) {
   if (!response) {
     return (
-      <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-        La respuesta del SRI aparecerá aquí después de enviar la factura.
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+            Resultado
+          </p>
+          <h3 className="text-lg font-semibold text-foreground">Respuesta SRI</h3>
+          <p className="text-sm text-muted-foreground">
+            El estado final y los mensajes de autorización se mostrarán aquí.
+          </p>
+        </div>
+
+        <div className="flex items-center justify-center py-12 text-muted-foreground text-sm border border-border/70 rounded-xl bg-muted/10">
+          La respuesta del SRI aparecerá aquí después de enviar la factura.
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start gap-4 p-5 border border-border rounded-sm">
+      <div className="space-y-1">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+          Resultado
+        </p>
+        <h3 className="text-lg font-semibold text-foreground">Respuesta SRI</h3>
+        <p className="text-sm text-muted-foreground">
+          Estado, clave de acceso y mensajes devueltos por el servicio.
+        </p>
+      </div>
+
+      <div className="flex items-start gap-4 p-5 border border-border/70 rounded-xl bg-background/70 shadow-sm">
         <div className="flex-1 space-y-3">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-1">
               Estado
             </p>
-            <p className={cn("text-2xl font-heading font-bold", statusStyles[response.status])}>
+            <p
+              className={cn(
+                "text-2xl font-heading font-bold",
+                statusStyles[response.status as keyof typeof statusStyles] ?? "text-foreground"
+              )}
+            >
               {response.status}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              {statusDescriptions[response.status]}
+              {statusDescriptions[response.status as keyof typeof statusDescriptions] ??
+                "El SRI devolvió una respuesta con un estado no reconocido."}
             </p>
           </div>
 
@@ -72,7 +100,7 @@ export default function SriResponse({ response }: SriResponseProps) {
               <div
                 key={i}
                 className={cn(
-                  "p-3 border rounded-sm text-sm",
+                  "p-3 border rounded-xl text-sm shadow-sm",
                   msg.type === "ERROR"
                     ? "border-destructive/30 bg-destructive/5 text-destructive"
                     : "border-border bg-muted/20"

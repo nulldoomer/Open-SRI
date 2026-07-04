@@ -1,10 +1,10 @@
 import { NextRequest } from "next/server";
 
-const BACKEND_URL =  process.env.PLAYGROUND_BACKEND_URL; 
+const BACKEND_URL = process.env.PLAYGROUND_BACKEND_URL;
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string}> }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
 
@@ -24,10 +24,11 @@ export async function GET(
     }
 
     if (!backendResponse.ok) {
-        return new Response("Session not found", { status: backendResponse.status });
+        const errorBody = await backendResponse.text();
+        return new Response(errorBody || "Failed to connect to SSE stream", {
+            status: backendResponse.status,
+        });
     }
-
-    // Return the stream directly without buffering it in memory
 
     return new Response(backendResponse.body, {
         headers: {

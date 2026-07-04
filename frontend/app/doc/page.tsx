@@ -1,5 +1,3 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Alert01Icon } from "@hugeicons/core-free-icons";
 import LanguageTabs from "@/components/docs/LanguageTabs";
 import LangCodeBlock from "@/components/docs/LangCodeBlock";
 
@@ -74,6 +72,18 @@ export default function Docs() {
               { label: "Gradle (Kotlin)", code: gradleKotlinCode, lang: "kotlin" },
             ]}
           />
+          <p className="mt-3 text-sm text-muted-foreground">
+            La librería Java está publicada en{" "}
+            <a
+              href="https://central.sonatype.com/artifact/io.github.nulldoomer/opensri"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              Maven Central
+            </a>
+            .
+          </p>
         </section>
 
         <section>
@@ -116,19 +126,6 @@ export default function Docs() {
             </li>
           </ul>
         </section>
-
-        <div className="flex items-center gap-2 p-4 border border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/20 rounded-sm text-sm">
-          <HugeiconsIcon
-            icon={Alert01Icon}
-            size={16}
-            strokeWidth={1.5}
-            className="text-amber-600 dark:text-amber-400 shrink-0"
-          />
-          <p className="text-amber-800 dark:text-amber-200">
-            El SDK actualmente soporta solo el <strong>ambiente de pruebas</strong> del SRI.
-            El soporte de producción está en el roadmap.
-          </p>
-        </div>
       </div>
     </>
   );

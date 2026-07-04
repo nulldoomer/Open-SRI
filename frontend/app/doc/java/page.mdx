@@ -1,5 +1,4 @@
 import LanguageTabs from '@/components/docs/LanguageTabs'
-import Callout from '@/components/docs/Callout'
 
 export const mavenCode = `<dependency>
   <groupId>io.github.nulldoomer</groupId>
@@ -165,6 +164,6 @@ El SDK de Open-SRI está escrito en Java y su primera versión soporta Java 17+.
 - **Maneja `DEVUELTA`** — siempre revisa `result.response().status()` antes de asumir que el comprobante fue aceptado.
 - **Guarda el XML firmado** — `result.signedXml()` es la evidencia legal del comprobante enviado.
 
-<Callout type="warning">
-El SDK actualmente soporta únicamente el ambiente de pruebas (`Environment.PRUEBAS`). El soporte de producción está en el roadmap.
-</Callout>
+## Publicación
+
+La librería Java está disponible en [Maven Central](https://central.sonatype.com/artifact/io.github.nulldoomer/opensri-java-sdk).

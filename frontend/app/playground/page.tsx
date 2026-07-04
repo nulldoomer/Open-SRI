@@ -83,7 +83,7 @@ export default function Playground() {
         </p>
       </div>
 
-      <div className="p-4 mb-6 border border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-950/20 rounded-sm text-xs text-emerald-800 dark:text-emerald-200">
+      {/* <div className="p-4 mb-6 border border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-950/20 rounded-sm text-xs text-emerald-800 dark:text-emerald-200">
         <strong>Backend conectado:</strong> el playground consume sesiones, trazas y respuesta
         desde tu API.
       </div>
@@ -92,7 +92,7 @@ export default function Playground() {
         <div className="p-4 mb-6 border border-destructive/30 bg-destructive/5 rounded-sm text-xs text-destructive">
           No se pudo iniciar la sesión: {error}
         </div>
-      )}
+      )} */}
 
       <div className="border border-border/70 rounded-xl p-6 mb-6 bg-background/70 shadow-sm">
         <InvoiceForm onSubmit={handleSubmit} isRunning={isRunning} />

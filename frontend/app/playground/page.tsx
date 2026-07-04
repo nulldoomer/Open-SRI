@@ -101,7 +101,7 @@ export default function Playground() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList variant="line">
           <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
-          <TabsTrigger value="xml">XML Generado</TabsTrigger>
+          {/* <TabsTrigger value="xml">XML Generado</TabsTrigger> */}
           <TabsTrigger value="traces">Trazas</TabsTrigger>
           <TabsTrigger value="response">Respuesta SRI</TabsTrigger>
         </TabsList>

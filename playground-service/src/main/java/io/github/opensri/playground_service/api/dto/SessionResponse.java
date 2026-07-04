@@ -8,18 +8,18 @@ import java.time.Instant;
 import java.util.List;
 
 public record SessionResponse(
-        String id,
-        SdkLanguage language,
-        String sdkVersion,
-        SessionStatus status,
-        Instant createdAt,
-        Instant startedAt,
-        Instant completedAt,
-        Long durationMs,
-        InvoicePayload requestPayload,
-        ResponsePayload responsePayload,
-        List<SessionLog> logs,
-        String errorMessage) {
+    String id,
+    SdkLanguage language,
+    String sdkVersion,
+    SessionStatus status,
+    Instant createdAt,
+    Instant startedAt,
+    Instant completedAt,
+    Long durationMs,
+    InvoicePayload requestPayload,
+    ResponsePayload responsePayload,
+    List<SessionLog> logs,
+    String errorMessage) {
 
   public SessionResponse {
     logs = logs == null ? List.of() : List.copyOf(logs);

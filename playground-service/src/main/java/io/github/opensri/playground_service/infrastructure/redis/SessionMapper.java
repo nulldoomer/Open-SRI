@@ -33,9 +33,11 @@ public class SessionMapper {
   private final InvoicePayloadSerializer payloadSerializer;
   private final ResponsePayloadSerializer responsePayloadSerializer;
 
-  public SessionMapper(InvoicePayloadSerializer payloadSerializer, ResponsePayloadSerializer responsePayloadSerializer) {
+  public SessionMapper(
+      InvoicePayloadSerializer payloadSerializer,
+      ResponsePayloadSerializer responsePayloadSerializer) {
     this.payloadSerializer = payloadSerializer;
-      this.responsePayloadSerializer = responsePayloadSerializer;
+    this.responsePayloadSerializer = responsePayloadSerializer;
   }
 
   public Map<String, Object> toMap(PlaygroundSession session) {
@@ -52,8 +54,11 @@ public class SessionMapper {
     putIfPresent(map, STARTED_AT, session.startedAt(), Instant::toString);
     putIfPresent(map, COMPLETED_AT, session.completedAt(), Instant::toString);
     putIfPresent(map, DURATION_MS, session.durationsMs(), Object::toString);
-    putIfPresent(map, RESPONSE_PAYLOAD, responsePayloadSerializer.serialize(session.responsePayload()),
-            Function.identity());
+    putIfPresent(
+        map,
+        RESPONSE_PAYLOAD,
+        responsePayloadSerializer.serialize(session.responsePayload()),
+        Function.identity());
     putIfPresent(map, ERROR_MESSAGE, session.errorMessage(), Function.identity());
 
     if (!session.logs().isEmpty()) {
@@ -74,7 +79,8 @@ public class SessionMapper {
   public PlaygroundSession fromMap(Map<String, String> map) {
 
     InvoicePayload payload = payloadSerializer.deserialize(map.get(REQUEST_PAYLOAD));
-    ResponsePayload responsePayload = responsePayloadSerializer.deserialize(map.get(RESPONSE_PAYLOAD));
+    ResponsePayload responsePayload =
+        responsePayloadSerializer.deserialize(map.get(RESPONSE_PAYLOAD));
     List<SessionLog> logs = SessionLogSerializer.deserialize(map.get(LOGS));
 
     return new PlaygroundSession(

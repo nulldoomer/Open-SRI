@@ -62,19 +62,19 @@ public class JavaSdkExecutor implements SdkExecutor {
 
       long executionTime = System.currentTimeMillis() - startTime;
 
-      ResponsePayload responsePayload = new ResponsePayload(
+      ResponsePayload responsePayload =
+          new ResponsePayload(
               result.accessKey(),
               result.response().status(),
-              result.response().messages()
-                      .stream()
-                      .map(message ->
-                              new PayloadMessage(
-                                      message.identifier(),
-                                      message.message(),
-                                      message.AdditionalInfo(),
-                                      message.type()))
-                      .toList()
-      );
+              result.response().messages().stream()
+                  .map(
+                      message ->
+                          new PayloadMessage(
+                              message.identifier(),
+                              message.message(),
+                              message.AdditionalInfo(),
+                              message.type()))
+                  .toList());
 
       return new SdkExecutionResult(responsePayload, logs, executionTime, null, true);
 

@@ -9,18 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record PlaygroundSession(
-        String id,
-        SdkLanguage language,
-        String sdkVersion,
-        SessionStatus status,
-        Instant createdAt,
-        Instant startedAt,
-        Instant completedAt,
-        Long durationsMs,
-        InvoicePayload requestPayload,
-        ResponsePayload responsePayload,
-        List<SessionLog> logs,
-        String errorMessage) {
+    String id,
+    SdkLanguage language,
+    String sdkVersion,
+    SessionStatus status,
+    Instant createdAt,
+    Instant startedAt,
+    Instant completedAt,
+    Long durationsMs,
+    InvoicePayload requestPayload,
+    ResponsePayload responsePayload,
+    List<SessionLog> logs,
+    String errorMessage) {
 
   public PlaygroundSession {
     logs = logs == null ? List.of() : List.copyOf(logs);

@@ -13,11 +13,14 @@ import { Sun01Icon, Moon01Icon } from "@hugeicons/core-free-icons";
   - Handles SSR hydration with mounted state
 */
 export default function ThemeToggle() {
-
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <button

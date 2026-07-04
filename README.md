@@ -92,7 +92,7 @@ dependencies {
      // Paso 4: Información tributaria
      .taxInfo(taxInfo)
      // Paso 5: Número de documento (factura)
-     .documentNumber("001-001-000000001")
+     .documentNumber("01-001-000000001")
      // Paso 6: Forma de pago
      .payment(paymentInfo)
      // Paso 7: Versión XML del SRI

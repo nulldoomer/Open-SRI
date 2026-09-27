@@ -1,127 +1,81 @@
 import type { SriResponse as SriResponseType } from "@/types/playground";
 import { cn } from "@/lib/utils";
+import ClaveAnatomy from "@/components/ui/ClaveAnatomy";
 
-const statusStyles = {
-  RECIBIDA: "text-emerald-600 dark:text-emerald-400",
-  DEVUELTA: "text-destructive",
-  AUTORIZADO: "text-emerald-600 dark:text-emerald-400",
-  NO_AUTORIZADO: "text-destructive",
-};
+const accepted = new Set(["RECIBIDA", "AUTORIZADO"]);
 
-const statusDescriptions = {
+const statusDescriptions: Record<string, string> = {
   RECIBIDA: "El comprobante fue recibido correctamente por el SRI.",
   DEVUELTA: "El comprobante fue devuelto por el SRI con errores.",
   AUTORIZADO: "El comprobante fue autorizado por el SRI.",
   NO_AUTORIZADO: "El comprobante no fue autorizado por el SRI.",
 };
 
-interface SriResponseProps {
-  response: SriResponseType | null;
-}
+const label = "font-mono text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground";
 
-export default function SriResponse({ response }: SriResponseProps) {
+export default function SriResponse({ response }: { response: SriResponseType | null }) {
   if (!response) {
     return (
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-            Resultado
-          </p>
-          <h3 className="text-lg font-semibold text-foreground">Respuesta SRI</h3>
-          <p className="text-sm text-muted-foreground">
-            El estado final y los mensajes de autorización se mostrarán aquí.
-          </p>
-        </div>
-
-        <div className="flex items-center justify-center py-12 text-muted-foreground text-sm border border-border/70 rounded-xl bg-muted/10">
-          La respuesta del SRI aparecerá aquí después de enviar la factura.
-        </div>
-      </div>
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        El estado final, la clave de acceso y los mensajes del SRI aparecerán aquí después de enviar la factura.
+      </p>
     );
   }
 
+  const ok = accepted.has(response.status);
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-          Resultado
-        </p>
-        <h3 className="text-lg font-semibold text-foreground">Respuesta SRI</h3>
-        <p className="text-sm text-muted-foreground">
-          Estado, clave de acceso y mensajes devueltos por el servicio.
-        </p>
-      </div>
-
-      <div className="flex items-start gap-4 p-5 border border-border/70 rounded-xl bg-background/70 shadow-sm">
-        <div className="flex-1 space-y-3">
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-1">
-              Estado
-            </p>
-            <p
-              className={cn(
-                "text-2xl font-heading font-bold",
-                statusStyles[response.status as keyof typeof statusStyles] ?? "text-foreground"
-              )}
-            >
-              {response.status}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              {statusDescriptions[response.status as keyof typeof statusDescriptions] ??
-                "El SRI devolvió una respuesta con un estado no reconocido."}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-1">
-              Clave de acceso
-            </p>
-            <p className="font-mono text-xs break-all text-foreground/70">{response.accessKey}</p>
-          </div>
-
-          {response.authorizationDate && (
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-1">
-                Fecha de autorización
-              </p>
-              <p className="text-sm">{response.authorizationDate}</p>
-            </div>
+    <div className="space-y-7">
+      <div className="flex flex-wrap items-center gap-5">
+        <p
+          className={cn(
+            "-rotate-3 rounded-[6px] border-2 px-3 py-1.5 font-mono text-lg font-semibold uppercase tracking-[0.2em]",
+            ok ? "border-[var(--v-olive-deep)] text-[var(--status-ok-ink)]" : "border-[var(--v-danger)] text-[var(--v-danger-ink)]",
           )}
-        </div>
+        >
+          {response.status}
+        </p>
+        <p className="min-w-0 flex-1 text-sm text-muted-foreground">
+          {statusDescriptions[response.status] ?? "El SRI devolvió un estado no reconocido."}
+        </p>
       </div>
 
-      {response.messages.length > 0 && (
+      <div>
+        <p className={label}>Clave de acceso</p>
+        <ClaveAnatomy clave={response.accessKey} className="mt-3" />
+      </div>
+
+      {response.authorizationDate && (
         <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-3">
-            Mensajes del SRI
-          </p>
-          <div className="space-y-2">
+          <p className={label}>Fecha de autorización</p>
+          <p className="mt-1.5 font-mono text-sm tabular-nums">{response.authorizationDate}</p>
+        </div>
+      )}
+
+      <div>
+        <p className={label}>Mensajes del SRI</p>
+        {response.messages.length === 0 ? (
+          <p className="mt-2 text-sm text-muted-foreground">Sin mensajes.</p>
+        ) : (
+          <ul className="mt-3 space-y-2">
             {response.messages.map((msg, i) => (
-              <div
+              <li
                 key={i}
                 className={cn(
-                  "p-3 border rounded-xl text-sm shadow-sm",
+                  "rounded-[var(--r-sm)] px-4 py-3 text-sm",
                   msg.type === "ERROR"
-                    ? "border-destructive/30 bg-destructive/5 text-destructive"
-                    : "border-border bg-muted/20"
+                    ? "bg-[var(--status-danger-bg)] text-[var(--status-danger-ink)]"
+                    : "bg-muted text-foreground",
                 )}
               >
-                <span className="font-mono text-xs opacity-70 mr-2">[{msg.identifier}]</span>
+                <span className="mr-2 font-mono text-xs opacity-75">[{msg.identifier}]</span>
                 {msg.message}
-                {msg.additionalInfo && (
-                  <p className="text-xs opacity-70 mt-1">{msg.additionalInfo}</p>
-                )}
-              </div>
+                {msg.additionalInfo && <p className="mt-1 text-xs opacity-75">{msg.additionalInfo}</p>}
+              </li>
             ))}
-          </div>
-        </div>
-      )}
-
-      {response.messages.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-2">
-          Sin mensajes del SRI.
-        </p>
-      )}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

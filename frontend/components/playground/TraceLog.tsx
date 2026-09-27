@@ -2,73 +2,40 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import CodeFrame from "@/components/ui/CodeFrame";
 import type { TraceEvent, TraceLevel } from "@/types/playground";
 
+// Levels read on the dark log surface in both modes.
 const levelStyles: Record<TraceLevel, string> = {
-  INFO: "text-blue-500 dark:text-blue-400",
-  OK: "text-emerald-600 dark:text-emerald-400",
-  WARN: "text-amber-500",
-  ERROR: "text-destructive",
+  INFO: "text-[var(--structure-text)]",
+  OK: "text-[#B4C3A0]",
+  WARN: "text-[#E7CF98]",
+  ERROR: "text-[#F0A99C]",
 };
 
 const filters: Array<{ value: TraceLevel | "ALL"; label: string }> = [
   { value: "ALL", label: "Todo" },
   { value: "OK", label: "OK" },
-  { value: "WARN", label: "WARN" },
-  { value: "ERROR", label: "ERROR" },
+  { value: "WARN", label: "Warn" },
+  { value: "ERROR", label: "Error" },
 ];
 
-interface TraceLogProps {
-  traces: TraceEvent[];
-}
-
-export default function TraceLog({ traces }: TraceLogProps) {
+export default function TraceLog({ traces }: { traces: TraceEvent[] }) {
   const [filter, setFilter] = useState<TraceLevel | "ALL">("ALL");
-
   const visible = filter === "ALL" ? traces : traces.filter((t) => t.level === filter);
-
-  if (traces.length === 0) {
-    return (
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-            Observabilidad
-          </p>
-          <h3 className="text-lg font-semibold text-foreground">Trazas del pipeline</h3>
-          <p className="text-sm text-muted-foreground">
-            Las trazas aparecerán aquí en tiempo real a medida que la sesión avance.
-          </p>
-        </div>
-
-        <div className="flex items-center justify-center py-12 text-muted-foreground text-sm border border-border/70 rounded-xl bg-muted/10">
-          Las trazas del SDK aparecerán aquí en tiempo real.
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1">
-        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-          Observabilidad
-        </p>
-        <h3 className="text-lg font-semibold text-foreground">Trazas del pipeline</h3>
-        <p className="text-sm text-muted-foreground">
-          Filtra la ejecución por severidad para seguir el flujo paso a paso.
-        </p>
-      </div>
-
-      <div className="flex gap-2 flex-wrap">
+      <div role="group" aria-label="Filtrar por severidad" className="inline-flex rounded-full bg-[var(--v-beige)] p-1">
         {filters.map((f) => (
           <button
             key={f.value}
+            type="button"
+            aria-pressed={filter === f.value}
             onClick={() => setFilter(f.value)}
             className={cn(
-              "px-3 py-1 text-xs font-semibold tracking-widest uppercase border rounded-sm transition-colors",
-              filter === f.value
-                ? "border-foreground bg-foreground text-background"
-                : "border-border text-muted-foreground hover:border-foreground/40"
+              "h-8 rounded-full px-3.5 font-mono text-xs transition-colors",
+              filter === f.value ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {f.label}
@@ -76,23 +43,23 @@ export default function TraceLog({ traces }: TraceLogProps) {
         ))}
       </div>
 
-      <div className="border border-border/70 rounded-xl bg-muted/10 min-h-40 max-h-80 overflow-y-auto p-3 space-y-0.5 font-mono text-xs shadow-sm">
-        {visible.length === 0 ? (
-          <p className="text-muted-foreground py-4 text-center">
-            Sin trazas con este filtro.
-          </p>
-        ) : (
-          visible.map((trace, i) => (
-            <div key={i} className="flex gap-3 leading-relaxed">
-              <span className="text-muted-foreground shrink-0">[{trace.timestamp}]</span>
-              <span className={cn("shrink-0 font-semibold w-8", levelStyles[trace.level])}>
-                {trace.level}
-              </span>
-              <span className="text-foreground/70">{trace.message}</span>
-            </div>
-          ))
-        )}
-      </div>
+      <CodeFrame label="trazas del SDK">
+        <div aria-live="polite" className="max-h-96 min-h-40 space-y-1 overflow-y-auto p-4 font-mono text-xs leading-relaxed">
+          {traces.length === 0 ? (
+            <p className="py-8 text-center text-[var(--structure-text)]">Las trazas aparecerán aquí en tiempo real.</p>
+          ) : visible.length === 0 ? (
+            <p className="py-8 text-center text-[var(--structure-text)]">Sin trazas con este filtro.</p>
+          ) : (
+            visible.map((trace, i) => (
+              <p key={i} className="flex gap-3">
+                <span className="shrink-0 tabular-nums opacity-60">{trace.timestamp}</span>
+                <span className={cn("w-10 shrink-0 font-semibold", levelStyles[trace.level])}>{trace.level}</span>
+                <span className="min-w-0 break-words text-[var(--on-structure)]">{trace.message}</span>
+              </p>
+            ))
+          )}
+        </div>
+      </CodeFrame>
     </div>
   );
 }

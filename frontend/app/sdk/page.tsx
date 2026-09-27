@@ -1,31 +1,34 @@
-import SdkTable from "@/components/sdk/SdkTable";
+import SdkList from "@/components/sdk/SdkList";
 
 export default function SDK() {
   return (
-    <main className="max-w-5xl mx-auto px-8 py-16">
-      <div className="mb-12">
-        <h1 className="font-heading text-4xl font-bold mb-3">SDK Explorer</h1>
-        <p className="text-muted-foreground text-lg">
-          Integra OpenSRI en tu lenguaje preferido. El SDK Java está disponible hoy;
-          los demás están en desarrollo.
+    <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-8 lg:py-16">
+      <header className="mb-12">
+        <h1 className="font-heading text-[clamp(2.5rem,5vw,3.75rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.015em] [font-stretch:80%]">
+          SDK
+        </h1>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          Integra OpenSRI en tu lenguaje preferido. El SDK Java está disponible hoy; C# está en desarrollo y Go y Python están planificados.
         </p>
-      </div>
-      <SdkTable />
-      <div className="mt-8 p-4 border border-border rounded-sm bg-muted/20">
-        <p className="text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">¿Quieres contribuir?</span>{" "}
-          Revisa los issues abiertos en{" "}
+      </header>
+
+      <SdkList />
+
+      <aside className="mt-12 rounded-[var(--r-card-sm)] bg-muted px-6 py-5">
+        <p className="text-[15px] leading-relaxed text-muted-foreground">
+          <span className="font-semibold text-foreground">¿Quieres contribuir?</span> Las portaciones de SDK son el
+          mejor punto de entrada. Revisa los issues abiertos en{" "}
           <a
-            href="https://github.com/nulldoomer/Open-SRI"
+            href="https://github.com/nulldoomer/Open-SRI/issues"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-foreground transition-colors"
+            className="text-foreground underline decoration-border underline-offset-4 hover:decoration-signal"
           >
             github.com/nulldoomer/Open-SRI
           </a>
-          . Las portaciones de SDK son el mejor punto de entrada.
+          .
         </p>
-      </div>
+      </aside>
     </main>
   );
 }

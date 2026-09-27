@@ -1,15 +1,40 @@
+/* Cojeev layers sit above Tailwind utilities; this order used to ship inside cojeev-fonts.css. */
+@layer theme, base, components, utilities, cojeev-states, cojeev-flow, cojeev-morph, cojeev-accessibility;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* ponytail: fonts load through next/font in app/layout.tsx instead of the 404 KB base64 styles/cojeev-fonts.css */
+@import "../styles/cojeev/tokens.css";
+@import "../styles/cojeev/theme.css";
+@import "../styles/cojeev/base.css";
+@import "../styles/cojeev/morph.css";
+@import "../styles/cojeev/flow-press.css";
+@import "../styles/cojeev/label.css";
+@import "../styles/cojeev/badge.css";
+@import "../styles/cojeev/control-appearance.css";
+@import "../styles/cojeev/separator.css";
+@import "../styles/cojeev/spinner.css";
+@import "../styles/cojeev/presence.css";
+@import "../styles/cojeev/scroll-area.css";
+@import "../styles/cojeev/icon.css";
+@import "../styles/cojeev/shape.css";
+@import "../styles/cojeev/button.css";
+@import "../styles/cojeev/tabs.css";
+@import "../styles/cojeev/animated-icon.css";
+@import "../styles/cojeev/input.css";
+@import "../styles/cojeev/theme-toggle.css";
+@import "../styles/cojeev/item-adornment.css";
+@import "../styles/cojeev/select.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-heading);
+  --font-sans: var(--font-text);
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,88 +71,439 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-v-pink: var(--v-pink);
+  --color-v-olive: var(--v-olive);
+  --color-v-blue: var(--v-blue);
+  --color-v-yellow: var(--v-yellow);
+  --color-v-canvas: var(--v-canvas);
+  --color-v-paper: var(--v-paper);
+  --color-v-beige: var(--v-beige);
+  --color-v-beige-2: var(--v-beige-2);
+  --color-v-cream-pill: var(--v-cream-pill);
+  --color-v-ink: var(--v-ink);
+  --color-v-structure: var(--v-structure);
+  --color-on-structure: var(--on-structure);
+  --color-structure-quiet: var(--structure-quiet);
+  --color-structure-line: var(--structure-line);
+  --color-structure-text: var(--structure-text);
+  --color-v-ink-soft: var(--v-ink-soft);
+  --color-v-on-ink: var(--v-on-ink);
+  --color-v-text: var(--v-text);
+  --color-v-text-2: var(--v-text-2);
+  --color-v-text-3: var(--v-text-3);
+  --color-v-skel-face: var(--v-skel-face);
+  --color-v-skel-sheen: var(--v-skel-sheen);
+  --color-v-skel-edge: var(--v-skel-edge);
+  --color-v-disabled-ink: var(--v-disabled-ink);
+  --color-v-disabled-face: var(--v-disabled-face);
+  --color-v-disabled-edge: var(--v-disabled-edge);
+  --color-v-danger: var(--v-danger);
+  --color-v-danger-ink: var(--v-danger-ink);
+  --color-v-danger-fill: var(--v-danger-fill);
+  --color-v-olive-ink: var(--v-olive-ink);
+  --color-v-accent-ink: var(--v-accent-ink);
+  --color-v-brand: var(--v-brand);
+  --color-v-border: var(--v-border);
+  --color-v-edge: var(--v-edge);
+  --color-switch-knob: var(--switch-knob);
+  --color-switch-knob-on: var(--switch-knob-on);
+  --color-surface-quiet: var(--surface-quiet);
+  --color-surface-work: var(--surface-work);
+  --color-surface-automation: var(--surface-automation);
+  --color-surface-memory: var(--surface-memory);
+  --color-surface-library: var(--surface-library);
+  --color-surface-ai: var(--surface-ai);
+  --color-surface-alert: var(--surface-alert);
+  --color-sel-bg: var(--sel-bg);
+  --color-sel-edge: var(--sel-edge);
+  --color-sel-ink: var(--sel-ink);
+  --color-status-ok-bg: var(--status-ok-bg);
+  --color-status-ok-ink: var(--status-ok-ink);
+  --color-status-warn-bg: var(--status-warn-bg);
+  --color-status-warn-ink: var(--status-warn-ink);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-ink: var(--status-danger-ink);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-info-ink: var(--status-info-ink);
+  --color-status-pending-bg: var(--status-pending-bg);
+  --color-status-pending-ink: var(--status-pending-ink);
+  --color-v-scrim: var(--v-scrim);
+  --color-v-disabled-fill: var(--v-disabled-fill);
+  --color-v-pink-deep: var(--v-pink-deep);
+  --color-v-olive-deep: var(--v-olive-deep);
+  --color-v-blue-deep: var(--v-blue-deep);
+  --color-v-yellow-deep: var(--v-yellow-deep);
+  --color-v-pink-soft: var(--v-pink-soft);
+  --color-v-olive-soft: var(--v-olive-soft);
+  --color-v-blue-soft: var(--v-blue-soft);
+  --color-v-yellow-soft: var(--v-yellow-soft);
+  --color-v-danger-soft: var(--v-danger-soft);
+  --color-card-2: var(--card-2);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-cat-work: var(--cat-work);
+  --color-cat-automations: var(--cat-automations);
+  --color-cat-memory: var(--cat-memory);
+  --color-cat-library: var(--cat-library);
+  --color-cat-ai-apps: var(--cat-ai-apps);
+  --color-cat-free-models: var(--cat-free-models);
+  --color-cat-settings: var(--cat-settings);
+  --color-cat-needs-you: var(--cat-needs-you);
+  --color-cat-runs: var(--cat-runs);
+  --color-status-ok: var(--status-ok);
+  --color-status-warn: var(--status-warn);
+  --color-status-danger: var(--status-danger);
+  --color-status-info: var(--status-info);
+  --color-status-pending: var(--status-pending);
+  --color-status-off: var(--status-off);
+  --text-v-hero: var(--fs-hero);
+  --text-v-display: var(--fs-display);
+  --text-v-section: var(--fs-section);
+  --text-v-title: var(--fs-title);
+  --text-v-lead: var(--fs-lead);
+  --text-v-body: var(--fs-body);
+  --text-v-control: var(--fs-control);
+  --text-v-meta: var(--fs-meta);
+  --text-v-caps: var(--fs-caps);
+  --spacing-s-1: var(--s-1);
+  --spacing-s-2: var(--s-2);
+  --spacing-s-3: var(--s-3);
+  --spacing-s-4: var(--s-4);
+  --spacing-s-5: var(--s-5);
+  --spacing-s-6: var(--s-6);
+  --spacing-s-8: var(--s-8);
+  --spacing-s-10: var(--s-10);
+  --spacing-s-12: var(--s-12);
+  --spacing-s-16: var(--s-16);
+  --spacing-shell-inset: var(--shell-inset);
+  --spacing-sidebar-w: var(--sidebar-w);
+  --spacing-sidebar-w-mini: var(--sidebar-w-mini);
+  --spacing-sidebar-gap: var(--sidebar-gap);
+  --spacing-rail-w: var(--rail-w);
+  --spacing-rail-gap: var(--rail-gap);
+  --spacing-topbar-h: var(--topbar-h);
+  --spacing-content-max: var(--content-max);
+  --spacing-card-pad: var(--card-pad);
+  --radius-v-xs: var(--r-xs);
+  --radius-v-sm: var(--r-sm);
+  --radius-v-md: var(--r-md);
+  --radius-v-card-sm: var(--r-card-sm);
+  --radius-v-card: var(--r-card);
+  --radius-v-panel: var(--r-panel);
+  --radius-v-sheet: var(--r-sheet);
+  --radius-v-frame: var(--r-frame);
+  --radius-v-pill: var(--r-pill);
+  --spacing-disk-sm: var(--disk-sm);
+  --spacing-disk-md: var(--disk-md);
+  --spacing-disk-lg: var(--disk-lg);
+  --spacing-icon-sm: var(--icon-sm);
+  --spacing-icon-md: var(--icon-md);
+  --spacing-icon-lg: var(--icon-lg);
+  --spacing-icon-stroke: var(--icon-stroke);
+  --spacing-ctl-sm: var(--ctl-sm);
+  --spacing-ctl-md: var(--ctl-md);
+  --spacing-ctl-lg: var(--ctl-lg);
+  --color-pulse-c: var(--pulse-c);
+  --color-c: var(--c);
+  --color-hue: var(--hue);
+  --color-hue-deep: var(--hue-deep);
+  --color-hue-ink: var(--hue-ink);
+  --color-wm: var(--wm);
+  --color-skel: var(--skel);
+  --color-sw: var(--sw);
+  --color-dot: var(--dot);
+  --color-disk-bg: var(--disk-bg);
+  --color-mfill: var(--mfill);
+  --color-mstroke: var(--mstroke);
+  --color-glide-bg: var(--glide-bg);
+  --color-glide-fg: var(--glide-fg);
+  --color-v-on-accent: var(--v-on-accent);
+  --color-ink-fixed: var(--ink-fixed);
+  --color-cream-fixed: var(--cream-fixed);
+  --color-mask-ink: var(--mask-ink);
+  --color-unavail-ink: var(--unavail-ink);
+  --color-alert-ink: var(--alert-ink);
+  --color-btn-disabled-ink: var(--btn-disabled-ink);
+  --color-nav-group-ink: var(--nav-group-ink);
+  --color-muted-foreground-ink: var(--muted-foreground-ink);
+  --color-muted-foreground-tinted: var(--muted-foreground-tinted);
+  --color-danger-deep: var(--danger-deep);
+  --color-legacy-on-brand: var(--legacy-on-brand);
+  --color-legacy-accent-5: var(--legacy-accent-5);
+  --color-legacy-success: var(--legacy-success);
+  --color-legacy-warning: var(--legacy-warning);
+  --color-legacy-info: var(--legacy-info);
+  --color-legacy-danger-fill: var(--legacy-danger-fill);
+  --color-legacy-success-fill: var(--legacy-success-fill);
+  --color-rail-sel: var(--rail-sel);
+  --color-rail-hover: var(--rail-hover);
+  --color-surface-page: var(--surface-page);
+  --color-surface-card: var(--surface-card);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-strong: var(--border-strong);
+  --color-border-subtle: var(--border-subtle);
+  --color-brand: var(--brand);
+  --color-action: var(--action);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
+  --color-accent-1-soft: var(--accent-1-soft);
+  --color-accent-2-soft: var(--accent-2-soft);
+  --color-accent-3-soft: var(--accent-3-soft);
+  --color-accent-4-soft: var(--accent-4-soft);
+  --color-danger: var(--danger);
+  --color-success-soft: var(--success-soft);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger-soft: var(--danger-soft);
+  --color-info-soft: var(--info-soft);
+  --color-ring-offset: var(--ring-offset);
+  --spacing-card-padding: var(--card-padding);
+  --spacing-topbar-height: var(--topbar-height);
+  --font-cojeev-text: var(--font-text);
+  --font-cojeev-display: var(--font-display);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-soft: var(--signal-soft);
 }
 
+/*
+ * shadcn token bridge (from the Cojeev base).
+ * Heads-up: `shadcn add` of any @cojeev item rewrites this block and re-adds the
+ * cojeev-fonts.css import; restore --accent/--ring/--muted-foreground-* afterwards.
+ */
+:root, :root[data-mode] {
+    --background: var(--v-canvas);
+    --foreground: var(--v-text);
+    --card: var(--v-paper);
+    --card-foreground: var(--v-text);
+    --card-2: var(--v-beige-2);
+    --popover: var(--v-paper);
+    --popover-foreground: var(--v-text);
+    --primary: var(--v-ink);
+    --primary-foreground: var(--v-on-ink);
+    --secondary: var(--v-beige);
+    --secondary-foreground: var(--v-text);
+    --accent: var(--v-beige);
+    --accent-foreground: var(--v-text);
+    --muted: var(--v-beige-2);
+    --muted-foreground: var(--v-text-2);
+    --border: var(--v-border);
+    --input: var(--v-beige);
+    --ring: var(--signal);
+    --destructive: var(--v-danger-fill);
+    --destructive-foreground: #fff;
+    --chart-1: var(--v-yellow);
+    --chart-2: var(--v-pink);
+    --chart-3: var(--v-olive);
+    --chart-4: var(--v-blue);
+    --chart-5: var(--v-ink);
+    --sidebar: var(--v-structure);
+    --sidebar-foreground: var(--on-structure);
+    --sidebar-muted: #B4BDCA;
+    --sidebar-primary: var(--v-pink);
+    --muted-foreground-ink: #2e3138;
+    --muted-foreground-tinted: #454850;
+}
+
+/*
+ * OpenSRI palette: Cojeev "graphite" at contrast 60, generated once with
+ * appearanceTokens() from lib/cojeev/appearance-tokens.ts.
+ * ponytail: static values instead of mounting AppearanceProvider; regenerate if the palette changes.
+ * --signal is the single Evangelion accent: it replaces Cojeev's pink brand everywhere
+ * components use --v-pink as their selected/active marker.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --v-canvas: #F4F5F6;
+  --v-paper: #FFFFFF;
+  --v-beige: #E5E8EB;
+  --v-beige-2: #eceef0;
+  --v-cream-pill: #FFFFFF;
+  --v-text: #24262b;
+  --v-text-2: #454850;
+  --v-text-3: #51555d;
+  --v-ink: #24262b;
+  --v-ink-soft: #454850;
+  --v-on-ink: #F4F5F6;
+  --v-border: #aeb0b3;
+  --v-edge: #6b6d70;
+  --v-on-accent: #14171B;
+  --v-accent-ink: #6a505d;
+  --v-olive-ink: #535a4d;
+  --v-disabled-face: #E5E8EB;
+  --v-disabled-ink: #51555d;
+  --v-disabled-edge: #6b6d70;
+  --v-disabled-fill: #E5E8EB;
+  --btn-disabled-ink: #51555d;
+  --unavail-ink: #51555d;
+  --alert-ink: #454850;
+  --nav-group-ink: #51555d;
+  --v-skel-face: #E5E8EB;
+  --v-skel-sheen: #FFFFFF;
+  --v-skel-edge: #aeb0b3;
+  --switch-knob: #FFFFFF;
+  --v-danger-ink: #b0433a;
+  --v-danger-soft: #fae7e6;
+  --v-scrim: rgba(19,24,32,.46);
+  --v-olive: #B4C3A0;
+  --v-olive-deep: #a1ae90;
+  --v-olive-soft: #edf1e8;
+  --v-blue: #ABBEDC;
+  --v-blue-deep: #99aac5;
+  --v-blue-soft: #ebeff7;
+  --v-yellow: #E7CF98;
+  --v-yellow-deep: #ceb989;
+  --v-yellow-soft: #f9f3e6;
+  --status-ok-bg: #f5f7f3;
+  --status-ok-ink: #575e50;
+  --status-warn-bg: #fcf9f2;
+  --status-warn-ink: #655d47;
+  --status-danger-bg: #fae7e6;
+  --status-danger-ink: #96342d;
+  --status-info-bg: #f4f7fa;
+  --status-info-ink: #535d6c;
+  --status-pending-bg: #e7e7e8;
+  --status-pending-ink: #454850;
+  --signal: #E5482E;
+  --signal-ink: #B8321C;
+  --signal-soft: #fbe6e1;
+  --v-brand: var(--signal);
+  --v-pink: var(--signal);
+  --v-pink-deep: color-mix(in oklab, var(--signal) 82%, black);
+  --v-pink-soft: var(--signal-soft);
+  --sel-bg: var(--signal-soft);
+  --sel-ink: var(--v-text);
+  --sel-edge: var(--signal);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-text: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+:root[data-mode="dark"] {
+  --v-canvas: #111418;
+  --v-paper: #20252C;
+  --v-beige: #2C333D;
+  --v-beige-2: #20252c;
+  --v-cream-pill: #20252C;
+  --v-text: #fafafa;
+  --v-text-2: #c2c6ca;
+  --v-text-3: #afb3b8;
+  --v-ink: #fafafa;
+  --v-ink-soft: #c2c6ca;
+  --v-on-ink: #111418;
+  --v-border: #4e535c;
+  --v-edge: #919499;
+  --v-accent-ink: #E9ACC5;
+  --v-olive-ink: #B4C3A0;
+  --v-disabled-face: #2C333D;
+  --v-disabled-ink: #afb3b8;
+  --v-disabled-edge: #919499;
+  --v-disabled-fill: #2C333D;
+  --btn-disabled-ink: #afb3b8;
+  --unavail-ink: #afb3b8;
+  --alert-ink: #c2c6ca;
+  --nav-group-ink: #afb3b8;
+  --v-skel-face: #2C333D;
+  --v-skel-sheen: #20252C;
+  --v-skel-edge: #4e535c;
+  --switch-knob: #20252C;
+  --v-danger-ink: #e47f76;
+  --v-danger-soft: #36292e;
+  --v-scrim: rgba(0,0,0,.66);
+  --v-olive-soft: #363d3d;
+  --v-blue-soft: #353c46;
+  --v-yellow-soft: #3e3f3c;
+  --status-ok-bg: #32383a;
+  --status-ok-ink: #B4C3A0;
+  --status-warn-bg: #383939;
+  --status-warn-ink: #E7CF98;
+  --status-danger-bg: #36292e;
+  --status-danger-ink: #e99992;
+  --status-info-bg: #313741;
+  --status-info-ink: #ABBEDC;
+  --status-pending-bg: #33383f;
+  --status-pending-ink: #c2c6ca;
+  --signal: #F06A4F;
+  --signal-ink: #FF7A5C;
+  --signal-soft: #3a2723;
+  --v-brand: var(--signal);
+  --v-pink: var(--signal);
+  --v-pink-deep: color-mix(in oklab, var(--signal) 82%, black);
+  --v-pink-soft: var(--signal-soft);
+  --sel-bg: var(--signal-soft);
+  --sel-ink: var(--v-text);
+  --sel-edge: var(--signal);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-sans;
+    color-scheme: light;
+  }
+  html[data-mode="dark"] {
+    color-scheme: dark;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  ::selection {
+    background: var(--sel-bg);
+    color: var(--sel-ink);
+  }
+  /* Cojeev's reset underlines every link; underline is opted into per link here instead. */
+  a:any-link {
+    text-decoration-line: none;
   }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
   }
-  html {
-    @apply font-sans;
-  }
+}
+/*
+ * Signature motion (landing): ghosted states that print in order with no tween.
+ * The resting style is the printed state, so reduced motion simply skips the animation.
+ */
+@keyframes strike-ghost {
+  from { opacity: 0.22; }
+}
+@keyframes strike-node {
+  from { background-color: transparent; border-style: dashed; }
+}
+@keyframes stamp-press {
+  from { opacity: 0; scale: 1.8; }
+  to { opacity: 1; scale: 1; }
+}
+/* The ghost state holds for the whole run (duration = delay) and flips at the end: a print, not a fade. */
+.strike {
+  animation: strike-ghost var(--strike-delay, 0ms) steps(1, end) both;
+}
+.strike-node {
+  animation: strike-node var(--strike-delay, 0ms) steps(1, end) both;
+}
+.stamp {
+  animation: stamp-press 220ms cubic-bezier(0.16, 1, 0.3, 1) var(--strike-delay, 0ms) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .strike, .strike-node, .stamp { animation: none; }
+}
+
+/* Cojeev paints the default button pink in dark mode; OpenSRI keeps it ink (see PRODUCT.md: nada tierno). */
+:root[data-mode="dark"] .v-btn[data-slot]:not(.-accent):not(.-secondary):not(.-ghost):not(.-outline):not(.-danger):not(:disabled):not([aria-disabled="true"]:not([aria-busy="true"])) {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+:root[data-mode="dark"] .v-btn[data-slot]:not(.-accent):not(.-secondary):not(.-ghost):not(.-outline):not(.-danger):not(:disabled):not([aria-disabled="true"]):hover {
+  background: color-mix(in oklab, var(--primary) 86%, var(--v-canvas));
+}
+
+/* Same reasoning for Cojeev's pill tabs: the selected pill stays ink in dark mode. */
+[data-mode="dark"] :is(.-pills, .-lenses) .v-tab[aria-selected="true"] {
+  background: var(--v-ink);
+  color: var(--v-on-ink);
 }

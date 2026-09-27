@@ -1,0 +1,43 @@
+/* Reset follows the reference. Component rules live in layers so accessibility
+   overrides can come last without an importance flag. */
+@layer base {
+  *, *::before, *::after { box-sizing:border-box; border-width:0; border-style:none; }
+  html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body { margin:0; background:var(--background); color:var(--foreground); font-family:var(--font-text); font-size:var(--fs-body); line-height:var(--lh-body); font-weight:var(--fw-body); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  h1,h2,h3,h4,p,figure,ul,ol { margin:0; }
+  button,input,select,textarea { font:inherit; color:inherit; }
+  code,pre,samp { font-family:monospace; }
+  button { background:none; border:0; padding:0; cursor:pointer; }
+  :where(a[href],area[href],summary,label[for],label:has(input),select,input:is([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"]),[role="button"],[role="checkbox"],[role="radio"],[role="switch"],[role="tab"],[role="option"],[role="menuitem"],[role="menuitemcheckbox"],[role="menuitemradio"]) { cursor:pointer; }
+  /* Hit-test the control, not changing decorative SVG paths. Icon feedback
+     already listens to the owning control. Standalone interactive art is intact. */
+  :where(button,a[href],summary,[role="button"],[role="tab"],[role^="menuitem"],[role="option"],[role="checkbox"],[role="radio"],[role="switch"])
+    :where([data-slot="icon"][aria-hidden="true"],[data-slot="animated-icon"]:has([data-slot="icon"][aria-hidden="true"]),[data-slot="shape"][aria-hidden="true"],[data-slot="state-chevron"][aria-hidden="true"]) { pointer-events:none; }
+  /* Preserve the original browser touch feedback on library elements. */
+  :where([data-slot]) { -webkit-tap-highlight-color:initial; }
+  img,svg { display:block; max-width:100%; }
+  a { color:var(--foreground); text-underline-offset:2px; }
+  /* The reference preserves native link decoration; Tailwind preflight resets it. */
+  a:any-link { text-decoration-line:underline; }
+  a:hover { color:var(--v-text-2); }
+  :focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:var(--r-sm); }
+  ::selection { background:var(--v-pink); color:var(--ink-fixed); }
+}
+/* Disabled controls remain hit-testable so their unavailable cursor is visible.
+   Their native primitive or event guard still owns activation prevention. */
+:is(button,input,select,textarea,[role],[data-slot]):is(:disabled,[aria-disabled="true"],[data-disabled]:not([data-disabled="false"])),
+label:has(input:disabled) { cursor:not-allowed; }
+:is([aria-disabled="true"],[data-disabled]:not([data-disabled="false"]),label:has(input:disabled)) :where(span,svg,path) { cursor:inherit; }
+@layer components {
+  .v-body-2 { font-size:var(--fs-body); line-height:1.5; color:var(--muted-foreground); }
+  .v-meta { font-size:var(--fs-meta); line-height:1.3; color:var(--muted-foreground); }
+  .v-id { font-variant-numeric:tabular-nums; letter-spacing:.02em; }
+  .v-icon { width:var(--icon-md); height:var(--icon-md); flex:none; stroke-width:var(--icon-stroke); fill:none; }
+}
+@layer cojeev-accessibility {
+  [hidden]:not([hidden="until-found"]) { display:none; }
+  .v-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; inset-inline-start:0; inset-block-start:0; }
+  @media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { animation-duration:0s; animation-iteration-count:1; transition-duration:0s; scroll-behavior:auto; }
+  }
+}

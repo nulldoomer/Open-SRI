@@ -1,0 +1,16 @@
+@layer cojeev-states {
+/* Separate lifecycle channels preserve a child's authored transform/contour owner. */
+.v-motion-surface[data-motion-surface] {
+  translate: var(--presence-x,0px) var(--presence-y,0px);
+  scale: var(--presence-scale,1);
+}
+.v-motion-surface:is([data-motion-surface="soften"],[data-motion-surface="focus"]) { filter:blur(var(--presence-blur,0px)); }
+.v-motion-surface[data-motion-quiet="true"] { translate: none; scale: none; clip-path: none; }
+.v-motion-surface[data-motion-quiet="true"]:is([data-motion-surface="soften"],[data-motion-surface="focus"]) { filter:none; }
+.v-motion-surface[data-motion-exiting="true"] { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .v-motion-surface[data-motion-surface] { translate: none; scale: none; clip-path: none; }
+  .v-motion-surface:is([data-motion-surface="soften"],[data-motion-surface="focus"]) { filter:none; }
+}
+
+}

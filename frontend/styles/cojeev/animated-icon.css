@@ -1,0 +1,8 @@
+@layer cojeev-states {
+[data-slot="animated-icon"], [data-slot="animated-icon"] > span { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; }
+[data-slot="animated-icon"] svg { overflow:visible; }
+
+.v-state-chevron, .v-state-chevron > span { display:inline-flex; align-items:center; justify-content:center; flex:none; vertical-align:middle; }
+.v-state-chevron { margin-inline-start:auto; width:16px; height:16px; }
+
+}

@@ -46,9 +46,6 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-          Artefactos
-        </p>
         <h3 className="text-lg font-semibold text-foreground">XML generado</h3>
         <p className="text-sm text-muted-foreground">
           Revisa el XML sin firmar y el XML firmado cuando el backend los exponga.
@@ -57,7 +54,7 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
 
       <Tabs value={tab} onValueChange={setTab}>
         <div className="flex items-center justify-between">
-          <TabsList variant="line">
+          <TabsList variant="underline">
             <TabsTrigger value="unsigned">Sin firma</TabsTrigger>
             <TabsTrigger value="signed">Con firma XAdES</TabsTrigger>
           </TabsList>
@@ -65,14 +62,14 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
             <div className="flex gap-2">
               <Button
                 variant="ghost"
-                size="xs"
+                size="sm"
                 onClick={() => copyToClipboard(currentXml)}
               >
                 Copiar XML
               </Button>
               <Button
                 variant="ghost"
-                size="xs"
+                size="sm"
                 onClick={() =>
                   downloadXml(currentXml, tab === "signed" ? "firmado.xml" : "factura.xml")
                 }
@@ -83,7 +80,7 @@ export default function XmlViewer({ unsignedXml, signedXml }: XmlViewerProps) {
           )}
         </div>
 
-        <div className="mt-3 border border-border/70 rounded-xl bg-muted/10 min-h-64 max-h-96 overflow-y-auto shadow-sm">
+        <div className="mt-3 rounded-[var(--r-card-sm)] border border-border bg-muted min-h-64 max-h-96 overflow-y-auto">
           <TabsContent value="unsigned">
             <XmlCode xml={unsignedXml} />
           </TabsContent>

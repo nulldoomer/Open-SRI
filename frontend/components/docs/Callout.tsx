@@ -8,10 +8,9 @@ interface CalloutProps {
 }
 
 const styles: Record<CalloutType, string> = {
-  warning:
-    "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200",
-  info: "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/20 dark:text-blue-200",
-  note: "border-border bg-muted/50 text-muted-foreground",
+  warning: "bg-[var(--status-warn-bg)] text-[var(--status-warn-ink)] ring-[var(--v-yellow)]",
+  info: "bg-[var(--status-info-bg)] text-[var(--status-info-ink)] ring-[var(--v-blue)]",
+  note: "bg-muted text-muted-foreground ring-border",
 };
 
 const labels: Record<CalloutType, string> = {
@@ -22,9 +21,9 @@ const labels: Record<CalloutType, string> = {
 
 export default function Callout({ type = "info", children }: CalloutProps) {
   return (
-    <div className={cn("p-4 border rounded-sm text-sm my-6", styles[type])}>
-      <p className="font-semibold mb-1">{labels[type]}</p>
-      <div>{children}</div>
-    </div>
+    <aside className={cn("my-6 rounded-[var(--r-card-sm)] px-5 py-4 text-[15px] leading-relaxed ring-1 ring-inset", styles[type])}>
+      <p className="mb-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.16em]">{labels[type]}</p>
+      <div className="[&_p]:mb-0 [&_p]:text-inherit">{children}</div>
+    </aside>
   );
 }

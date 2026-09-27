@@ -4,9 +4,9 @@ import { LanguageProvider } from "@/contexts/docs-language";
 export default function DocLayout({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
-      <div className="flex gap-12 max-w-6xl mx-auto px-8 py-16 min-h-screen">
+      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-10 sm:px-8 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-16 lg:px-16 lg:py-16">
         <DocsSidebar />
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="min-w-0 max-w-[72ch]">{children}</main>
       </div>
     </LanguageProvider>
   );

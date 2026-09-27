@@ -1,0 +1,1170 @@
+@layer cojeev-flow {
+/* Shared flow paint and nine authored characters. Scoped to component-owned groups and registry roles. */
+[data-flow-owned].v-glide {
+  isolation: isolate;
+}
+:where([data-flow-owned].v-glide) {
+  position: relative;
+}
+[data-flow-owned].v-glide > .v-glide__pill,
+[data-flow-owned].v-glide > .v-glide__hover,
+[data-flow-owned].v-glide > .v-glide__trail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: var(--glide-layer-z, 0);
+  pointer-events: none;
+  border-radius: var(--glide-r, 999px);
+  width: var(--glide-w, 0px);
+  height: var(--glide-h, 0px);
+  opacity: var(--glide-o, 0);
+  transform: translate3d(var(--glide-x, 0px), var(--glide-y, 0px), 0);
+  will-change: transform, width, height;
+}
+[data-flow-owned].v-glide > .v-glide__hover {
+  width: var(--hov-w, 0px);
+  height: var(--hov-h, 0px);
+  border-radius: var(--hov-r, 999px);
+  opacity: calc(var(--hov-o, 0) * var(--flow-hover, 1));
+  transform: translate3d(var(--hov-x, 0px), var(--hov-y, 0px), 0);
+}
+[data-flow-owned].v-glide > .v-glide__pill > i,
+[data-flow-owned].v-glide > .v-glide__hover > i,
+[data-flow-owned].v-glide > .v-glide__trail > i {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  display: block;
+}
+[data-flow-owned].v-glide > * > i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+:where(
+  [data-flow-owned].v-glide
+    > *:not([data-assembly-part]):not(.v-glide__pill):not(.v-glide__hover):not(
+      .v-glide__trail
+    )
+),
+:where(
+  [data-slot="navigation-menu"][data-flow-owned].v-glide
+    .v-nav__item[data-slot="navigation-menu-link"]
+) {
+  position: relative;
+  z-index: 1;
+}
+[data-flow-owned].v-glide > .v-glide__hover {
+  z-index: var(--glide-hover-z, 2);
+}
+[data-flow-owned].v-glide > .v-glide__trail {
+  z-index: var(--glide-trail-z, -2);
+  display: none;
+}
+[data-flow-owned].v-glide > .v-glide__pill > i,
+[data-flow-owned].v-glide > .v-glide__trail > i {
+  background: var(--glide-bg);
+}
+/* A group may hand the travelling surface an edge (--glide-ring) and its
+   pointer preview a paint (--glide-hover-bg) from its own stylesheet. */
+[data-flow-owned].v-glide > .v-glide__pill > i {
+  box-shadow: var(--glide-ring, none);
+}
+[data-flow-owned].v-glide > .v-glide__trail > i {
+  opacity: 0.3;
+}
+[data-flow-owned].v-glide > .v-glide__hover > i {
+  background: var(
+    --glide-hover-bg,
+    color-mix(in oklab, var(--v-ink) 8%, transparent)
+  );
+}
+[data-flow-owned].v-glide [data-glide-active] {
+  background: transparent;
+  box-shadow: none;
+  color: var(--glide-fg);
+}
+[data-flow-owned].v-glide .v-nav__item[data-glide-active],
+[data-flow-owned].v-glide .v-tab[data-glide-active] {
+  color: var(--glide-fg);
+}
+[data-flow-owned].v-glide.-underline > .v-glide__pill > i,
+[data-flow-owned].v-glide.-underline > .v-glide__trail > i {
+  background: var(--v-pink);
+}
+[data-flow-owned].v-glide.-underline > .v-glide__hover {
+  border-radius: 10px;
+}
+[data-flow-owned].v-glide.-underline [data-glide-active] {
+  color: var(--v-text);
+}
+/* Notebook and rail paint their travelling surface from tabs.css (paper sheet
+   and soft index line); their selected label stays in reading ink. */
+.v-tabs[data-flow-owned].v-glide:is(.-notebook, .-rail)
+  .v-tab[data-glide-active] {
+  color: var(--v-text);
+}
+.v-tabs[data-flow-owned].v-glide > .v-tab {
+  transition: none;
+}
+.v-nav[data-flow-owned].v-glide > .v-glide__pill > i,
+.v-nav[data-flow-owned].v-glide > .v-glide__trail > i {
+  background: var(--rail-sel);
+}
+.v-nav[data-flow-owned].v-glide > .v-glide__hover > i {
+  background: var(--rail-hover);
+}
+.v-nav[data-flow-owned].v-glide > .v-glide__pill {
+  border-radius: var(--r-md);
+  background: rgba(251, 244, 230, 0.1);
+}
+.v-nav[data-flow-owned].v-glide .v-nav__item[data-glide-active] {
+  color: var(--nav-active-ink, var(--v-pink));
+}
+.v-nav[data-flow-owned][data-appearance] .v-nav__item {
+  transition: background-color var(--t-flow-hover) ease;
+}
+.v-seg[data-flow-owned].v-glide > .v-glide__pill {
+  border-radius: 999px;
+}
+.v-seg.-pink[data-flow-owned].v-glide > .v-glide__pill > i,
+.v-seg.-pink[data-flow-owned].v-glide > .v-glide__trail > i {
+  background: var(--v-pink);
+}
+.v-seg.-pink[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--v-on-accent);
+}
+.v-seg[data-flow-owned].v-glide
+  .v-btn:is([aria-pressed="true"], [aria-checked="true"]) {
+  background: transparent;
+}
+:root[data-mode="dark"] .v-seg[data-flow-owned].v-glide > .v-glide__pill > i,
+:root[data-mode="dark"] .v-pager[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+}
+:root[data-mode="dark"]
+  .v-seg:where([data-slot], [data-slot] *)
+  [data-glide-active],
+:root[data-mode="dark"]
+  .v-pager:where([data-slot], [data-slot] *)
+  [data-glide-active] {
+  color: var(--v-on-accent);
+}
+:root[data-mode="dark"]
+  .v-tabs[data-flow-owned].v-glide:is(.-pills, .-lenses) {
+  --glide-bg: var(--v-pink);
+  --glide-fg: var(--v-on-accent);
+}
+.v-weekdays[data-flow-owned].v-glide > .v-glide__pill > i,
+.v-iradios[data-flow-owned].v-glide > .v-glide__pill > i,
+.v-md__list[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--sel-bg);
+}
+.v-weekdays[data-flow-owned].v-glide [data-glide-active],
+.v-iradios[data-flow-owned].v-glide [data-glide-active],
+.v-md__list[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--sel-ink);
+}
+.v-quest__opts[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--questionnaire-flow-face, var(--v-pink-soft));
+}
+.v-quest__opts[data-flow-owned].v-glide > .v-glide__hover > i {
+  background: color-mix(in oklab, var(--v-ink) 8%, transparent);
+}
+.v-quest__opts[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--v-text);
+}
+.v-quest__opts[data-flow-owned].v-glide [data-glide-active] small {
+  color: var(--v-text);
+}
+:root[data-mode="dark"]
+  .v-quest__opts[data-flow-owned].v-glide
+  > .v-glide__pill
+  > i {
+  background: var(
+    --questionnaire-flow-face,
+    color-mix(in oklab, var(--v-pink) 28%, var(--v-beige-2))
+  );
+}
+.v-datestrip[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+  box-shadow: inset 0 0 0 1px var(--v-ink);
+}
+.v-datestrip[data-flow-owned].v-glide [data-glide-active],
+.v-datestrip[data-flow-owned].v-glide [data-glide-active] b {
+  color: var(--v-on-accent);
+}
+[data-flow-fields][data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink-soft);
+}
+[data-flow-fields][data-flow-owned].v-glide > .v-glide__hover {
+  display: none;
+}
+[data-flow-fields][data-flow-owned].v-glide [data-glide-active] {
+  color: var(--v-text);
+}
+[data-flow-fields][data-flow-owned].v-glide
+  [data-glide-active]:not(.v-otp input):not([data-slot="input-otp-slot"]) {
+  box-shadow: inset 0 0 0 2px var(--v-brand);
+}
+[data-flow-fields][data-flow-owned].v-glide
+  .v-field:has([data-glide-active])
+  .v-label {
+  color: var(--v-accent-ink);
+  transition: color var(--t-flow-radius-sm) ease;
+}
+[data-flow-fields][data-flow-owned].v-glide > .v-glide__pill > i::after {
+  inset: auto 0 0 auto;
+}
+.v-menu[data-flow-owned].v-glide > .v-glide__pill > i,
+.v-cmd__list[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-beige);
+}
+.v-menu[data-flow-owned].v-glide > .v-glide__hover > i,
+.v-cmd__list[data-flow-owned].v-glide > .v-glide__hover > i {
+  background: color-mix(in oklab, var(--v-ink) 4%, transparent);
+}
+.v-menu[data-flow-owned].v-glide [data-glide-active]:not(.-danger),
+.v-cmd__list[data-flow-owned].v-glide [data-glide-active]:not(.-danger) {
+  color: var(--v-text);
+}
+.v-menu[data-flow-owned].v-glide [data-glide-active].-danger,
+.v-cmd__list[data-flow-owned].v-glide [data-glide-active].-danger {
+  color: var(--v-danger-ink);
+}
+.v-menu[data-flow-owned].v-glide .v-menu__item:hover:not([data-glide-active]),
+.v-cmd__list[data-flow-owned].v-glide
+  .v-menu__item:hover:not([data-glide-active]) {
+  background: transparent;
+}
+.v-list[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--sel-bg);
+  box-shadow: inset 0 0 0 1px var(--sel-edge);
+}
+.v-list[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--sel-ink);
+}
+.v-stepper-flow[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+}
+.v-stepper-flow[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--v-text);
+}
+.v-stepper-flow[data-flow-owned].v-glide .v-step[data-glide-active] .v-step__n {
+  background: transparent;
+  box-shadow: none;
+  color: var(--v-on-accent);
+}
+.v-stepper-flow[data-flow-owned].v-glide > .v-glide__hover {
+  display: none;
+}
+.v-carousel__dots[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+}
+.v-carousel__dots[data-flow-owned].v-glide button {
+  transition: none;
+}
+.v-dock[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+}
+.v-dock[data-flow-owned].v-glide .v-dock__item[data-glide-active] {
+  color: var(--v-pink);
+}
+.v-dock[data-flow-owned].v-glide .v-dock__item[aria-current="page"]::after {
+  display: none;
+}
+[data-flow-owned].v-glide[data-flow-kind="bar"] > .v-glide__hover {
+  border-radius: 10px;
+}
+:root[data-flow-hover="off"] [data-flow-owned].v-glide > .v-glide__hover,
+[data-flow-owned].v-glide[data-flow-hover="off"] > .v-glide__hover {
+  display: none;
+}
+[data-flow-owned].v-glide > .v-glide__hover {
+  transition:
+    transform calc(var(--t-flow-hover) / var(--flow-speed, 1)) var(--enter),
+    width calc(var(--t-flow-hover) / var(--flow-speed, 1)) var(--enter),
+    height calc(var(--t-flow-hover) / var(--flow-speed, 1)) var(--enter),
+    border-radius var(--t-flow-radius-sm) ease,
+    opacity var(--t-flow-fade-sm) ease;
+}
+[data-flow-owned].v-glide > .v-glide__pill,
+[data-flow-owned].v-glide > .v-glide__trail {
+  transition:
+    border-radius var(--t-flow-radius) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="glide"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-glide) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-glide),
+    width calc(var(--t-flow-glide) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-glide),
+    height
+      calc(var(--t-flow-glide-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-glide),
+    border-radius var(--t-flow-radius) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="glide"] > .v-glide__pill.-land > i {
+  animation: none;
+}
+@keyframes vf-land {
+  0% {
+    transform: scale(
+      calc(1 + 0.05 * var(--flow-intensity, 1)),
+      calc(1 - 0.08 * var(--flow-intensity, 1))
+    );
+  }
+  60% {
+    transform: scale(
+      calc(1 - 0.015 * var(--flow-intensity, 1)),
+      calc(1 + 0.03 * var(--flow-intensity, 1))
+    );
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+[data-flow-owned].v-glide[data-flow-v="stretch"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-stretch) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch),
+    width calc(var(--t-flow-stretch) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch),
+    height
+      calc(var(--t-flow-stretch) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch),
+    border-radius var(--t-flow-radius-sm) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="stretch"] > .v-glide__pill.-phase1 {
+  transition:
+    transform
+      calc(var(--t-flow-stretch-p1) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch-p1),
+    width
+      calc(var(--t-flow-stretch-p1) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch-p1),
+    height
+      calc(var(--t-flow-stretch-p1) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-stretch-p1);
+}
+[data-flow-owned].v-glide[data-flow-v="jelly"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-jelly) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-jelly),
+    width calc(var(--t-flow-jelly) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-jelly),
+    height
+      calc(var(--t-flow-jelly-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-jelly),
+    border-radius var(--t-flow-glide-h) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="jelly"] > .v-glide__hover {
+  transition-timing-function: var(--e-flow-jelly-hover);
+  transition-duration: calc(var(--t-flow-jelly-hover) / var(--flow-speed, 1));
+}
+[data-flow-owned].v-glide[data-flow-v="jelly"][data-dir="x"]
+  > .v-glide__pill.-land
+  > i {
+  animation: vf-jellyx calc(var(--t-flow-jelly-land) / var(--flow-speed, 1))
+    var(--e-flow-jelly);
+}
+[data-flow-owned].v-glide[data-flow-v="jelly"][data-dir="y"]
+  > .v-glide__pill.-land
+  > i {
+  animation: vf-jellyy calc(var(--t-flow-jelly-land) / var(--flow-speed, 1))
+    var(--e-flow-jelly);
+}
+@keyframes vf-jellyx {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(
+      calc(1 + 0.14 * var(--flow-intensity, 1)),
+      calc(1 - 0.16 * var(--flow-intensity, 1))
+    );
+  }
+  65% {
+    transform: scale(
+      calc(1 - 0.05 * var(--flow-intensity, 1)),
+      calc(1 + 0.06 * var(--flow-intensity, 1))
+    );
+  }
+  85% {
+    transform: scale(
+      calc(1 + 0.02 * var(--flow-intensity, 1)),
+      calc(1 - 0.02 * var(--flow-intensity, 1))
+    );
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes vf-jellyy {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(
+      calc(1 - 0.14 * var(--flow-intensity, 1)),
+      calc(1 + 0.14 * var(--flow-intensity, 1))
+    );
+  }
+  65% {
+    transform: scale(
+      calc(1 + 0.05 * var(--flow-intensity, 1)),
+      calc(1 - 0.05 * var(--flow-intensity, 1))
+    );
+  }
+  85% {
+    transform: scale(
+      calc(1 - 0.01 * var(--flow-intensity, 1)),
+      calc(1 + 0.02 * var(--flow-intensity, 1))
+    );
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+[data-flow-owned].v-glide[data-flow-v="comet"] > .v-glide__trail {
+  display: block;
+}
+[data-flow-owned].v-glide[data-flow-v="comet"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-comet) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-comet),
+    width calc(var(--t-flow-comet) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-comet),
+    height
+      calc(var(--t-flow-comet-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-comet),
+    border-radius var(--t-flow-comet-h) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="comet"] > .v-glide__trail {
+  transition:
+    transform
+      calc(var(--t-flow-comet-trail) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-comet-trail),
+    width
+      calc(var(--t-flow-comet-trail) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-comet-trail),
+    height
+      calc(
+        var(--t-flow-comet-trail-h) * var(--glide-d, 1) / var(--flow-speed, 1)
+      )
+      var(--e-flow-comet-trail),
+    border-radius var(--t-flow-comet-h) ease,
+    opacity var(--t-flow-comet-h) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="drop"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-drop) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop),
+    width calc(var(--t-flow-drop) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop),
+    height calc(var(--t-flow-drop) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop),
+    border-radius var(--t-flow-radius-sm) ease,
+    opacity var(--t-flow-drop-shoot) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="drop"] > .v-glide__pill.-gather {
+  transition:
+    transform
+      calc(var(--t-flow-drop-gather) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop-gather),
+    width
+      calc(var(--t-flow-drop-gather) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop-gather),
+    height
+      calc(var(--t-flow-drop-gather) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop-gather),
+    border-radius var(--t-flow-drop-gather) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="drop"] > .v-glide__pill.-shoot {
+  transition:
+    transform
+      calc(var(--t-flow-drop-shoot) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-drop-shoot),
+    width
+      calc(var(--t-flow-drop-shoot) * var(--glide-d, 1) / var(--flow-speed, 1)),
+    height
+      calc(var(--t-flow-drop-shoot) * var(--glide-d, 1) / var(--flow-speed, 1));
+}
+[data-flow-owned].v-glide[data-flow-v="drop"] > .v-glide__pill.-land > i {
+  animation: vf-bloom calc(var(--t-flow-drop) / var(--flow-speed, 1))
+    var(--e-flow-drop);
+}
+@keyframes vf-bloom {
+  0% {
+    transform: scale(calc(1 - 0.08 * var(--flow-intensity, 1)));
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+[data-flow-owned].v-glide[data-flow-v="rubber"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-rubber) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber),
+    width calc(var(--t-flow-rubber) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber),
+    height calc(var(--t-flow-rubber) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber),
+    border-radius var(--t-flow-rubber-lead) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="rubber"] > .v-glide__pill.-lead {
+  transition:
+    transform
+      calc(var(--t-flow-rubber-lead) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber-lead),
+    width
+      calc(var(--t-flow-rubber-lead) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber-lead),
+    height
+      calc(var(--t-flow-rubber-lead) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-rubber-lead);
+}
+[data-flow-owned].v-glide[data-flow-v="pebble"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-pebble) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-pebble),
+    width calc(var(--t-flow-pebble) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-pebble),
+    height
+      calc(var(--t-flow-pebble-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-pebble),
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="pebble"][data-dir="x"]
+  > .v-glide__pill.-land
+  > i {
+  animation: vf-pebble-x calc(var(--t-flow-pebble-land) / var(--flow-speed, 1))
+    var(--e-flow-pebble);
+}
+[data-flow-owned].v-glide[data-flow-v="pebble"][data-dir="y"]
+  > .v-glide__pill.-land
+  > i,
+[data-flow-owned].v-glide[data-flow-v="pebble"]:not([data-dir])
+  > .v-glide__pill.-land
+  > i {
+  animation: vf-pebble-y calc(var(--t-flow-pebble-land) / var(--flow-speed, 1))
+    var(--e-flow-pebble);
+}
+@keyframes vf-pebble-x {
+  0% {
+    border-radius: var(--glide-r, 999px);
+    transform: none;
+  }
+  30% {
+    border-radius: calc(var(--glide-h, 40px) * 0.46)
+      calc(var(--glide-h, 40px) * 0.54) calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.5) / calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.44) calc(var(--glide-h, 40px) * 0.56)
+      calc(var(--glide-h, 40px) * 0.5);
+    transform: scale(
+        calc(1 + 0.03 * var(--flow-intensity, 1)),
+        calc(1 - 0.07 * var(--flow-intensity, 1))
+      )
+      skewX(calc(-3deg * var(--flow-intensity, 1)));
+  }
+  65% {
+    border-radius: calc(var(--glide-h, 40px) * 0.54)
+      calc(var(--glide-h, 40px) * 0.46) calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.5) / calc(var(--glide-h, 40px) * 0.48)
+      calc(var(--glide-h, 40px) * 0.52) calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.5);
+    transform: scale(
+        calc(1 - 0.01 * var(--flow-intensity, 1)),
+        calc(1 + 0.03 * var(--flow-intensity, 1))
+      )
+      skewX(calc(1deg * var(--flow-intensity, 1)));
+  }
+  100% {
+    border-radius: var(--glide-r, 999px);
+    transform: none;
+  }
+}
+@keyframes vf-pebble-y {
+  0% {
+    border-radius: var(--glide-r, 999px);
+    transform: none;
+  }
+  30% {
+    border-radius: calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.5) calc(var(--glide-h, 40px) * 0.46)
+      calc(var(--glide-h, 40px) * 0.54) / calc(var(--glide-h, 40px) * 0.56)
+      calc(var(--glide-h, 40px) * 0.5) calc(var(--glide-h, 40px) * 0.44)
+      calc(var(--glide-h, 40px) * 0.5);
+    transform: scale(
+        calc(1 - 0.04 * var(--flow-intensity, 1)),
+        calc(1 + 0.05 * var(--flow-intensity, 1))
+      )
+      skewY(calc(-1.2deg * var(--flow-intensity, 1)));
+  }
+  65% {
+    border-radius: calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.5) calc(var(--glide-h, 40px) * 0.54)
+      calc(var(--glide-h, 40px) * 0.46) / calc(var(--glide-h, 40px) * 0.5)
+      calc(var(--glide-h, 40px) * 0.52) calc(var(--glide-h, 40px) * 0.48)
+      calc(var(--glide-h, 40px) * 0.5);
+    transform: scale(
+        calc(1 + 0.015 * var(--flow-intensity, 1)),
+        calc(1 - 0.02 * var(--flow-intensity, 1))
+      )
+      skewY(calc(0.4deg * var(--flow-intensity, 1)));
+  }
+  100% {
+    border-radius: var(--glide-r, 999px);
+    transform: none;
+  }
+}
+[data-flow-owned].v-glide[data-flow-v="ripple"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-ripple) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-ripple),
+    width calc(var(--t-flow-ripple) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-ripple),
+    height
+      calc(var(--t-flow-ripple-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-ripple),
+    border-radius var(--t-flow-ripple-h) ease,
+    opacity var(--t-flow-ripple-delay) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="ripple"]
+  > .v-glide__pill.-land
+  > i::after {
+  animation: vf-ripple calc(var(--t-flow-ripple-ring) / var(--flow-speed, 1))
+    var(--e-flow-settle) calc(var(--t-flow-ripple-delay) / var(--flow-speed, 1));
+}
+@keyframes vf-ripple {
+  0% {
+    box-shadow: 0 0 0 0 var(--glide-ripple, var(--v-pink));
+    opacity: 0.55;
+  }
+  100% {
+    box-shadow: 0 0 0 calc(16px * var(--flow-intensity, 1))
+      var(--glide-ripple, var(--v-pink));
+    opacity: 0;
+  }
+}
+[data-flow-owned].v-glide[data-flow-v="halo"] > .v-glide__pill {
+  transition:
+    transform
+      calc(var(--t-flow-halo) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-halo),
+    width calc(var(--t-flow-halo) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-halo),
+    height calc(var(--t-flow-halo-h) * var(--glide-d, 1) / var(--flow-speed, 1))
+      var(--e-flow-halo),
+    border-radius var(--t-flow-radius) ease,
+    opacity var(--t-flow-fade) ease;
+}
+[data-flow-owned].v-glide[data-flow-v="halo"]
+  > .v-glide__pill.-land
+  > i::after {
+  animation: vf-halo calc(var(--t-flow-halo-glow) / var(--flow-speed, 1))
+    var(--e-flow-settle);
+}
+@keyframes vf-halo {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 0;
+  }
+  30% {
+    box-shadow: 0 0 calc(22px * var(--flow-intensity, 1))
+      calc(6px * var(--flow-intensity, 1))
+      color-mix(in oklab, var(--v-pink) 60%, transparent);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 calc(30px * var(--flow-intensity, 1))
+      calc(10px * var(--flow-intensity, 1)) transparent;
+    opacity: 0;
+  }
+}
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide.-still
+  > .v-glide__pill,
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide.-still
+  > .v-glide__hover,
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide.-still
+  > .v-glide__trail {
+  transition: none;
+}
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide[data-flow-kind="bar"]
+  > .v-glide__pill
+  > i,
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide[data-flow-kind="bar"]
+  > .v-glide__pill
+  > i::after {
+  animation: none;
+}
+[data-flow-owned].v-glide.-underline > .v-glide__trail {
+  display: none;
+}
+[data-flow-owned].v-glide > .v-tab,
+[data-flow-owned].v-glide > .v-btn,
+[data-flow-owned].v-glide > .v-nav__item,
+[data-flow-owned].v-glide > .v-item,
+[data-flow-owned].v-glide > label,
+[data-flow-owned].v-glide > .v-iradio[data-slot="radio-group-item"],
+[data-slot="navigation-menu"][data-flow-owned].v-glide
+  .v-nav__item[data-slot="navigation-menu-link"] {
+  transition:
+    color var(--t-flow-label) ease
+      calc(var(--t-flow-label-delay) / var(--flow-speed, 1)),
+    background-color var(--t-flow-hover) ease,
+    box-shadow var(--t-flow-hover) ease,
+    transform var(--t-micro) var(--enter);
+}
+@media (hover: none) {
+  [data-flow-owned].v-glide > .v-glide__hover {
+    display: none;
+  }
+}
+:root:not([data-flow-hover="off"])
+  [data-flow-owned].v-glide:not([data-flow-hover="off"])
+  > :is(.v-btn, .v-tab, .v-nav__item):hover:not([data-glide-active]),
+:root:not([data-flow-hover="off"])
+  [data-slot="navigation-menu"][data-flow-owned].v-glide:not(
+    [data-flow-hover="off"]
+  )
+  .v-nav__item[data-slot="navigation-menu-link"]:hover:not(
+    [data-glide-active]
+  ) {
+  background: transparent;
+}
+[data-flow-owned].v-glide[data-flow-v="off"] > .v-glide__pill,
+[data-flow-owned].v-glide[data-flow-v="off"] > .v-glide__hover,
+[data-flow-owned].v-glide[data-flow-v="off"] > .v-glide__trail {
+  transition: none;
+}
+[data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide[data-flow-v="off"]
+  > .v-glide__pill
+  > i {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide
+    > .v-glide__pill,
+  [data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide
+    > .v-glide__hover,
+  [data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide
+    > .v-glide__trail {
+    transition: none;
+  }
+  [data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide
+    > *
+    > i,
+  [data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned][data-flow-owned].v-glide
+    > *
+    > i::after {
+    animation: none;
+  }
+}
+:root.-doc-hidden [data-flow-owned].v-glide > .v-glide__pill,
+:root.-doc-hidden [data-flow-owned].v-glide > .v-glide__trail {
+  transition: none;
+}
+:root {
+  --flow-ease: var(--e-flow-glide);
+  --flow-dur: var(--t-flow-glide);
+  --flow-land: none;
+  --flow-glow: none /* @kind other */;
+}
+[data-flow-land]:where([data-slot], [data-slot] *) {
+  animation:
+    var(--flow-land) calc(var(--flow-dur) * 0.85) var(--flow-ease),
+    var(--flow-glow) calc(var(--flow-dur) * 1.6) var(--e-flow-settle);
+}
+@keyframes vf-lean {
+  0% {
+    transform: none;
+  }
+  35% {
+    transform: scale(
+        calc(1 + 0.04 * var(--flow-intensity, 1)),
+        calc(1 - 0.07 * var(--flow-intensity, 1))
+      )
+      skewX(calc(-3deg * var(--flow-intensity, 1)));
+  }
+  70% {
+    transform: scale(
+        calc(1 - 0.01 * var(--flow-intensity, 1)),
+        calc(1 + 0.03 * var(--flow-intensity, 1))
+      )
+      skewX(calc(1deg * var(--flow-intensity, 1)));
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes vf-ring {
+  0% {
+    outline: 0 solid color-mix(in oklab, var(--v-pink) 70%, transparent);
+  }
+  100% {
+    outline: calc(12px * var(--flow-intensity, 1)) solid transparent;
+  }
+}
+@keyframes vf-glow {
+  0% {
+    outline: 0 solid transparent;
+  }
+  35% {
+    outline: calc(6px * var(--flow-intensity, 1)) solid
+      color-mix(in oklab, var(--v-pink) 40%, transparent);
+  }
+  100% {
+    outline: calc(10px * var(--flow-intensity, 1)) solid transparent;
+  }
+}
+[data-flow-in="grow"]:where([data-slot], [data-slot] *) {
+  transform-origin: var(--flow-ox, 50%) var(--flow-oy, 100%);
+  animation:
+    vf-grow var(--flow-dur) var(--flow-ease) both,
+    var(--flow-glow) calc(var(--flow-dur) * 1.6) var(--e-flow-settle);
+}
+@keyframes vf-grow {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.3 * min(1, var(--flow-intensity, 1))));
+  }
+}
+[data-flow-in="enter"]:where([data-slot], [data-slot] *) {
+  animation:
+    vf-enter var(--flow-dur) var(--flow-ease) both,
+    var(--flow-land) calc(var(--flow-dur) * 0.9) var(--flow-ease)
+      var(--flow-dur);
+}
+@keyframes vf-enter {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.06 * var(--flow-intensity, 1)));
+  }
+}
+.v-switch:where([data-slot], [data-slot] *),
+.v-switch:where([data-slot], [data-slot] *)::after,
+.v-check:where([data-slot], [data-slot] *) input,
+.v-radio:where([data-slot], [data-slot] *) input,
+.v-toggle:where([data-slot], [data-slot] *) {
+  transition-timing-function: var(--flow-ease);
+  transition-duration: var(--flow-dur);
+}
+.v-track:where([data-slot], [data-slot] *) > i {
+  transition:
+    width var(--flow-dur) var(--flow-ease),
+    background var(--t-flow-radius-sm) ease;
+}
+.v-ring:where([data-slot], [data-slot] *) circle {
+  transition-timing-function: var(--flow-ease);
+  transition-duration: var(--flow-dur);
+}
+.v-bars:where([data-slot], [data-slot] *) > i {
+  transition:
+    height var(--flow-dur) var(--flow-ease),
+    transform var(--flow-dur) var(--flow-ease);
+  transform-origin: bottom;
+}
+.v-skel:where([data-slot], [data-slot] *) {
+  animation-duration: calc(var(--t-skel) / var(--flow-speed, 1));
+}
+.v-skel:where([data-slot], [data-slot] *)::after {
+  animation-duration: calc(var(--t-skel-sheen) / var(--flow-speed, 1));
+}
+.v-pulse:where([data-slot], [data-slot] *) .core {
+  animation-duration: calc(var(--t-pulse) / var(--flow-speed, 1));
+}
+.v-acc:where([data-slot], [data-slot] *) > details::details-content,
+.v-collapsible:where([data-slot], [data-slot] *)::details-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  block-size: auto;
+  overflow: clip;
+  transition: grid-template-rows var(--flow-dur) var(--flow-ease);
+}
+.v-acc:where([data-slot], [data-slot] *) > details[open]::details-content,
+.v-collapsible:where([data-slot], [data-slot] *)[open]::details-content {
+  grid-template-rows: 1fr;
+  block-size: auto;
+}
+.v-acc__body:where([data-slot], [data-slot] *),
+.v-collapsible__body:where([data-slot], [data-slot] *) {
+  min-height: 0;
+}
+.v-acc:where([data-slot], [data-slot] *) > details[open] > .v-acc__body,
+.v-collapsible:where([data-slot], [data-slot] *)[open] > .v-collapsible__body {
+  animation: vf-enter var(--flow-dur) var(--flow-ease) both;
+}
+.v-acc:where([data-slot], [data-slot] *) summary .v-chev,
+[data-slot="accordion-trigger"] .v-chev {
+  transition-timing-function: var(--flow-ease);
+  transition-duration: var(--flow-dur);
+}
+.v-avatar:where([data-slot], [data-slot] *),
+.v-hex:where([data-slot], [data-slot] *),
+.v-kbd:where([data-slot], [data-slot] *),
+.v-crumbs:where([data-slot], [data-slot] *) a,
+.v-bars:where([data-slot], [data-slot] *) > i,
+.v-ratio:where([data-slot], [data-slot] *) {
+  transition-property: transform;
+  transition-duration: var(--flow-dur);
+  transition-timing-function: var(--flow-ease);
+}
+.v-avatar:where([data-slot], [data-slot] *):hover,
+.v-hex:where([data-slot], [data-slot] *):hover,
+.v-kbd:where([data-slot], [data-slot] *):hover {
+  transform: scale(calc(1 + 0.05 * var(--flow-intensity, 1)));
+}
+.v-ratio:where([data-slot], [data-slot] *):hover {
+  transform: scale(calc(1 + 0.015 * var(--flow-intensity, 1)));
+}
+.v-table:where([data-slot], [data-slot] *) tbody tr,
+.v-table:where([data-slot], [data-slot] *) tbody tr .v-disk,
+.v-sliderwrap:where([data-slot], [data-slot] *) output {
+  transition-timing-function: var(--flow-ease);
+  transition-duration: var(--flow-dur);
+}
+.v-slider:where([data-slot], [data-slot] *)::-webkit-slider-thumb {
+  transition:
+    transform var(--flow-dur) var(--flow-ease),
+    border-radius var(--flow-dur) var(--flow-ease),
+    background var(--t-flow-radius-sm) ease;
+}
+.v-crumbs:where([data-slot], [data-slot] *) a:hover {
+  transform: translateY(calc(-1px * var(--flow-intensity, 1)));
+}
+.v-bars:where([data-slot], [data-slot] *) > i:hover {
+  transform: scaleY(calc(1 + 0.04 * var(--flow-intensity, 1)));
+}
+.v-cal__grid[data-flow-owned].v-glide > .v-glide__pill > i {
+  background: var(--v-pink);
+}
+.v-cal__grid[data-flow-owned].v-glide [data-glide-active] {
+  color: var(--v-on-accent);
+}
+.v-cal__grid[data-flow-owned].v-glide > .v-glide__hover {
+  display: none;
+}
+.v-cal__grid[data-flow-owned].v-glide .v-cal__d:hover:not([data-glide-active]) {
+  background: transparent;
+}
+:root[data-flow="off"] [data-flow-in]:where([data-slot], [data-slot] *),
+:root[data-flow="off"] [data-flow-land]:where([data-slot], [data-slot] *),
+[data-flow="off"] [data-flow-in]:where([data-slot], [data-slot] *),
+[data-flow="off"] [data-flow-land]:where([data-slot], [data-slot] *) {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-flow-in]:where([data-slot], [data-slot] *),
+  [data-flow-land]:where([data-slot], [data-slot] *) {
+    animation: none;
+  }
+}
+
+/* Layer paint owns selection wells; selected labels stay transparent at every theme/state specificity. */
+[data-flow-owned].v-glide
+  [data-glide-active][data-glide-active][data-glide-active] {
+  background: transparent;
+}
+[data-flow-owned].v-glide:not([data-flow-kind="fill"])
+  [data-glide-active][data-glide-active][data-glide-active] {
+  box-shadow: none;
+}
+/* Effective motion overrides do not rewrite authored settings. */
+:root[data-flow="off"] [data-slot]:is(.v-skel, .v-pulse, .v-ring, .v-bars),
+:root[data-flow="off"] [data-slot]:is(.v-skel, .v-pulse, .v-ring, .v-bars) *,
+:root[data-flow="off"] [data-slot].v-skel::after {
+  animation-play-state: paused;
+}
+:root[data-flow="off"]
+  [data-slot]:is(.v-avatar, .v-hex, .v-kbd, .v-ratio):hover {
+  transform: none;
+}
+:root[data-flow="off"] [data-slot],
+[data-flow="off"] [data-slot] {
+  --flow-dur: 0s;
+  --flow-land: none;
+  --flow-glow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-slot]:is(.v-skel, .v-pulse, .v-ring, .v-bars),
+  [data-slot]:is(.v-skel, .v-pulse, .v-ring, .v-bars) *,
+  [data-slot].v-skel::after {
+    animation-play-state: paused;
+  }
+  [data-slot]:is(.v-avatar, .v-hex, .v-kbd, .v-ratio):hover {
+    transform: none;
+  }
+  [data-slot] {
+    --flow-dur: 0s;
+    --flow-land: none;
+    --flow-glow: none;
+  }
+}
+
+/* Radix owns real thumb and indicator elements in the React port. */
+[data-slot="switch-thumb"],
+[data-slot="checkbox-indicator"],
+[data-slot="radio-group-indicator"] {
+  transition-timing-function: var(--flow-ease);
+  transition-duration: var(--flow-dur);
+}
+[data-slot="progress-indicator"] {
+  transition:
+    width var(--flow-dur) var(--flow-ease),
+    transform var(--flow-dur) var(--flow-ease),
+    background var(--t-flow-radius-sm) ease;
+}
+[data-slot="accordion-content"][data-state="open"],
+[data-slot="collapsible-content"][data-state="open"] {
+  animation: vf-enter var(--flow-dur) var(--flow-ease) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="switch-thumb"],
+  [data-slot="checkbox-indicator"],
+  [data-slot="radio-group-indicator"],
+  [data-slot="progress-indicator"] {
+    transition-duration: 0s;
+  }
+}
+
+/* Source morph injects this after flow at specificity one. Keep stronger flow contexts intact. */
+[data-morph]:where([data-slot].v-morph-host) {
+  transition: transform 0s;
+}
+
+/* Source alive.css:529 keeps radio and questionnaire tiles beige even under the travelling fill. */
+:root[data-mode="dark"]
+  .v-iradios[data-flow-owned]
+  .v-iradio[data-glide-active] {
+  background: var(--v-beige);
+}
+:root[data-mode="dark"]
+  .v-quest__opts[data-flow-owned]
+  .v-quest__opt[data-glide-active] {
+  background: var(--questionnaire-flow-base, var(--v-beige));
+}
+
+/* Selection feedback belongs to the shared layer, keeping text and target
+   geometry still during pointer, keyboard and touch activation. */
+:is(
+    .v-tabs,
+    .v-seg,
+    .v-pager,
+    .v-iradios,
+    [role="tablist"],
+    [data-slot="toggle-group"]
+  )[data-flow-owned].v-glide:not([data-flow-kind="fill"])
+  :is(.v-tab, .v-btn, .v-toggle, .v-nav__item, [role="tab"], [role="radio"]):is(
+    :hover,
+    :active
+  ) {
+  transform: none;
+}
+/* Off also covers CSS-only press feedback after automatic Morph detaches. */
+[data-flow="off"]
+  [data-slot]:is(
+    .v-btn,
+    .v-ibtn,
+    .v-toggle,
+    .v-tab,
+    .v-nav__item,
+    .v-menu__item,
+    .v-item
+  ):is(:hover, :active) {
+  transform: none;
+}
+/* A zero-duration transition with a delay is still a running animation. */
+@media (prefers-reduced-motion: reduce) {
+  [data-flow-owned] {
+    --t-flow-label-delay: 0s;
+  }
+  [data-flow-owned].v-glide,
+  [data-flow-owned].v-glide * {
+    transition-delay: 0s;
+    animation-delay: 0s;
+  }
+}
+:root[data-flow="off"] [data-flow-owned],
+:root[data-flow="off"] [data-flow-owned] * {
+  transition-delay: 0s;
+  animation-delay: 0s;
+}
+
+[data-flow="off"] [data-slot] {
+  transition-duration: 0s;
+  transition-delay: 0s;
+  animation-duration: 0s;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+}
+
+/* Motion owns travel and feedback. CSS still supplies colors and layer layout. */
+:root
+  [data-flow-owned][data-flow-engine="motion"].v-glide[data-flow-v]
+  > :is(.v-glide__pill, .v-glide__hover, .v-glide__trail) {
+  transition: none;
+  will-change: auto;
+}
+:root
+  [data-flow-owned][data-flow-engine="motion"].v-glide[data-flow-v]
+  > :is(.v-glide__pill, .v-glide__hover, .v-glide__trail)
+  > i,
+:root
+  [data-flow-owned][data-flow-engine="motion"].v-glide[data-flow-v]
+  > :is(.v-glide__pill, .v-glide__hover, .v-glide__trail)
+  > i::after {
+  animation: none;
+}
+[data-flow-engine="motion"] > .v-glide__trail {
+  transform: translate3d(var(--trail-x, 0px), var(--trail-y, 0px), 0);
+  width: var(--trail-w, 0px);
+  height: var(--trail-h, 0px);
+  border-radius: var(--trail-r, 999px);
+  opacity: var(--trail-o, 0);
+}
+[data-flow-presence] {
+  animation: none;
+}
+/* This animation changes no visible property. Its end event lets Radix unmount
+   after Motion's exit, keeping focus management and component contracts intact. */
+@keyframes v-motion-presence {
+  from {
+    --v-presence-beat: 0;
+  }
+  to {
+    --v-presence-beat: 1;
+  }
+}
+[data-flow-presence][data-state="closed"] {
+  animation: v-motion-presence var(--flow-exit-duration, 0.22s) linear;
+  pointer-events: none;
+}
+:root[data-flow="off"] [data-flow-presence][data-state="closed"],
+[data-flow="off"] [data-flow-presence][data-state="closed"] {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-flow-presence][data-state="closed"] {
+    animation: none;
+  }
+}
+
+}

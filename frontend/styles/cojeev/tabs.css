@@ -1,0 +1,426 @@
+@layer cojeev-states {
+/* Tabs: six paper choices on one trigger contract. The shared flow layer
+   moves the selected surface; each variant only names what that surface is:
+   an ink lozenge (pills), a beige lens, a ruled-line marker (underline), the
+   top sheet of a notebook, or a soft line in a rail index. */
+.v-tab:where(
+    [data-slot="tabs"],
+    [data-slot^="tabs-"]
+  )[aria-selected="true"][data-morph] {
+  --mfill: var(--v-ink);
+}
+
+[data-slot="tabs-list"] {
+  min-width: 0;
+  max-width: 100%;
+}
+[data-slot="tabs-trigger"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    color var(--t-micro),
+    background var(--t-micro),
+    box-shadow var(--t-micro);
+}
+[data-slot="tabs-trigger"] > .v-icon {
+  flex: none;
+}
+/* A leading icon carries its own visual weight: pull it in by a hair so the
+   pill reads balanced instead of icon-heavy on the leading side. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]):is(.-pills, .-lenses)
+  .v-tab:has(> .v-icon:first-child) {
+  padding-inline-start: 12px;
+}
+[data-slot="tabs-trigger"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+[data-slot="tabs-list"][data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+[data-slot="tabs-trigger"][data-disabled] {
+  color: var(--v-disabled-ink);
+  cursor: not-allowed;
+}
+[data-slot="tabs-content"] {
+  min-width: 0;
+}
+
+/* Pills and Default: quiet beige pills, one ink lozenge. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-pills {
+  gap: var(--s-2);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-pills .v-tab {
+  height: var(--ctl-sm);
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--v-beige);
+  color: var(--v-text);
+  font-size: 13px;
+  font-weight: 500;
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-pills
+  .v-tab:not([aria-selected="true"]) {
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-pills
+  .v-tab:not([aria-selected="true"]):not([data-disabled]):hover {
+  background: var(--v-beige-2);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-pills
+  .v-tab[aria-selected="true"] {
+  background: var(--v-ink);
+  color: var(--v-on-ink);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-default .v-tab {
+  height: var(--ctl-md);
+  padding-inline: var(--s-4);
+  font-size: var(--fs-control);
+}
+@media (pointer: coarse) {
+  .v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-default .v-tab {
+    min-height: var(--ctl-lg);
+  }
+}
+
+/* Lenses: quiet labels, one beige lens with a real edge. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-lenses {
+  gap: var(--s-2);
+  --glide-bg: var(--v-beige);
+  --glide-fg: var(--v-text);
+  --glide-ring: inset 0 0 0 1px var(--v-edge);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-lenses .v-tab {
+  height: var(--ctl-md);
+  padding: 0 var(--s-4);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-control);
+  font-weight: 500;
+  color: var(--v-text-2);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-lenses
+  .v-tab:not([aria-selected="true"]):not([data-disabled]):hover {
+  color: var(--v-text);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-lenses
+  .v-tab[aria-selected="true"] {
+  background: var(--v-beige);
+  color: var(--v-text);
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+}
+
+/* Underline: reading-size labels on one ruled line; a pink marker rides it. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-underline {
+  gap: var(--s-6);
+  box-shadow: inset 0 -1px 0 var(--v-border);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-underline .v-tab {
+  padding: 8px 2px 10px;
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  color: var(--v-text-2);
+  border-bottom: 2px solid transparent;
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-underline
+  .v-tab:not([aria-selected="true"]):not([data-disabled]):hover {
+  color: var(--v-text);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-underline
+  .v-tab[aria-selected="true"] {
+  color: var(--v-text);
+  border-color: var(--v-pink);
+}
+/* While the flow layer travels, the stationary border would sit on top of
+   its marker; hand the line to the layer and keep the quiet fallback pink. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-underline.v-glide
+  .v-tab[data-glide-active] {
+  border-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]) {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])::-webkit-scrollbar {
+    display: none;
+  }
+  .v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]) .v-tab {
+    flex: none;
+  }
+}
+
+/* Dark mode: the ink lozenge becomes the pink accent with fixed ink; every
+   other surface keeps its own paired paint from the dark tokens. These stay
+   below the flow layer's selected-surface override in specificity, so an
+   unlayered consumer still hands the selected paint to the travelling layer. */
+[data-mode="dark"] :is(.-pills, .-lenses) .v-tab[aria-selected="true"] {
+  background: var(--v-pink);
+  color: var(--v-on-accent);
+  box-shadow: none;
+}
+[data-mode="dark"] .v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]).-lenses {
+  --glide-ring: none;
+}
+[data-mode="dark"] .-pills .v-tab:not([aria-selected="true"]) {
+  color: var(--v-text);
+}
+
+/* Consumer ink overrides keep their original contract. */
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="light"],
+.v-tab:where([data-slot="tabs"], [data-slot^="tabs-"])[data-ink="light"] {
+  color: var(--cream-fixed);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"]) .v-tab[data-ink="dark"],
+.v-tab:where([data-slot="tabs"], [data-slot^="tabs-"])[data-ink="dark"] {
+  color: var(--v-text-2);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="dark"]:hover,
+.v-tab:where([data-slot="tabs"], [data-slot^="tabs-"])[data-ink="dark"]:hover {
+  color: var(--v-text);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="light"][aria-selected="true"],
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="light"][aria-pressed="true"] {
+  color: var(--cream-fixed);
+}
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="dark"][aria-selected="true"],
+.v-tabs:where([data-slot="tabs"], [data-slot^="tabs-"])
+  .v-tab[data-ink="dark"][aria-pressed="true"] {
+  color: var(--v-on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="tabs"],
+  [data-slot^="tabs-"],
+  [data-slot="tabs"]::before,
+  [data-slot="tabs"]::after,
+  [data-slot^="tabs-"]::before,
+  [data-slot^="tabs-"]::after {
+    animation-duration: 0s;
+    animation-iteration-count: 1;
+    transition-duration: 0s;
+    scroll-behavior: auto;
+  }
+}
+
+/* Retained panels share one position: exit paint never creates another row.
+   Explicit forceMount remains entirely under the caller's visibility control. */
+.v-tabs-root > [data-tabs-managed] {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+}
+.v-tabs-root > [data-tabs-managed][data-motion-exiting="true"] {
+  pointer-events: none;
+}
+.v-tabs-root [data-slot="tabs-trigger"] {
+  min-height: 44px;
+}
+
+/* Notebook: the section tabs are sheets on one ruled baseline. The selected
+   sheet is paper with an open bottom, so it continues into its page; the
+   travelling layer carries that sheet between sections. */
+.v-tabs-root[data-tabs-appearance="notebook"] {
+  gap: 0;
+}
+[data-slot="tabs-list"].-notebook {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  gap: 4px;
+  padding: 0 12px 1px;
+  --glide-bg: var(--v-paper);
+  --glide-fg: var(--v-text);
+  --glide-ring:
+    inset 1px 0 0 var(--v-edge), inset -1px 0 0 var(--v-edge),
+    inset 0 1px 0 var(--v-edge);
+  --glide-hover-bg: color-mix(in oklab, var(--v-ink) 5%, transparent);
+}
+[data-slot="tabs-list"].-notebook::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--v-edge);
+  z-index: -1;
+  pointer-events: none;
+}
+[data-slot="tabs-list"].-notebook [data-slot="tabs-trigger"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  margin-bottom: -1px;
+  padding: 12px 16px 13px;
+  border-radius: 14px 14px 0 0;
+  color: var(--v-text-2);
+  background: transparent;
+}
+[data-slot="tabs-list"].-notebook
+  [data-slot="tabs-trigger"]:not([aria-selected="true"]):not(
+    [data-disabled]
+  ):hover {
+  color: var(--v-text);
+  background: color-mix(in oklab, var(--v-ink) 5%, transparent);
+}
+[data-slot="tabs-list"].-notebook
+  [data-slot="tabs-trigger"][aria-selected="true"] {
+  color: var(--v-text);
+  background: var(--v-paper);
+  box-shadow:
+    inset 1px 0 0 var(--v-edge), inset -1px 0 0 var(--v-edge),
+    inset 0 1px 0 var(--v-edge);
+}
+.v-tabs-root[data-tabs-appearance="notebook"] > [data-tabs-managed] {
+  border: 1px solid var(--v-edge);
+  border-top: 0;
+  border-radius: 0 0 20px 20px;
+  background: var(--v-paper);
+}
+
+/* Rail: a section index beside the workspace; the selected line is a soft
+   pink slip that travels up and down the column. */
+.v-tabs-root[data-tabs-appearance="rail"] {
+  grid-template-columns: minmax(150px, 0.32fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+.v-tabs-root[data-tabs-appearance="rail"] > [data-slot="tabs-list"] {
+  grid-column: 1;
+  grid-row: 1;
+}
+.v-tabs-root[data-tabs-appearance="rail"] > [data-tabs-managed] {
+  grid-column: 2;
+  grid-row: 1;
+}
+[data-slot="tabs-list"].-rail {
+  flex-direction: column;
+  gap: 4px;
+  padding-inline-end: 16px;
+  border-inline-end: 1px solid var(--v-border);
+  --glide-bg: var(--v-pink-soft);
+  --glide-fg: var(--v-text);
+  --glide-ring: none;
+}
+[data-slot="tabs-list"].-rail [data-slot="tabs-trigger"] {
+  justify-content: flex-start;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: start;
+  color: var(--v-text-2);
+}
+[data-slot="tabs-list"].-rail
+  [data-slot="tabs-trigger"]:not([aria-selected="true"]):not(
+    [data-disabled]
+  ):hover {
+  color: var(--v-text);
+  background: color-mix(in oklab, var(--v-ink) 5%, transparent);
+}
+[data-slot="tabs-list"].-rail [data-slot="tabs-trigger"][aria-selected="true"] {
+  background: var(--v-pink-soft);
+  color: var(--v-text);
+}
+[data-slot="tabs-list"] .v-tabs__count {
+  margin-inline-start: auto;
+  padding-inline-start: 8px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--v-text-3);
+}
+[data-slot="tabs-trigger"][aria-selected="true"] .v-tabs__count {
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* Documentation story: the panel is one paper page under the chosen tab. */
+.v-tabs__story {
+  padding: 24px;
+  min-height: 250px;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  border-radius: 20px;
+  border: 1px solid var(--v-border);
+  background: var(--v-paper);
+}
+[data-tabs-appearance="notebook"] .v-tabs__story {
+  border: 0;
+  background: transparent;
+}
+.v-tabs__story > small {
+  color: var(--v-accent-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+.v-tabs__story h3 {
+  margin: 0;
+  font: 500 24px/1.15 var(--font-display);
+  letter-spacing: -0.01em;
+}
+.v-tabs__story p {
+  color: var(--v-text-2);
+  margin: 0;
+  max-width: 45ch;
+}
+.v-tabs__story [data-slot="button"] {
+  justify-self: start;
+  min-height: 44px;
+}
+@media (max-width: 640px) {
+  [data-slot="tabs-list"]:is(.-underline, .-lenses) {
+    gap: 12px;
+  }
+  [data-slot="tabs-list"]:is(.-underline, .-lenses) [data-slot="tabs-trigger"] {
+    font-size: var(--fs-control);
+    padding-inline: 10px;
+  }
+  .v-tabs-root[data-tabs-appearance="rail"] {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 12px;
+  }
+  [data-slot="tabs-list"].-rail {
+    padding-inline-end: 8px;
+  }
+  [data-slot="tabs-list"].-rail [data-slot="tabs-trigger"] {
+    gap: 8px;
+    padding-inline: 8px;
+    font-size: 13px;
+  }
+  [data-slot="tabs-list"].-rail .v-tabs__count {
+    display: none;
+  }
+  [data-slot="tabs-list"].-notebook {
+    padding-inline: 4px;
+  }
+  /* Sheets keep filling the row but never shrink below their label; a longer
+     set scrolls the row instead of clipping. Counts step aside like the rail's. */
+  [data-slot="tabs-list"].-notebook [data-slot="tabs-trigger"] {
+    flex: 1 0 auto;
+    padding-inline: 10px;
+  }
+  [data-slot="tabs-list"].-notebook .v-tabs__count {
+    display: none;
+  }
+  .v-tabs-root[data-tabs-appearance="rail"] .v-tabs__story {
+    padding: 16px;
+  }
+  .v-tabs-root[data-tabs-appearance="rail"] .v-tabs__story h3 {
+    font-size: 20px;
+  }
+}
+
+}

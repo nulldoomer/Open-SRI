@@ -1,0 +1,106 @@
+@layer cojeev-states {
+/* One inherited corner contract, with a readable cap for multiline/native fields. */
+:is(.v-input,.v-igroup,.v-select,.v-native,.v-number-input,.v-btn) {
+  border-radius: var(--v-control-radius, var(--r-pill));
+}
+:is(.v-textarea,.v-composer,.v-native,.v-multi-select__trigger) {
+  border-radius: min(var(--v-control-radius, 20px), 20px);
+}
+.v-btn[data-control-shape="card"] { border-radius: 12px; }
+.v-btn[data-control-shape="pill"] { border-radius: var(--r-pill); }
+
+/* A Field can own the treatment for its immediate shell; explicit child paint wins. */
+:root .v-native[data-appearance] { padding-inline-end:40px; }
+:root .v-native[data-appearance][size]:not([size="1"]) { padding-inline:8px; }
+[data-slot="field"][data-appearance="contour"] { --v-field-face: var(--v-canvas); }
+:root [data-appearance="contour"]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger),
+:root [data-slot="field"][data-appearance="contour"] :is(.v-input,.v-igroup,.v-textarea):not([data-appearance]) {
+  background-color: var(--v-canvas);
+  color: var(--v-text);
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+}
+:root [data-appearance="editorial"]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger),
+:root [data-slot="field"][data-appearance="editorial"] :is(.v-input,.v-igroup,.v-textarea):not([data-appearance]) {
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--v-text);
+  box-shadow: inset 0 -1px 0 var(--v-edge);
+  padding-inline: 2px;
+}
+:root [data-slot="field"][data-appearance="inset"] {
+  padding: 14px 16px;
+  border-radius: min(var(--v-control-radius, 20px), 20px);
+  background: var(--v-beige);
+  color: var(--v-text);
+  box-shadow: inset 0 1px 2px color-mix(in oklab, var(--v-text) 9%, transparent);
+  gap: 6px;
+}
+:root [data-appearance="inset"]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger) {
+  background-color: var(--v-beige);
+  color: var(--v-text);
+  box-shadow: inset 0 1px 2px color-mix(in oklab, var(--v-text) 12%, transparent);
+}
+:root [data-slot="field"][data-appearance="inset"] :is(.v-input,.v-igroup,.v-textarea):not([data-appearance]) {
+  background: transparent;
+  box-shadow: none;
+  padding-inline: 0;
+}
+:root [data-slot="field"][data-appearance="inset"] [data-slot="field-label"] { color: var(--v-text-2); }
+:root [data-slot="field"][data-appearance="inset"]:focus-within { outline: 2px solid var(--v-brand); outline-offset: 2px; }
+:root [data-appearance]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger):focus-within,
+:root [data-slot="field"][data-appearance] :is(.v-input,.v-igroup,.v-textarea):focus-within {
+  outline: 2px solid var(--v-brand);
+  outline-offset: 3px;
+}
+:root [data-slot="field"][data-appearance="inset"] :is(.v-input,.v-igroup,.v-textarea):focus-within { outline: none; }
+:root [data-appearance]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger):is(:disabled,[data-disabled="true"],:has(input:disabled)),
+:root [data-slot="field"][data-appearance] :is(.v-input,.v-igroup,.v-textarea):is(:disabled,:has(input:disabled)) {
+  background: var(--v-disabled-face);
+  color: var(--v-disabled-ink);
+  box-shadow: inset 0 0 0 1px var(--v-disabled-edge);
+  cursor: not-allowed;
+}
+:root [data-slot="field"][data-appearance][data-state="error"],
+:root [data-appearance]:is(.v-input,.v-igroup,.v-textarea,.v-native,.v-select,.v-number-input,.v-multi-select__trigger):is([aria-invalid="true"],[data-invalid="true"],:has([aria-invalid="true"])) {
+  outline: 2px solid var(--v-danger-fill);
+  outline-offset: 3px;
+}
+:root [data-slot="field"][data-appearance][data-state="error"] [role="alert"] { color: var(--v-danger-ink); }
+
+.v-form-example { display: grid; gap: 20px; width: 100%; min-width: 0; max-width: 480px; margin-inline: auto; }
+.v-form-example__intro { display: grid; gap: 5px; }
+.v-form-example__intro strong { font-family: var(--font-display, inherit); font-size: 22px; font-weight: 500; }
+.v-form-example__intro p { margin: 0; color: var(--v-text-2); font-size: 13px; line-height: 1.5; }
+.v-form-example__status { min-height: 1.5em; margin: 0; font-size: 12px; color: var(--v-text-2); overflow-wrap: anywhere; }
+.v-form-example__footer { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+
+/* Composer owns one surface, while the actual textarea keeps native editing. */
+:root .v-composer[data-appearance] { border-radius:min(var(--v-control-radius,20px),20px); background:var(--v-canvas); color:var(--v-text); box-shadow:inset 0 0 0 1px var(--v-edge); }
+:root .v-composer[data-appearance="inset"] { background:var(--v-beige); box-shadow:inset 0 1px 2px color-mix(in oklab,var(--v-text) 12%,transparent); }
+:root .v-composer[data-appearance="editorial"] { border-radius:0; background:transparent; box-shadow:inset 0 -1px 0 var(--v-edge); }
+:root .v-composer[data-appearance] .v-textarea:is(:focus,:hover,:not(:focus)) { background:transparent; box-shadow:none; outline:0; border-radius:0; resize:vertical; }
+:root .v-composer[data-appearance] .v-textarea-scroll > textarea { padding-inline-end:30px; }
+:root [data-slot="field"][data-appearance] [data-slot="input-group"] .v-textarea { background:transparent; box-shadow:none; outline:0; border:0; border-radius:0; }
+:root .v-composer[data-appearance]:focus-within { outline:2px solid var(--v-brand); outline-offset:3px; }
+:root [data-slot="field"][data-appearance="inset"] .v-composer[data-appearance] { background:transparent; box-shadow:none; outline:0; }
+.v-form-example[data-form-example="field"] { max-width:600px; }
+.v-form-example [data-slot="field-label"] { font-size:14px; line-height:1.5; }
+.v-form-example [data-slot="field-description"] { font-size:13px; margin:0; }
+.v-form-example__footer > .v-btn, .v-form-example [data-slot="textarea-composer-bar"] > .v-btn { min-height:44px; }
+.v-form-example [data-slot="textarea-composer-bar"] { justify-content:space-between; flex-wrap:wrap; gap:12px; padding:10px 12px; border-top:1px solid var(--v-border); }
+.v-form-example__allowance { height:4px; border-radius:4px; overflow:hidden; background:var(--v-beige); margin-top:-8px; }
+.v-form-example__allowance > span { display:block; height:100%; max-width:100%; border-radius:inherit; background:var(--v-blue-deep); }
+.v-form-example__label-row { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; justify-content:space-between; }
+.v-form-example__label-row > span { font-size:12px; color:var(--v-text-2); }
+.v-form-example__hint { margin:0; color:var(--v-text-2); font-size:13px; line-height:1.5; }
+/* Editorial draws only the focus edge: no moving caret, label or hit area. */
+:root [data-appearance="editorial"]:is(.v-input,.v-igroup,.v-textarea,.v-composer),
+:root [data-slot="field"][data-appearance="editorial"] :is(.v-input,.v-igroup,.v-textarea):not([data-appearance]) {
+  background-image:linear-gradient(var(--v-brand),var(--v-brand)); background-repeat:no-repeat; background-position:left bottom; background-size:0% 2px;
+  transition:background-size var(--t-micro) var(--enter);
+}
+:root [data-appearance="editorial"]:is(.v-input,.v-igroup,.v-textarea,.v-composer):focus-within,
+:root [data-slot="field"][data-appearance="editorial"] :is(.v-input,.v-igroup,.v-textarea):focus-within { background-size:100% 2px; outline:0; }
+@media(prefers-reduced-motion:reduce) { :root [data-slot="field"] :is(.v-input,.v-igroup,.v-textarea,.v-composer) { transition:none; } }
+
+}

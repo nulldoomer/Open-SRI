@@ -1,0 +1,448 @@
+@layer cojeev-states {
+/* Icon primitive state and contextual geometry. */
+.v-icon:where([data-slot]).-sm {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+.v-icon:where([data-slot]).-lg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+.v-disk:where([data-slot]).-sm {
+  width: var(--disk-sm);
+  height: var(--disk-sm);
+}
+.v-disk:where([data-slot]).-lg {
+  width: var(--disk-lg);
+  height: var(--disk-lg);
+}
+.v-disk:where([data-slot]).-pink {
+  --disk-bg: var(--v-pink);
+  color: var(--v-on-accent);
+}
+.v-disk:where([data-slot]).-yellow {
+  --disk-bg: var(--v-yellow);
+  color: var(--v-on-accent);
+}
+.v-disk:where([data-slot]).-olive {
+  --disk-bg: var(--v-olive);
+  color: var(--v-on-accent);
+}
+.v-disk:where([data-slot]).-blue {
+  --disk-bg: var(--v-blue);
+  color: var(--v-on-accent);
+}
+.v-disk:where([data-slot]).-ink {
+  --disk-bg: var(--v-ink);
+  color: var(--v-on-ink);
+}
+.v-disk:where([data-slot]).-cream {
+  --disk-bg: var(--v-canvas);
+}
+.v-disk:where([data-slot]).-beige {
+  --disk-bg: var(--v-beige);
+}
+.v-ibtn:where([data-slot]).-dashed {
+  box-shadow: none;
+  border: 1px dashed var(--v-text-2);
+  border-color: var(--v-edge);
+}
+.v-ibtn:where([data-slot]).-ink {
+  background: var(--v-ink);
+  color: var(--v-on-ink);
+  box-shadow: none;
+}
+.v-ibtn:where([data-slot]).-pink {
+  background: var(--v-pink);
+  box-shadow: none;
+  color: var(--v-on-accent);
+}
+.v-ibtn:where([data-slot]).-beige {
+  background: var(--v-beige);
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+  color: var(--v-on-accent);
+}
+.v-ibtn:where([data-slot]).-cream {
+  background: var(--v-canvas);
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+}
+.v-ibtn:where([data-slot]).-sm {
+  width: var(--ctl-sm);
+  height: var(--ctl-sm);
+}
+.v-ibtn:where([data-slot]).-lg {
+  width: var(--ctl-lg);
+  height: var(--ctl-lg);
+}
+.v-ibtn:where([data-slot]).-xl {
+  width: var(--dock-action);
+  height: var(--dock-action);
+}
+.v-disk:where([data-slot]).-sm .v-icon {
+  width: 16px;
+  height: 16px;
+}
+.v-disk:where([data-slot]).-lg .v-icon {
+  width: 24px;
+  height: 24px;
+}
+.v-ibtn:where([data-slot])[data-morph][data-hover] {
+  --mfill: var(--v-beige);
+}
+.v-ibtn:where([data-slot]).-ink[data-morph] {
+  --mfill: var(--v-ink);
+}
+.v-ibtn:where([data-slot]).-ink[data-morph][data-hover] {
+  --mfill: var(--v-ink-soft);
+}
+.v-ibtn:where([data-slot]).-pink[data-morph] {
+  --mfill: var(--v-pink);
+}
+.v-ibtn:where([data-slot]).-pink[data-morph][data-hover] {
+  --mfill: var(--v-pink-deep);
+}
+.v-ibtn:where([data-slot]).-beige[data-morph] {
+  --mfill: var(--v-beige);
+}
+.v-ibtn:where([data-slot]).-cream[data-morph] {
+  --mfill: var(--v-canvas);
+}
+.v-disk:where([data-slot])[data-morph] {
+  --mfill: var(--disk-bg, var(--v-beige));
+}
+[data-colourful="1"] .v-disk:where([data-slot]):not([class*=" -"]) {
+  background: var(--v-blue-soft);
+}
+.v-ibtn:where([data-slot]):where(:hover, :focus-visible) {
+  background: var(--v-beige);
+}
+.v-ibtn:where([data-slot]).-ink:where(:hover, :focus-visible) {
+  background: var(--v-ink-soft);
+}
+.v-ibtn:where([data-slot]).-pink:where(:hover, :focus-visible) {
+  background: var(--v-pink-deep);
+}
+.v-ibtn:where([data-slot]).-sm .v-icon {
+  width: 16px;
+  height: 16px;
+}
+.v-ibtn:where([data-slot]).-xl .v-icon {
+  width: 24px;
+  height: 24px;
+}
+.v-ibtn:where([data-slot]):disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.v-ibtn:where([data-slot]):not(.-ink):not(.-pink):not(.-beige):not(.-cream):not(
+    .-dashed
+  ) {
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+}
+:root[data-mode="dark"] .v-ibtn:where([data-slot]) {
+  color: var(--v-text);
+}
+.v-ibtn:where([data-slot]):disabled {
+  background: var(--v-disabled-face);
+  color: var(--v-disabled-ink);
+  box-shadow: inset 0 0 0 1px var(--v-disabled-edge);
+  opacity: 1;
+}
+
+/* Part motion can briefly travel beyond the glyph without changing its layout box. */
+.v-icon:where([data-slot]) {
+  overflow: visible;
+}
+
+/* The documentation typecase: one proofing stage, then a bounded tray of signs. */
+.v-icon-studio {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+  padding: 18px;
+  container-type: inline-size;
+}
+.v-icon-studio__heading {
+  display: grid;
+  gap: 12px;
+}
+.v-icon-studio__eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--v-text-2);
+}
+.v-icon-studio__heading h3 {
+  font: 32px/1.05 var(--font-display);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+.v-icon-studio__heading p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--v-text-2);
+}
+.v-icon-studio__inspector {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 1.3fr);
+  border: 1px solid var(--v-border);
+  border-radius: 24px;
+  background: var(--v-paper);
+  min-width: 0;
+}
+.v-icon-studio__proof {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 24px;
+  min-height: 240px;
+  padding: 28px 16px;
+  border-radius: 23px 0 0 23px;
+  background:
+    radial-gradient(ellipse at 40% 30%, var(--v-blue-soft), transparent 70%),
+    var(--v-paper);
+}
+.v-icon-studio__proof::before,
+.v-icon-studio__proof::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  border: 1px solid var(--v-border);
+}
+.v-icon-studio__proof::before {
+  top: 16px;
+  left: 16px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.v-icon-studio__proof::after {
+  right: 16px;
+  bottom: 16px;
+  border-left: 0;
+  border-top: 0;
+}
+.v-icon-studio__proof .v-icon-studio__replay {
+  width: 116px;
+  height: 116px;
+  padding: 16px;
+  background: transparent;
+  box-shadow: none;
+}
+.v-icon-studio__proof-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--v-text-2);
+}
+.v-icon-studio__details {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  min-width: 0;
+  padding: 24px;
+  border-left: 1px solid var(--v-border);
+}
+.v-icon-studio__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.v-icon-studio__name code {
+  font-size: 18px;
+  min-width: 0;
+  flex: 1 1 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.v-icon-studio__name .v-btn {
+  margin-left: auto;
+  min-height: 44px;
+}
+.v-icon-studio__details [data-icon-description] {
+  min-height: 3.2em;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--v-text-2);
+}
+.v-icon-studio__control {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.v-icon-studio__control-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.v-icon-studio__control small {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--v-text-2);
+}
+.v-icon-studio__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.v-icon-studio__choices .v-btn {
+  font-size: 12px;
+  min-height: 44px;
+  padding-inline: 12px;
+}
+.v-icon-studio__tones {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
+.v-icon-studio__tones .v-btn {
+  height: auto;
+  min-height: 56px;
+  min-width: 44px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 4px;
+  font-size: 11px;
+}
+.v-icon-studio__tones .v-btn > span {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+.v-icon-studio__tones .v-btn[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px var(--v-edge);
+  background: var(--v-beige);
+}
+.v-icon-studio__timing {
+  min-width: 0;
+  border-bottom: 1px solid var(--v-border);
+  padding-bottom: 16px;
+}
+.v-icon-studio__timing-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+}
+.v-icon-studio__timing-controls > .v-icon-studio__choices {
+  grid-column: 2 / -1;
+}
+.v-icon-studio__timing-controls output {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.v-icon-studio__search {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.v-icon-studio__search .v-igroup {
+  width: 100%;
+  max-width: none;
+}
+.v-icon-studio__search > .v-btn {
+  justify-self: start;
+}
+.v-icon-studio__search [data-slot="input-group-button"] {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+.v-icon-studio__status {
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 3.2em;
+  margin: 0;
+  color: var(--v-text-2);
+}
+.v-icon-studio__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  padding: 12px;
+}
+.v-icon-studio__grid .v-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 108px;
+  padding: 12px 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.v-icon-studio__grid .v-btn > span {
+  min-height: 30px;
+  display: grid;
+  align-items: center;
+}
+.v-icon-studio__pages {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+.v-icon-studio__pages > span {
+  font-size: 12px;
+}
+.v-icon-studio__pages > .v-btn {
+  font-size: 12px;
+  min-height: 44px;
+}
+.v-icon-studio__credit {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--v-text-2);
+  margin: 0;
+}
+.v-icon-studio__compact {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+@container (max-width:520px) {
+  .v-icon-studio__inspector {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .v-icon-studio__proof {
+    min-height: 220px;
+    border-radius: 23px 23px 0 0;
+    gap: 12px;
+  }
+  .v-icon-studio__details {
+    padding: 20px;
+    border-left: 0;
+    border-top: 1px solid var(--v-border);
+  }
+  .v-icon-studio__details [data-icon-description] {
+    min-height: 3.2em;
+  }
+  .v-icon-studio__tones {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .v-icon-studio__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .v-icon-studio__pages {
+    justify-content: center;
+  }
+  .v-icon-studio__pages > span {
+    order: 3;
+    flex-basis: 100%;
+    text-align: center;
+  }
+}
+
+}

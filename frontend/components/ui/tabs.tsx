@@ -1,90 +1,128 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Tabs as TabsPrimitive } from "radix-ui"
-
-import { cn } from "@/lib/utils"
-
-function Tabs({
-  className,
-  orientation = "horizontal",
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      data-orientation={orientation}
-      className={cn(
-        "group/tabs flex gap-2 data-horizontal:flex-col",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-const tabsListVariants = cva(
-  "group/tabs-list inline-flex w-fit items-center justify-center p-1 text-muted-foreground group-data-horizontal/tabs:h-10 group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col",
-  {
-    variants: {
-      variant: {
-        default: "bg-muted",
-        line: "gap-1 bg-transparent",
-      },
+import * as React from "react";
+import { useMorph } from "@/lib/cojeev-motion/use-morph";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import * as Primitive from "@radix-ui/react-tabs";
+import { useFlowGroup } from "@/lib/cojeev-motion/use-flow";
+import { MotionPresence, MotionSurface } from "@/components/ui/presence";
+export const tabsVariants = cva("v-tabs [display:flex] [gap:var(--s-6)]", {
+  variants: {
+    variant: {
+      default: "-pills -default gap-[var(--s-2)]",
+      pills: "-pills gap-[var(--s-2)]",
+      underline: "-underline gap-[var(--s-6)]",
+      lenses: "-lenses gap-[var(--s-6)]",
+      notebook: "-notebook",
+      rail: "-rail",
     },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
-
-function TabsList({
+  },
+  defaultVariants: { variant: "default" },
+});
+const TabsVariantContext =
+  React.createContext<VariantProps<typeof tabsVariants>["variant"]>("default");
+const TabsValueContext = React.createContext<string | undefined>(undefined);
+export type TabsProps = React.ComponentProps<typeof Primitive.Root> &
+  VariantProps<typeof tabsVariants>;
+export function Tabs({
   className,
   variant = "default",
+  children,
+  value,
+  defaultValue,
+  onValueChange,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List> &
-  VariantProps<typeof tabsListVariants>) {
+}: TabsProps) {
+  const [uncontrolledValue, setUncontrolledValue] =
+    React.useState(defaultValue);
+  const selected = value ?? uncontrolledValue;
   return (
-    <TabsPrimitive.List
+    <TabsVariantContext.Provider value={variant}>
+      <TabsValueContext.Provider value={selected}>
+        <Primitive.Root
+          data-slot="tabs"
+          data-tabs-appearance={variant}
+          className={cn("v-tabs-root grid min-w-0 gap-[var(--s-4)]", className)}
+          value={selected}
+          onValueChange={(next) => {
+            if (value === undefined) setUncontrolledValue(next);
+            onValueChange?.(next);
+          }}
+          {...props}
+        >
+          {children}
+        </Primitive.Root>
+      </TabsValueContext.Provider>
+    </TabsVariantContext.Provider>
+  );
+}
+export type TabsListProps = React.ComponentProps<typeof Primitive.List> &
+  VariantProps<typeof tabsVariants>;
+export function TabsList({ className, variant, ref, ...props }: TabsListProps) {
+  const inherited = React.useContext(TabsVariantContext);
+  const resolved = variant ?? inherited;
+  // Underline travels as a ruled-line marker; every other variant moves its
+  // whole selected surface (ink lozenge, beige lens, paper sheet, index line).
+  const flowRef = useFlowGroup<HTMLDivElement>(ref, {
+    kind: resolved === "underline" ? "bar" : "pill",
+    itemSelector: '[data-slot="tabs-trigger"]',
+    activeSelector: '[aria-selected="true"]',
+  });
+  return (
+    <Primitive.List
+      ref={flowRef}
       data-slot="tabs-list"
-      data-variant={variant}
-      className={cn(tabsListVariants({ variant }), className)}
+      data-part="root"
+      data-flow-group=""
+      className={cn(tabsVariants({ variant: resolved }), className)}
       {...props}
     />
-  )
+  );
 }
-
-function TabsTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+export type TabsTriggerProps = React.ComponentProps<typeof Primitive.Trigger>;
+export function TabsTrigger({ className, ref, ...props }: TabsTriggerProps) {
+  const morphRef = useMorph<HTMLButtonElement>("nav", ref);
   return (
-    <TabsPrimitive.Trigger
+    <Primitive.Trigger
+      ref={morphRef}
       data-slot="tabs-trigger"
-      className={cn(
-        "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 border border-transparent px-4 py-1.5 text-xs font-semibold tracking-wider whitespace-nowrap text-foreground/60 uppercase transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start group-data-vertical/tabs:px-4 group-data-vertical/tabs:py-2 hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
-        "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent",
-        "data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground",
-        "after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100",
-        className
-      )}
+      data-part="trigger"
+      className={cn("v-tab shrink-0", className)}
       {...props}
     />
-  )
+  );
 }
-
-function TabsContent({
+export type TabsContentProps = React.ComponentProps<typeof Primitive.Content>;
+export function TabsContent({
   className,
+  ref,
+  forceMount,
+  value,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
-  return (
-    <TabsPrimitive.Content
+}: TabsContentProps) {
+  const selected = React.useContext(TabsValueContext);
+  const content = (
+    <Primitive.Content
+      ref={ref}
+      value={value}
+      forceMount
       data-slot="tabs-content"
-      className={cn("flex-1 text-sm outline-none", className)}
+      data-tabs-managed={!forceMount || undefined}
+      data-part="content"
+      className={className}
       {...props}
     />
-  )
+  );
+  // Explicit forceMount leaves visibility under the consumer's control.
+  if (forceMount) return content;
+  return (
+    <MotionPresence>
+      {selected === value && (
+        <MotionSurface key={value} asChild preset="fade">
+          {content}
+        </MotionSurface>
+      )}
+    </MotionPresence>
+  );
 }
-
-export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants }

@@ -1,7 +1,3 @@
-import type { HugeiconsIconProps } from "@hugeicons/react";
-
-export type HugeIcon = NonNullable<HugeiconsIconProps["icon"]>;
-
 export type PipelineStepId =
   | "build"
   | "access_key"
@@ -14,7 +10,6 @@ export type StepStatus = "idle" | "running" | "ok" | "error";
 
 export interface PipelineStep {
   id: PipelineStepId;
-  icon: HugeIcon;
   label: string;
   detail?: string;
   status: StepStatus;

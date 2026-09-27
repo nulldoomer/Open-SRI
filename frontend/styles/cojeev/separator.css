@@ -1,0 +1,8 @@
+@layer cojeev-states {
+/* Orthogonal authored class modifiers remain composable with CVA axes. */
+.v-sep[data-slot].-v{width:1px;height:auto;align-self:stretch;margin:0 var(--s-4)}
+
+/* Authored contextual and pseudo-element rules, scoped to component-owned roots. */
+
+
+}

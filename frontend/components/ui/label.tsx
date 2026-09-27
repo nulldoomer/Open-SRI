@@ -1,24 +1,16 @@
 "use client"
-
 import * as React from "react"
-import { Label as LabelPrimitive } from "radix-ui"
-
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-function Label({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
-  return (
-    <LabelPrimitive.Root
-      data-slot="label"
-      className={cn(
-        "flex items-center gap-2 text-xs font-semibold tracking-wide uppercase select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 peer-data-[slot=checkbox]:text-sm peer-data-[slot=checkbox]:font-normal peer-data-[slot=checkbox]:tracking-normal peer-data-[slot=checkbox]:normal-case peer-data-[slot=radio-group-item]:text-sm peer-data-[slot=radio-group-item]:font-normal peer-data-[slot=radio-group-item]:tracking-normal peer-data-[slot=radio-group-item]:normal-case peer-data-[slot=switch]:text-sm peer-data-[slot=switch]:font-normal peer-data-[slot=switch]:tracking-normal peer-data-[slot=switch]:normal-case",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+const LabelVariants=cva("v-label [font-size:var(--fs-control)] [font-weight:600] [line-height:1.5] [box-shadow:none] [border:0] [background:none]",{variants:{variant:{"default":""},size:{"default":"","sm":"-sm [font-size:13px]"}},defaultVariants:{variant:"default",size:"default"}})
+export type LabelProps=React.ComponentProps<"label"> & VariantProps<typeof LabelVariants> & { as?:React.ElementType }
+export function Label({as:Tag="label",className,variant,size,...props}:LabelProps){return <Tag data-slot="label" data-part="root" className={cn(LabelVariants({variant,size}),className)} {...props}/>}
 
-export { Label }
+const StatsVariants=cva("v-stats [display:flex] [gap:var(--s-5)_var(--s-5)] [flex-wrap:wrap] [margin-top:var(--s-4)] [max-width:100%]",{variants:{variant:{"default":""},size:{"default":""}},defaultVariants:{variant:"default",size:"default"}})
+export type StatsProps=React.ComponentProps<"div"> & VariantProps<typeof StatsVariants> & { as?:React.ElementType }
+export function Stats({as:Tag="div",className,variant,size,...props}:StatsProps){return <Tag data-slot="label-stats" data-part="stats" className={cn(StatsVariants({variant,size}),className)} {...props}/>}
+
+const StatVariants=cva("v-stat [display:grid] [gap:4px] [min-width:0]",{variants:{variant:{"default":"","ul":"-ul [padding-bottom:8px] [border-bottom:2px_solid_var(--wm,var(--v-text))]"},size:{"default":""}},defaultVariants:{variant:"default",size:"default"}})
+export type StatProps=React.ComponentProps<"div"> & VariantProps<typeof StatVariants> & { as?:React.ElementType }
+export function Stat({as:Tag="div",className,variant,size,...props}:StatProps){return <Tag data-slot="label-stat" data-part="stat" className={cn(StatVariants({variant,size}),className)} {...props}/>}

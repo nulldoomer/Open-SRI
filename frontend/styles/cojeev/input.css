@@ -1,0 +1,192 @@
+@layer cojeev-states {
+/* Focus and cross-part precedence follow the authored cascade. */
+[data-slot="input"] {
+  transition:
+    background var(--t-micro),
+    box-shadow var(--t-micro);
+}
+[data-slot="input"]::placeholder {
+  color: var(--v-text-2);
+}
+[data-slot="input"]:hover:not(:focus-within) {
+  background: color-mix(in oklab, var(--input) 92%, var(--v-canvas));
+}
+[data-slot="input"]:is(:focus, :focus-within) {
+  outline: none;
+  background: var(--v-pink-soft);
+  box-shadow: inset 0 0 0 2px var(--v-brand);
+}
+[data-slot="input"].-cream:focus-within {
+  background: var(--v-canvas);
+}
+[data-slot="input"].-lg {
+  height: 56px;
+  padding: 0 20px;
+  font-size: 16px;
+}
+[data-slot="input"].-ink {
+  background: var(--v-ink);
+  color: var(--v-on-ink);
+  box-shadow: inset 0 0 0 1px rgba(251, 244, 230, 0.22);
+}
+[data-slot="input"].-ink::placeholder,
+[data-slot="input"].-ink input::placeholder {
+  color: rgba(251, 244, 230, 0.55);
+}
+[data-slot="input"].-ink:focus-within {
+  background: var(--v-ink-soft);
+  box-shadow: inset 0 0 0 2px var(--v-pink);
+}
+[data-slot="input"]:has(> .v-disk) {
+  padding-left: 8px;
+}
+[data-slot="input"] > .v-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--v-text-2);
+  flex: none;
+}
+[data-slot="input"]:focus-within > .v-icon {
+  color: var(--v-text);
+}
+[data-slot="input-addon"] {
+  transition:
+    background var(--t-element) var(--enter),
+    color var(--t-element);
+}
+[data-slot="input-addon"] .v-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+[data-slot="input"]:focus-within > [data-slot="input-addon"] {
+  background: var(--v-ink);
+  color: var(--v-on-ink);
+}
+[data-slot="input"].-ink > [data-slot="input-addon"] {
+  background: var(--v-pink);
+  color: var(--v-on-accent);
+}
+[data-slot="input"].-ink:focus-within > [data-slot="input-addon"] {
+  background: var(--v-paper);
+}
+[data-slot="input-clear"] .v-icon {
+  width: 14px;
+  height: 14px;
+}
+[data-slot="input-affix"].-pill {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--v-canvas);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+  color: var(--v-text);
+  font-size: 12.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  margin-right: -8px;
+}
+[data-slot="input-affix"].-pill.-pink {
+  background: var(--v-pink);
+  box-shadow: none;
+  color: var(--v-on-accent);
+}
+[data-slot="input-affix"].-pill.-olive {
+  background: var(--v-olive);
+  box-shadow: none;
+  color: var(--v-on-accent);
+}
+[data-slot="input-affix"].-pill.-yellow {
+  background: var(--v-yellow);
+  box-shadow: none;
+  color: var(--v-on-accent);
+}
+[data-slot="input"]:has(input:read-only:not([type="time"])) {
+  background: var(--v-canvas);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+[data-slot="input"]:is([type="date"], [type="time"], [type="number"]) {
+  font-variant-numeric: tabular-nums;
+}
+[data-slot="input"][type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+  filter: none;
+}
+[data-slot="input"][type="number"]::-webkit-inner-spin-button {
+  opacity: 1;
+}
+[data-slot="input"][type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--v-text-2);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")
+    center/contain no-repeat;
+  cursor: pointer;
+}
+:root[data-mode="dark"] [data-slot="input"] {
+  background: var(--v-beige);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+:root[data-mode="dark"] [data-slot="input"]:is(:focus, :focus-within) {
+  background: color-mix(in oklab, var(--v-pink) 14%, var(--v-canvas));
+  box-shadow: inset 0 0 0 2px var(--v-pink);
+}
+:root[data-mode="dark"] [data-slot="input"].-cream {
+  background: var(--v-canvas);
+}
+:root[data-mode="dark"] [data-slot="input"].-ink {
+  background: var(--v-beige-2);
+  color: var(--v-text);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+:root[data-mode="dark"] [data-slot="input-addon"]:not([class*=" -"]) {
+  background: var(--v-beige-2);
+  color: var(--v-text);
+}
+:root[data-mode="dark"]
+  [data-slot="input"]:focus-within
+  > [data-slot="input-addon"] {
+  background: var(--v-pink);
+  color: var(--v-on-accent);
+}
+:root[data-mode="dark"] [data-slot="input-affix"].-pill {
+  background: var(--v-beige-2);
+  color: var(--v-text);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+[data-slot="input"]:is(:disabled, [aria-disabled="true"]) {
+  opacity: 1;
+}
+[data-slot="input"]:is(:disabled, :has(input:disabled)) {
+  background: var(--v-disabled-face);
+  color: var(--v-disabled-ink);
+  box-shadow: inset 0 0 0 1px var(--v-disabled-edge);
+  cursor: not-allowed;
+}
+[data-slot="input"]:disabled::placeholder {
+  color: var(--v-disabled-ink);
+}
+[data-slot="input"].v-input:is(.-error, [aria-invalid="true"]),
+:root[data-mode] [data-slot="input"].v-input:is(.-error, [aria-invalid="true"]) {
+  box-shadow: inset 0 0 0 1.5px var(--v-danger-fill);
+  background: var(--v-danger-soft);
+}
+[data-slot="input"].v-input:is(.-error, [aria-invalid="true"]):focus-within,
+:root[data-mode] [data-slot="input"].v-input:is(.-error, [aria-invalid="true"]):focus-within {
+  box-shadow: inset 0 0 0 2px var(--v-danger-fill);
+}
+
+[data-slot="input"].-cream { border-color: var(--v-border); }
+[data-slot="input"]:is(:focus, :focus-within) { border-color: transparent; }
+[data-slot="input"].-ink > .v-icon { color: rgba(251,244,230,.7); }
+
+[data-slot="input-control"][type="time"] { padding: 0 0 0 1px; }
+
+/* Clear is a real shared button; the tiny icon is not its hit rectangle. */
+.v-input:has([data-slot="input-clear"]) { min-height:44px; padding-inline-end:4px; }
+.v-input [data-slot="input-clear"].v-btn { width:44px; height:44px; min-width:44px; padding:0; margin:0; border-radius:50%; }
+
+}

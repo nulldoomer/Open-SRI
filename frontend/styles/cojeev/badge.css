@@ -1,0 +1,242 @@
+@layer cojeev-states {
+/* Descendant paint and explicit dark overrides from alive.css. */
+[data-slot="badge"] > * {
+  line-height: 1;
+}
+.v-badge[data-slot].-caps {
+  height: 26px;
+  padding: 0 11px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-slot="badge"] .v-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  margin: 0;
+  background: currentColor;
+}
+[data-slot="badge"]:is(.-live, .-pending) .v-dot {
+  background: var(--v-olive);
+}
+:root[data-mode="dark"]
+  [data-slot="badge"]:is(
+    .-pink-soft,
+    .-yellow-soft,
+    .-olive-soft,
+    .-blue-soft
+  ) {
+  color: var(--v-text);
+  background: color-mix(in oklab, var(--badge-tint) 20%, var(--v-canvas));
+}
+:root[data-mode="dark"] [data-slot="badge"].-pink-soft {
+  --badge-tint: var(--v-pink);
+}
+:root[data-mode="dark"] [data-slot="badge"].-yellow-soft {
+  --badge-tint: var(--v-yellow);
+}
+:root[data-mode="dark"] [data-slot="badge"].-olive-soft {
+  --badge-tint: var(--v-olive);
+}
+:root[data-mode="dark"] [data-slot="badge"].-blue-soft {
+  --badge-tint: var(--v-blue);
+}
+:root[data-mode="dark"] [data-slot="badge"]:is(.-dashed, .-test, .-live) {
+  background: var(--v-beige-2);
+}
+/* The moving SVG owns this edge; a painted DOM edge would double it. */
+[data-slot="badge"]:is(.-dashed, .-test).v-morph-live {
+  border-color: transparent;
+}
+
+/* Shape and paint are independent of the status/tone axis. The SVG owns both. */
+.v-badge[data-appearance] {
+  --mfill: var(--badge-face);
+  --mstroke: currentColor;
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: var(--v-control-radius, 8px);
+  box-shadow: none;
+}
+.v-badge[data-appearance="stamp"] {
+  letter-spacing: 0.045em;
+}
+.v-badge[data-appearance="tag"] {
+  border-radius: var(--v-control-radius, 4px 12px 12px 4px);
+}
+.v-badge[data-appearance="tag"]::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  flex: none;
+  opacity: 0.6;
+}
+.v-badge[data-appearance="counter"] {
+  border-radius: var(--v-control-radius, 50%);
+  min-width: var(--badge-count-size, 28px);
+  font-variant-numeric: tabular-nums;
+}
+.v-badge[data-appearance].v-morph-live {
+  background: transparent;
+}
+:root[data-mode="dark"]
+  .v-badge[data-appearance]:is(
+    .-pink-soft,
+    .-yellow-soft,
+    .-olive-soft,
+    .-blue-soft
+  ) {
+  --mfill: color-mix(in oklab, var(--badge-tint) 20%, var(--v-canvas));
+}
+:root[data-mode="dark"] .v-badge[data-appearance]:is(.-dashed, .-test, .-live) {
+  --mfill: var(--v-beige-2);
+}
+.v-badge-example {
+  width: 100%;
+  max-width: 620px;
+  margin-inline: auto;
+  display: grid;
+  gap: 22px;
+  color: var(--v-text);
+}
+.v-badge-example__surface {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--v-edge);
+  border-radius: 20px;
+  background: var(--v-paper);
+  padding: 28px;
+}
+.v-badge-example__kicker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--v-text-3);
+}
+.v-badge-example__surface h3 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4cqi, 34px);
+  line-height: 1.18;
+  margin: 22px 0 10px;
+}
+.v-badge-example__surface p {
+  color: var(--v-text-2);
+  line-height: 1.6;
+  margin: 0;
+}
+.v-badge-example__surface[data-layout="stamp"] {
+  border-radius: 4px 22px 22px 4px;
+  border-left: 5px solid var(--v-pink);
+}
+.v-badge-example__stamp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--v-edge);
+  margin-top: 28px;
+  padding-top: 20px;
+}
+.v-badge-example__stamp .v-badge {
+  transform: rotate(-3deg);
+  transform-origin: center;
+}
+.v-badge-example__meta {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--v-text-3);
+}
+.v-badge-example__meta strong {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--v-text);
+}
+.v-badge-example__tags {
+  margin: 26px 0 0;
+  display: grid;
+  gap: 0;
+}
+.v-badge-example__tags > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid var(--v-edge);
+  padding: 14px 0;
+}
+.v-badge-example__tags dt {
+  font-size: 12px;
+  color: var(--v-text-3);
+}
+.v-badge-example__tags dd {
+  margin: 0;
+}
+.v-badge-example__counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.v-badge-example__counter h3 {
+  margin: 0;
+}
+.v-badge-example__counter .v-badge {
+  --badge-count-size: 52px;
+  height: 52px;
+  padding-inline: 15px;
+  font-size: 24px;
+}
+.v-badge-example__surface[data-layout="counter"] p {
+  margin-block: 14px 24px;
+}
+.v-badge-example__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.v-badge-example__treatments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.v-badge-example__copy {
+  display: grid;
+  gap: 10px;
+}
+.v-badge-example__eyebrow {
+  color: var(--v-text-3);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.v-badge-example__counter .v-badge.-sm {
+  --badge-count-size: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+.v-badge-example__counter .v-badge.-lg {
+  --badge-count-size: 64px;
+  height: 64px;
+  font-size: 28px;
+}
+@container (max-width:440px) {
+  .v-badge-example__surface {
+    padding: 22px;
+  }
+}
+
+}

@@ -1,0 +1,885 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-27T23:02:13+00:00",
+  "title": "Design System: OpenSRI",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Lienzo Grafito",
+        "canonical": "#F4F5F6",
+        "cssVar": "--v-canvas",
+        "mode": "light",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5e",
+          "#7c7d7e",
+          "#9d9e9f",
+          "#c3c4c5",
+          "#edeeef"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "#FFFFFF",
+        "cssVar": "--v-paper",
+        "mode": "light",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "inset": {
+        "role": "neutral",
+        "displayName": "Inset",
+        "canonical": "#E5E8EB",
+        "cssVar": "--v-beige",
+        "mode": "light",
+        "tonalRamp": [
+          "#090b0d",
+          "#222426",
+          "#3e4042",
+          "#5b5e60",
+          "#7b7e80",
+          "#9c9fa1",
+          "#c1c4c7",
+          "#eceff2"
+        ]
+      },
+      "inset-quiet": {
+        "role": "neutral",
+        "displayName": "Inset Quieto",
+        "canonical": "#eceef0",
+        "cssVar": "--v-beige-2",
+        "mode": "light",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232426",
+          "#3e4041",
+          "#5c5e5f",
+          "#7c7d7f",
+          "#9d9fa0",
+          "#c2c4c6",
+          "#edeff1"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#24262b",
+        "cssVar": "--v-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#090b0f",
+          "#222429",
+          "#3d4045",
+          "#5b5d63",
+          "#7b7d83",
+          "#9c9ea5",
+          "#c1c4cb",
+          "#eceef5"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Texto Secundario",
+        "canonical": "#454850",
+        "cssVar": "--v-text-2",
+        "mode": "light",
+        "tonalRamp": [
+          "#090b11",
+          "#21242b",
+          "#3d4047",
+          "#5a5d66",
+          "#7a7d86",
+          "#9b9ea7",
+          "#c0c4cd",
+          "#ebeef8"
+        ]
+      },
+      "text-tertiary": {
+        "role": "neutral",
+        "displayName": "Texto Terciario",
+        "canonical": "#51555d",
+        "cssVar": "--v-text-3",
+        "mode": "light",
+        "tonalRamp": [
+          "#080b11",
+          "#21242b",
+          "#3c4047",
+          "#5a5e66",
+          "#797d86",
+          "#9a9ea7",
+          "#bfc4cd",
+          "#eaeff8"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Filete",
+        "canonical": "#aeb0b3",
+        "cssVar": "--v-border",
+        "mode": "light",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232426",
+          "#3e4042",
+          "#5c5e60",
+          "#7b7d80",
+          "#9c9ea1",
+          "#c2c4c7",
+          "#eceff2"
+        ]
+      },
+      "edge": {
+        "role": "neutral",
+        "displayName": "Canto",
+        "canonical": "#6b6d70",
+        "cssVar": "--v-edge",
+        "mode": "light",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#222427",
+          "#3e4043",
+          "#5c5e61",
+          "#7b7d80",
+          "#9c9ea2",
+          "#c2c4c7",
+          "#eceff2"
+        ]
+      },
+      "signal": {
+        "role": "primary",
+        "displayName": "Rojo Señal",
+        "canonical": "#E5482E",
+        "cssVar": "--signal",
+        "mode": "light",
+        "tonalRamp": [
+          "#1e0100",
+          "#480701",
+          "#751808",
+          "#ad1b00",
+          "#da3c23",
+          "#fb6a51",
+          "#ffac9b",
+          "#fee9e5"
+        ]
+      },
+      "signal-ink": {
+        "role": "primary",
+        "displayName": "Tinta Señal",
+        "canonical": "#B8321C",
+        "cssVar": "--signal-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#1e0100",
+          "#480701",
+          "#771404",
+          "#aa220b",
+          "#d04a33",
+          "#f76d55",
+          "#fdad9d",
+          "#fee9e5"
+        ]
+      },
+      "signal-soft": {
+        "role": "primary",
+        "displayName": "Señal Tenue",
+        "canonical": "#fbe6e1",
+        "cssVar": "--signal-soft",
+        "mode": "light",
+        "tonalRamp": [
+          "#140705",
+          "#2f201c",
+          "#4c3b37",
+          "#6b5955",
+          "#8b7874",
+          "#ad9995",
+          "#d3bfba",
+          "#fee9e4"
+        ]
+      },
+      "structure": {
+        "role": "neutral",
+        "displayName": "Estructura",
+        "canonical": "#14171B",
+        "cssVar": "--v-structure",
+        "mode": "both",
+        "tonalRamp": [
+          "#090b0f",
+          "#212429",
+          "#3d4045",
+          "#5a5e63",
+          "#7a7e83",
+          "#9b9fa4",
+          "#c0c4ca",
+          "#eaeff5"
+        ]
+      },
+      "structure-text": {
+        "role": "neutral",
+        "displayName": "Texto de Estructura",
+        "canonical": "#E2E6ED",
+        "cssVar": "--structure-text",
+        "mode": "both",
+        "tonalRamp": [
+          "#090b10",
+          "#212429",
+          "#3d4045",
+          "#5a5e64",
+          "#7a7d84",
+          "#9b9fa5",
+          "#c0c4cb",
+          "#ebeff6"
+        ]
+      },
+      "structure-line": {
+        "role": "neutral",
+        "displayName": "Filete de Estructura",
+        "canonical": "#565D68",
+        "cssVar": "--structure-line",
+        "mode": "both",
+        "tonalRamp": [
+          "#070b14",
+          "#1e242e",
+          "#3a404a",
+          "#575e69",
+          "#767e89",
+          "#979fab",
+          "#bdc5d1",
+          "#e7effc"
+        ]
+      },
+      "structure-quiet": {
+        "role": "neutral",
+        "displayName": "Estructura Quieta",
+        "canonical": "#242931",
+        "cssVar": "--structure-quiet",
+        "mode": "both",
+        "tonalRamp": [
+          "#070b12",
+          "#1f242c",
+          "#3b4049",
+          "#585e67",
+          "#787e87",
+          "#989fa9",
+          "#bec5cf",
+          "#e8effa"
+        ]
+      },
+      "on-structure": {
+        "role": "neutral",
+        "displayName": "Sobre Estructura",
+        "canonical": "#F9FAFC",
+        "cssVar": "--on-structure",
+        "mode": "both",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5f",
+          "#7c7d7f",
+          "#9d9ea0",
+          "#c3c4c6",
+          "#edeef0"
+        ]
+      },
+      "status-ok-bg": {
+        "role": "status",
+        "displayName": "Salvia Fondo",
+        "canonical": "#f5f7f3",
+        "cssVar": "--status-ok-bg",
+        "mode": "light",
+        "tonalRamp": [
+          "#0a0c09",
+          "#232522",
+          "#3f403d",
+          "#5d5e5b",
+          "#7c7e7a",
+          "#9d9f9b",
+          "#c3c5c1",
+          "#edefeb"
+        ]
+      },
+      "status-ok-ink": {
+        "role": "status",
+        "displayName": "Salvia Tinta",
+        "canonical": "#575e50",
+        "cssVar": "--status-ok-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#080d04",
+          "#20261a",
+          "#3c4235",
+          "#596052",
+          "#798071",
+          "#9aa292",
+          "#bfc7b7",
+          "#e9f2e1"
+        ]
+      },
+      "status-live": {
+        "role": "status",
+        "displayName": "Punto Vivo Salvia",
+        "canonical": "#a1ae90",
+        "cssVar": "--v-olive-deep",
+        "mode": "light",
+        "tonalRamp": [
+          "#070e00",
+          "#1e280f",
+          "#3a442a",
+          "#576247",
+          "#768266",
+          "#97a486",
+          "#bccaab",
+          "#e7f5d5"
+        ]
+      },
+      "status-warn-bg": {
+        "role": "status",
+        "displayName": "Arena Fondo",
+        "canonical": "#fcf9f2",
+        "cssVar": "--status-warn-bg",
+        "mode": "light",
+        "tonalRamp": [
+          "#0d0b07",
+          "#26241f",
+          "#423f3a",
+          "#605d57",
+          "#807d77",
+          "#a19e98",
+          "#c7c4bd",
+          "#f1eee7"
+        ]
+      },
+      "status-warn-ink": {
+        "role": "status",
+        "displayName": "Arena Tinta",
+        "canonical": "#655d47",
+        "cssVar": "--status-warn-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#100a00",
+          "#2a230f",
+          "#473f2a",
+          "#655d47",
+          "#857d66",
+          "#a79e86",
+          "#cdc4ab",
+          "#f7eed5"
+        ]
+      },
+      "status-info-bg": {
+        "role": "status",
+        "displayName": "Azul Niebla Fondo",
+        "canonical": "#f4f7fa",
+        "cssVar": "--status-info-bg",
+        "mode": "light",
+        "tonalRamp": [
+          "#090b0d",
+          "#222426",
+          "#3e4042",
+          "#5b5e60",
+          "#7b7e80",
+          "#9c9fa1",
+          "#c1c4c7",
+          "#eceff2"
+        ]
+      },
+      "status-info-ink": {
+        "role": "status",
+        "displayName": "Azul Niebla Tinta",
+        "canonical": "#535d6c",
+        "cssVar": "--status-info-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#050b17",
+          "#1c2431",
+          "#37404e",
+          "#545e6d",
+          "#737e8e",
+          "#949fb0",
+          "#bac5d6",
+          "#e5effe"
+        ]
+      },
+      "status-danger-bg": {
+        "role": "status",
+        "displayName": "Peligro Fondo",
+        "canonical": "#fae7e6",
+        "cssVar": "--status-danger-bg",
+        "mode": "light",
+        "tonalRamp": [
+          "#130807",
+          "#2d2020",
+          "#4a3c3b",
+          "#695958",
+          "#897978",
+          "#ab9a99",
+          "#d1bfbe",
+          "#fce9e8"
+        ]
+      },
+      "status-danger-ink": {
+        "role": "status",
+        "displayName": "Peligro Tinta",
+        "canonical": "#96342d",
+        "cssVar": "--status-danger-ink",
+        "mode": "light",
+        "tonalRamp": [
+          "#1e0101",
+          "#4a0203",
+          "#771412",
+          "#9b3831",
+          "#c05a50",
+          "#e57b70",
+          "#fcada2",
+          "#fee9e6"
+        ]
+      },
+      "danger-fill": {
+        "role": "status",
+        "displayName": "Peligro Relleno",
+        "canonical": "#B92D28",
+        "cssVar": "--v-danger-fill",
+        "mode": "light",
+        "tonalRamp": [
+          "#1e0101",
+          "#4b0003",
+          "#7c0107",
+          "#ab1d1c",
+          "#d2463d",
+          "#f96a5e",
+          "#feaba1",
+          "#fee9e6"
+        ]
+      },
+      "canvas-dark": {
+        "role": "neutral",
+        "displayName": "Lienzo Grafito (oscuro)",
+        "canonical": "#111418",
+        "cssVar": "--v-canvas",
+        "mode": "dark",
+        "tonalRamp": [
+          "#090b0f",
+          "#212429",
+          "#3c4045",
+          "#5a5e63",
+          "#7a7e83",
+          "#9b9fa4",
+          "#c0c4ca",
+          "#eaeff5"
+        ]
+      },
+      "paper-dark": {
+        "role": "neutral",
+        "displayName": "Papel (oscuro)",
+        "canonical": "#20252C",
+        "cssVar": "--v-paper",
+        "mode": "dark",
+        "tonalRamp": [
+          "#070b11",
+          "#1f242b",
+          "#3b4048",
+          "#585e66",
+          "#787e86",
+          "#999fa8",
+          "#bec5ce",
+          "#e8eff9"
+        ]
+      },
+      "inset-dark": {
+        "role": "neutral",
+        "displayName": "Inset (oscuro)",
+        "canonical": "#2C333D",
+        "cssVar": "--v-beige",
+        "mode": "dark",
+        "tonalRamp": [
+          "#060b14",
+          "#1e242e",
+          "#39404b",
+          "#565e69",
+          "#767e8a",
+          "#979fab",
+          "#bcc5d2",
+          "#e6effd"
+        ]
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Tinta (oscuro)",
+        "canonical": "#fafafa",
+        "cssVar": "--v-ink",
+        "mode": "dark",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "text-secondary-dark": {
+        "role": "neutral",
+        "displayName": "Texto Secundario (oscuro)",
+        "canonical": "#c2c6ca",
+        "cssVar": "--v-text-2",
+        "mode": "dark",
+        "tonalRamp": [
+          "#090b0e",
+          "#212427",
+          "#3d4043",
+          "#5a5e61",
+          "#7a7e81",
+          "#9b9fa3",
+          "#c1c5c9",
+          "#ebeff3"
+        ]
+      },
+      "border-dark": {
+        "role": "neutral",
+        "displayName": "Filete (oscuro)",
+        "canonical": "#4e535c",
+        "cssVar": "--v-border",
+        "mode": "dark",
+        "tonalRamp": [
+          "#080b12",
+          "#20242c",
+          "#3b4049",
+          "#595e67",
+          "#787d87",
+          "#999fa9",
+          "#bec4cf",
+          "#e9effa"
+        ]
+      },
+      "signal-dark": {
+        "role": "primary",
+        "displayName": "Rojo Señal (oscuro)",
+        "canonical": "#F06A4F",
+        "cssVar": "--signal",
+        "mode": "dark",
+        "tonalRamp": [
+          "#1d0200",
+          "#460c03",
+          "#761602",
+          "#a92508",
+          "#cf4c32",
+          "#f66f54",
+          "#fcae9c",
+          "#fee9e4"
+        ]
+      },
+      "signal-ink-dark": {
+        "role": "primary",
+        "displayName": "Tinta Señal (oscuro)",
+        "canonical": "#FF7A5C",
+        "cssVar": "--signal-ink",
+        "mode": "dark",
+        "tonalRamp": [
+          "#1d0200",
+          "#460c02",
+          "#761801",
+          "#a82805",
+          "#ce4d31",
+          "#f47153",
+          "#ffac98",
+          "#fee9e4"
+        ]
+      },
+      "signal-soft-dark": {
+        "role": "primary",
+        "displayName": "Señal Tenue (oscuro)",
+        "canonical": "#3a2723",
+        "cssVar": "--signal-soft",
+        "mode": "dark",
+        "tonalRamp": [
+          "#160604",
+          "#311f1b",
+          "#4e3a36",
+          "#6e5853",
+          "#8e7772",
+          "#b09893",
+          "#d7beb8",
+          "#fee9e5"
+        ]
+      },
+      "status-danger-ink-dark": {
+        "role": "status",
+        "displayName": "Peligro Tinta (oscuro)",
+        "canonical": "#e99992",
+        "cssVar": "--status-danger-ink",
+        "mode": "dark",
+        "tonalRamp": [
+          "#1e0001",
+          "#490508",
+          "#6a2624",
+          "#8c4541",
+          "#b0655f",
+          "#d48680",
+          "#fdaca4",
+          "#fee9e7"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Solo el titular del hero; mayúsculas, font-stretch 78%."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Titulares de sección de la landing y H1 de Playground y SDK; mayúsculas, font-stretch 80%. Docs usa clamp(2.25rem,4.5vw,3.25rem) a 82%."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "H2 de docs y pasos numerados, caja normal."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Bajada bajo un H1."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prosa de docs en columna de 72ch, en --muted-foreground."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Botones y controles de 000h."
+      },
+      "label": {
+        "displayName": "Etiqueta mono",
+        "purpose": "Etiquetas de campo, cabeceras de tabla, títulos de callout; mayúsculas."
+      },
+      "status-bar": {
+        "displayName": "Barra de estado",
+        "purpose": "Barra ■■■ del hero y del pie; mayúsculas."
+      },
+      "data": {
+        "displayName": "Dato",
+        "purpose": "Dígitos de la clave, números de factura, versiones; cifras tabulares."
+      }
+    },
+    "shadows": [
+      {
+        "name": "paper-lift",
+        "value": "0 1px 0 var(--v-border), 0 24px 48px -28px rgb(20 23 27 / 0.45)",
+        "purpose": "Solo la guía de envío, modo claro."
+      },
+      {
+        "name": "paper-lift-dark",
+        "value": "0 1px 0 var(--v-border), 0 24px 48px -24px rgb(0 0 0 / 0.8)",
+        "purpose": "Solo la guía de envío, modo oscuro."
+      }
+    ],
+    "motion": [
+      {
+        "name": "strike",
+        "value": "strike-ghost var(--strike-delay, 0ms) steps(1, end) both",
+        "purpose": "Fantasma (opacidad 0.22) que se imprime de golpe al terminar el retardo; sin interpolación."
+      },
+      {
+        "name": "strike-node",
+        "value": "strike-node var(--strike-delay, 0ms) steps(1, end) both",
+        "purpose": "Nodo punteado sin relleno que pasa a impreso de golpe."
+      },
+      {
+        "name": "strike-stagger-route",
+        "value": "1350ms + i * 280ms",
+        "purpose": "Escalonado de las paradas de la ruta de tracking."
+      },
+      {
+        "name": "strike-stagger-clave",
+        "value": "250ms + i * 110ms",
+        "purpose": "Escalonado de los campos de la clave."
+      },
+      {
+        "name": "stamp",
+        "value": "stamp-press 220ms cubic-bezier(0.16, 1, 0.3, 1) 3100ms both",
+        "purpose": "Sello RECIBIDA: de escala 1.8 y opacidad 0 a 1."
+      },
+      {
+        "name": "t-micro",
+        "value": "120ms cubic-bezier(.2,.8,.2,1)",
+        "purpose": "Transiciones de estado de botones de 000h (--t-micro, --enter)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; --t-*: 0ms",
+        "purpose": "El reposo ya es el estado impreso; nada se anima."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Pill de 000h en tinta; se mantiene tinta en oscuro.",
+      "html": "<button class=\"ds-btn-primary\">Probar el Playground</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;height:48px;min-width:13rem;justify-content:center;padding:0 24px;border:0;border-radius:999px;background:var(--v-ink,#24262b);color:var(--v-on-ink,#F4F5F6);font:500 15px/1 var(--font-text,'DM Sans',sans-serif);transition:background 120ms cubic-bezier(.2,.8,.2,1),transform 120ms;cursor:pointer}.ds-btn-primary:hover{background:color-mix(in oklab,var(--v-ink,#24262b) 88%,var(--v-canvas,#F4F5F6))}.ds-btn-primary:focus-visible{outline:2px solid var(--signal,#E5482E);outline-offset:2px}.ds-btn-primary:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Botón contorno",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Pill de contorno para la acción par (Quick Start).",
+      "html": "<button class=\"ds-btn-outline\">Quick Start</button>",
+      "css": ".ds-btn-outline{height:48px;min-width:13rem;padding:0 24px;border-radius:999px;background:transparent;color:var(--v-text,#24262b);border:1px solid var(--v-border,#aeb0b3);font:500 15px/1 var(--font-text,'DM Sans',sans-serif);transition:background 120ms;cursor:pointer}.ds-btn-outline:hover{background:var(--v-beige-2,#eceef0)}.ds-btn-outline:focus-visible{outline:2px solid var(--signal,#E5482E);outline-offset:2px}"
+    },
+    {
+      "name": "Navegación",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Logotipo con SRI en señal; ruta activa con ■.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-logo\">OPEN<span>SRI</span></a><a class=\"ds-nav-link is-active\"><i class=\"ds-mark\"></i>Docs</a><a class=\"ds-nav-link\">Playground</a><a class=\"ds-nav-link\">SDK</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:4px;padding:12px 16px;border-bottom:1px solid var(--v-border,#aeb0b3);background:var(--v-canvas,#F4F5F6)}.ds-nav-logo{font:800 20px/1 var(--font-display,'Bricolage Grotesque',sans-serif);font-stretch:92%;letter-spacing:-0.025em;margin-right:28px;color:var(--v-text,#24262b)}.ds-nav-logo span{color:var(--signal,#E5482E)}.ds-nav-link{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:999px;font:400 14px var(--font-text,'DM Sans',sans-serif);color:var(--v-text-2,#454850);cursor:pointer}.ds-nav-link:hover{background:var(--v-beige-2,#eceef0);color:var(--v-text,#24262b)}.ds-nav-link.is-active{font-weight:600;color:var(--v-text,#24262b)}.ds-mark{display:inline-block;width:7px;height:7px;background:var(--signal,#E5482E)}"
+    },
+    {
+      "name": "Chip de estado",
+      "kind": "chip",
+      "refersTo": "status-chip-ok",
+      "description": "Pill salvia con punto; solo semántica de estado.",
+      "html": "<span class=\"ds-chip\"><i></i>Estable</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--status-ok-bg,#f5f7f3);color:var(--status-ok-ink,#575e50);font:400 14px var(--font-text,'DM Sans',sans-serif)}.ds-chip i{width:6px;height:6px;border-radius:50%;background:currentColor}"
+    },
+    {
+      "name": "Etiqueta de dato",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Etiqueta mono con ■ dibujado y valor debajo (campo de la guía).",
+      "html": "<div class=\"ds-field\"><dt><i></i>Remitente</dt><dd>Tu sistema<small>RUC 1791248678001</small></dd></div>",
+      "css": ".ds-field{padding:14px 20px}.ds-field dt{display:flex;align-items:center;gap:8px;font:400 10.5px/1.2 var(--font-mono,'Geist Mono',monospace);letter-spacing:.16em;text-transform:uppercase;color:var(--v-text-2,#454850)}.ds-field dt i{width:7px;height:7px;background:var(--signal,#E5482E)}.ds-field dd{margin:6px 0 0;font:500 15px/1.35 var(--font-text,'DM Sans',sans-serif);color:var(--v-text,#24262b)}.ds-field small{display:block;font:400 12px var(--font-mono,'Geist Mono',monospace);font-variant-numeric:tabular-nums;color:var(--v-text-2,#454850)}"
+    },
+    {
+      "name": "CodeFrame",
+      "kind": "card",
+      "refersTo": "code-frame",
+      "description": "Superficie de código en estructura con tira mono y COPIAR.",
+      "html": "<figure class=\"ds-code\"><figcaption><span><i></i>OpenSRIClient.java</span><button>Copiar</button></figcaption><pre>var result = client.sendInvoice(invoice);</pre></figure>",
+      "css": ".ds-code{margin:0;overflow:hidden;border-radius:16px;background:var(--v-structure,#14171B);color:var(--structure-text,#E2E6ED);box-shadow:0 0 0 1px color-mix(in oklab,var(--structure-line,#565D68) 60%,transparent)}.ds-code figcaption{display:flex;justify-content:space-between;align-items:center;min-height:40px;padding:0 16px;border-bottom:1px solid var(--structure-line,#565D68);font:400 12px var(--font-mono,'Geist Mono',monospace)}.ds-code figcaption span{display:flex;align-items:center;gap:8px}.ds-code figcaption i{width:7px;height:7px;background:var(--signal,#E5482E)}.ds-code button{height:28px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--structure-text,#E2E6ED);font:400 11px var(--font-mono,'Geist Mono',monospace);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}.ds-code button:hover{background:var(--structure-quiet,#242931)}.ds-code button:focus-visible{outline:2px solid var(--signal,#E5482E)}.ds-code pre{margin:0;padding:20px;font:400 13px/22px var(--font-mono,'Geist Mono',monospace)}"
+    },
+    {
+      "name": "Ruta de tracking",
+      "kind": "custom",
+      "refersTo": "tracking-route",
+      "description": "Nodos fantasma, impresos y actual en señal.",
+      "html": "<ol class=\"ds-route\"><li class=\"done\"><b></b><small>01</small>Factura construida</li><li class=\"done\"><b></b><small>02</small>Clave de acceso</li><li class=\"now\"><b></b><small>03</small>XML serializado</li><li><b></b><small>04</small>Firmado XAdES-BES</li></ol>",
+      "css": ".ds-route{display:grid;grid-template-columns:repeat(4,1fr);list-style:none;margin:0;padding:0;font:600 14px/1.3 var(--font-text,'DM Sans',sans-serif);color:var(--v-text,#24262b)}.ds-route li{position:relative;padding-right:16px}.ds-route li:not(:last-child)::after{content:'';position:absolute;left:20px;right:0;top:9px;height:1px;background:var(--v-border,#aeb0b3)}.ds-route li.done::after{background:var(--v-text,#24262b)}.ds-route b{position:relative;z-index:1;display:block;width:19px;height:19px;border-radius:50%;border:1px dashed var(--v-edge,#6b6d70);margin-bottom:16px}.ds-route li:not(.done):not(.now){color:var(--v-text-3,#51555d)}.ds-route .done b{border:1px solid var(--v-text,#24262b);background:var(--v-text,#24262b)}.ds-route .now b{border:1px solid var(--signal,#E5482E);background:var(--signal,#E5482E)}.ds-route small{display:block;font:400 10.5px var(--font-mono,'Geist Mono',monospace);color:var(--v-text-2,#454850)}"
+    },
+    {
+      "name": "Sello RECIBIDA",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "Sello de recepción en señal; se presiona una vez.",
+      "html": "<p class=\"ds-stamp\">Recibida</p>",
+      "css": ".ds-stamp{display:inline-block;margin:0;padding:4px 10px;border:2px solid var(--signal,#E5482E);border-radius:6px;transform:rotate(-6deg);color:var(--signal-ink,#B8321C);font:600 14px var(--font-mono,'Geist Mono',monospace);letter-spacing:.2em;text-transform:uppercase;animation:ds-stamp 220ms cubic-bezier(.16,1,.3,1) both}@keyframes ds-stamp{from{opacity:0;scale:1.8}}@media (prefers-reduced-motion:reduce){.ds-stamp{animation:none}}"
+    },
+    {
+      "name": "Paso numerado",
+      "kind": "custom",
+      "refersTo": "step-circle",
+      "description": "Número mono en círculo de tinta junto al título del paso.",
+      "html": "<h2 class=\"ds-step\"><span>1</span>Instala el SDK</h2>",
+      "css": ".ds-step{display:flex;align-items:center;gap:12px;margin:0;font:700 24px/1.2 var(--font-display,'Bricolage Grotesque',sans-serif);letter-spacing:-0.025em;color:var(--v-text,#24262b)}.ds-step span{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--v-text,#24262b);font:400 14px var(--font-mono,'Geist Mono',monospace);font-variant-numeric:tabular-nums}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Guía de envío SOAP",
+    "overview": "Cada factura es un envío y la clave de acceso de 49 dígitos es su número de tracking. El sitio se lee como papelería de courier técnica: una guía en papel con borde perforado, campos etiquetados en mono, un código de barras derivado de la clave, sellos de recepción y una ruta de tracking cuyas paradas se imprimen. La base es 000h de Cojeev, adoptado completo (componentes vendorizados en `components/ui`, `styles/cojeev`, `lib/cojeev`), en su paleta \"graphite\" horneada como tokens estáticos en `app/globals.css`.\n\nLa firma Evangelion se conserva como detalle, no como escenografía: la barra de estado `■■■` a todo el ancho, las etiquetas de datos en mono con un `■` dibujado, los titulares en mayúsculas condensadas y el panel de \"Análisis de riesgos\". Un solo acento de señal rojo-naranja marca lo impreso, el estado actual y la marca; todo lo demás es grafito, papel y tinta.\n\nLa densidad cambia por modo. **Persuade** (landing) respira con secciones de 96px y titulares display. **Read** (Docs, SDK, About) es una columna de lectura de 72ch con pasos numerados en círculo. **Operate** (Playground) es formulario más panel de seguimiento pegajoso. Nunca tierno ni pastel: los tonos pastel de graphite existen solo como semántica de estado.",
+    "keyCharacteristics": [
+      "000h completo: botones pill, tabs pill, inputs y badges de Cojeev sin reestilizar salvo el acento.",
+      "Un solo acento (`--signal`) que reemplaza al `--v-pink` de Cojeev en todos los componentes.",
+      "Titulares Bricolage Grotesque 800, en mayúsculas y condensados (`font-stretch` 78–82%).",
+      "Datos y etiquetas en Geist Mono con cifras tabulares; prosa en DM Sans.",
+      "Estados fantasma que se imprimen sin interpolación; sello RECIBIDA que se presiona.",
+      "Claro y oscuro con paridad completa vía `data-mode` en `<html>`."
+    ],
+    "rules": [
+      {
+        "name": "The One Signal Rule",
+        "body": "`--signal` se reserva para marcas impresas (`■`, sello, nodo final), el estado actual (ruta activa, paso en curso, foco) y la marca (logotipo, palabra acentuada del titular). Nunca rellena superficies ni botones.",
+        "section": "colors"
+      },
+      {
+        "name": "The Negative Is Not Signal Rule",
+        "body": "Un valor negativo o de riesgo (\"Semanas / meses\", \"Crítico\") usa `--status-danger-ink`, no `--signal`. El rojo de señal significa \"impreso/ahora\", no \"malo\".",
+        "section": "colors"
+      },
+      {
+        "name": "The Pastel Is Status Rule",
+        "body": "Salvia, arena y azul niebla aparecen solo como semántica de estado, nunca como decoración ni fondo de sección.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Is Data Rule",
+        "body": "Todo lo que es un dato del documento (clave, RUC, serie, versión, endpoint, número de paso) va en Geist Mono con cifras tabulares; la prosa nunca.",
+        "section": "typography"
+      },
+      {
+        "name": "The Upper Case Is Voice Rule",
+        "body": "Los titulares Bricolage van en mayúsculas condensadas; los títulos de nivel inferior (H2 de docs, H3, nombres de SDK) van en caja normal.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper Only Rule",
+        "body": "Solo un objeto de papel del mundo (la guía) proyecta sombra. Paneles, tarjetas y CodeFrame se separan con tono y un anillo de 1px (`ring-1 ring-border` o `ring-[var(--structure-line)]/60`).",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Nested Cards Rule",
+        "body": "Una superficie de papel no contiene otra tarjeta. Dentro de un panel se divide con filetes sólidos o punteados, nunca con cajas anidadas.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** usar `--signal` solo para marcas impresas, estado actual y marca (≤ una palabra acentuada por titular).",
+      "**Do** poner los `■■■` en la barra de estado y los `■` en etiquetas de datos, navegación activa y tiras de CodeFrame.",
+      "**Do** escribir valores negativos o de riesgo en `--status-danger-ink`, mono 12px/600 en mayúsculas.",
+      "**Do** mostrar lo pendiente como fantasma punteado y pasarlo a impreso con un cambio seco (`steps(1, end)`), con el estado impreso como reposo para movimiento reducido.",
+      "**Do** mantener tinta el botón primario y la pestaña pill seleccionada también en modo oscuro.",
+      "**Do** tras cualquier `shadcn add` de un ítem `@cojeev`, revisar `app/globals.css`: el comando reescribe el puente de tokens shadcn (restaurar `--accent`, `--ring`, `--muted-foreground-*`) y vuelve a añadir el import de `cojeev-fonts.css`, que rompe el build. Ver README, \"Design system\".",
+      "**Do** conservar el aviso MIT de Cojeev (`lib/cojeev/NOTICES.txt` y la línea del pie)."
+    ],
+    "donts": [
+      "**Don't** poner `■■■` ni una etiqueta mono como eyebrow encima de un titular.",
+      "**Don't** usar `--signal` para valores negativos, errores, fondos de sección ni rellenos de botón.",
+      "**Don't** dejar que reaparezca el `--v-pink` de Cojeev; toda selección y acento pasa por `--signal`.",
+      "**Don't** anidar tarjetas dentro de tarjetas.",
+      "**Don't** añadir sombras fuera de la guía de envío.",
+      "**Don't** usar los pasteles de graphite como decoración; se ve tierno y pastel, que es justo lo que el sistema rechaza.",
+      "**Don't** dibujar el `■` con un glifo de fuente; usar el componente `Mark`.",
+      "**Don't** interpolar la transición fantasma → impreso con un fundido."
+    ]
+  }
+}

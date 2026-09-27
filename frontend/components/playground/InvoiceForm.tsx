@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import type { ReactNode } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { Add01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,115 +85,88 @@ export default function InvoiceForm({ onSubmit, isRunning }: InvoiceFormProps) {
 
   const { fields, append, remove } = useFieldArray({ control, name: "items" });
 
+  // Wires label, error text and invalid state together for screen readers.
+  const a11y = (id: string, error?: string) => ({
+    id,
+    "aria-invalid": error ? true : undefined,
+    "aria-describedby": error ? `${id}-error` : undefined,
+  });
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <section className="space-y-3">
-        <SectionHeader
-          eyebrow="Datos del comprobante"
-          title="Emisor y comprador"
-          description="Estos campos identifican quién emite la factura y a quién va dirigida."
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-12" noValidate>
+      <section>
+        <SectionHeader n={1} title="Emisor y comprador">
+          Quién emite la factura y a quién va dirigida.
+        </SectionHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-border/70 bg-background/60 p-4">
-          <Field label="RUC del emisor" error={errors.issuerRuc?.message}>
-            <Input
-              id="issuerRuc"
-              placeholder="1791248678001"
-              maxLength={13}
-              className={fieldInputClass}
-              {...register("issuerRuc")}
-            />
+        <div className="grid gap-x-5 gap-y-5 md:grid-cols-2">
+          <Field id="issuerRuc" label="RUC del emisor" error={errors.issuerRuc?.message}>
+            <Input size="sm" inputMode="numeric" placeholder="1791248678001" maxLength={13} className={mono} {...a11y("issuerRuc", errors.issuerRuc?.message)} {...register("issuerRuc")} />
           </Field>
 
-          <Field label="Nombre del emisor" error={errors.issuerName?.message}>
-            <Input
-              id="issuerName"
-              placeholder="OpenSRI Demo S.A."
-              className={fieldInputClass}
-              {...register("issuerName")}
-            />
+          <Field id="issuerName" label="Nombre del emisor" error={errors.issuerName?.message}>
+            <Input size="sm" placeholder="OpenSRI Demo S.A." {...a11y("issuerName", errors.issuerName?.message)} {...register("issuerName")} />
           </Field>
 
-          <Field label="Dirección del establecimiento" error={errors.establishmentAddress?.message}>
-            <Input
-              id="establishmentAddress"
-              placeholder="Av. Amazonas y Naciones Unidas, Quito"
-              className={fieldInputClass}
-              {...register("establishmentAddress")}
-            />
+          <Field id="establishmentAddress" label="Dirección del establecimiento" error={errors.establishmentAddress?.message} className="md:col-span-2">
+            <Input size="sm" placeholder="Av. Amazonas y Naciones Unidas, Quito" {...a11y("establishmentAddress", errors.establishmentAddress?.message)} {...register("establishmentAddress")} />
           </Field>
 
-          <Field label="Identificación del comprador" error={errors.buyerIdentification?.message}>
-            <Input
-              id="buyerIdentification"
-              placeholder="1101160032"
-              className={fieldInputClass}
-              {...register("buyerIdentification")}
-            />
+          <Field id="buyerIdentification" label="Identificación del comprador" error={errors.buyerIdentification?.message}>
+            <Input size="sm" inputMode="numeric" placeholder="1101160032" className={mono} {...a11y("buyerIdentification", errors.buyerIdentification?.message)} {...register("buyerIdentification")} />
           </Field>
 
-          <Field label="Nombre del comprador" error={errors.buyerName?.message}>
-            <Input id="buyerName" placeholder="Juan Pérez" className={fieldInputClass} {...register("buyerName")} />
+          <Field id="buyerName" label="Nombre del comprador" error={errors.buyerName?.message}>
+            <Input size="sm" placeholder="Juan Pérez" {...a11y("buyerName", errors.buyerName?.message)} {...register("buyerName")} />
           </Field>
 
-          <Field label="Tipo de identificación" error={errors.buyerIdentificationType?.message}>
-            <Input
-              id="buyerIdentificationType"
-              placeholder="05"
-              maxLength={2}
-              className={fieldInputClass}
-              {...register("buyerIdentificationType")}
-            />
+          <Field id="buyerIdentificationType" label="Tipo de identificación" tag="tipoIdentificacionComprador" error={errors.buyerIdentificationType?.message}>
+            <Input size="sm" placeholder="05" maxLength={2} className={mono} {...a11y("buyerIdentificationType", errors.buyerIdentificationType?.message)} {...register("buyerIdentificationType")} />
           </Field>
         </div>
       </section>
 
-      <section className="space-y-3">
-        <SectionHeader
-          eyebrow="Numeración fiscal"
-          title="Serie y configuración"
-          description="La serie fiscal y la versión del documento deben quedar legibles y separadas del resto."
-        />
+      <section>
+        <SectionHeader n={2} title="Serie y configuración">
+          Numeración fiscal del comprobante. Forma parte de la clave de acceso.
+        </SectionHeader>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 rounded-xl border border-border/70 bg-background/60 p-4">
-          <Field label="codDoc" error={errors.codDoc?.message}>
-            <Input id="codDoc" maxLength={2} className={fieldInputClass} {...register("codDoc")} />
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4">
+          <Field id="codDoc" label="Tipo de documento" tag="codDoc" error={errors.codDoc?.message}>
+            <Input size="sm" maxLength={2} className={mono} {...a11y("codDoc", errors.codDoc?.message)} {...register("codDoc")} />
           </Field>
 
-          <Field label="estab" error={errors.estab?.message}>
-            <Input id="estab" maxLength={3} className={fieldInputClass} {...register("estab")} />
+          <Field id="estab" label="Establecimiento" tag="estab" error={errors.estab?.message}>
+            <Input size="sm" maxLength={3} className={mono} {...a11y("estab", errors.estab?.message)} {...register("estab")} />
           </Field>
 
-          <Field label="ptoEmi" error={errors.ptoEmi?.message}>
-            <Input id="ptoEmi" maxLength={3} className={fieldInputClass} {...register("ptoEmi")} />
+          <Field id="ptoEmi" label="Punto de emisión" tag="ptoEmi" error={errors.ptoEmi?.message}>
+            <Input size="sm" maxLength={3} className={mono} {...a11y("ptoEmi", errors.ptoEmi?.message)} {...register("ptoEmi")} />
           </Field>
 
-          <Field label="secuencial" error={errors.secuencial?.message}>
-            <Input id="secuencial" maxLength={9} className={fieldInputClass} {...register("secuencial")} />
+          <Field id="secuencial" label="Secuencial" tag="secuencial" error={errors.secuencial?.message}>
+            <Input size="sm" maxLength={9} className={mono} {...a11y("secuencial", errors.secuencial?.message)} {...register("secuencial")} />
           </Field>
 
-          <Field label="Método de pago" error={errors.paymentMethod?.message}>
-            <Input id="paymentMethod" readOnly className={fieldInputClass} {...register("paymentMethod")} />
+          <Field id="paymentMethod" label="Método de pago" error={errors.paymentMethod?.message} className="col-span-2">
+            <Input size="sm" readOnly className={mono} {...a11y("paymentMethod", errors.paymentMethod?.message)} {...register("paymentMethod")} />
+          </Field>
+
+          <Field id="documentVersion" label="Versión del documento" error={errors.documentVersion?.message} className="col-span-2">
+            <Input size="sm" readOnly className={mono} {...a11y("documentVersion", errors.documentVersion?.message)} {...register("documentVersion")} />
           </Field>
         </div>
-
-        <Field label="Versión del documento" error={errors.documentVersion?.message}>
-          <Input id="documentVersion" readOnly className={fieldInputClass} {...register("documentVersion")} />
-        </Field>
       </section>
 
-      <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-              Detalle de la factura
-            </p>
-            <h3 className="text-sm font-semibold text-foreground mt-1">Ítems y tributos</h3>
-          </div>
+      <section>
+        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+          <SectionHeader n={3} title="Ítems y tributos" className="mb-0">
+            Cada línea de la factura con su código de impuesto.
+          </SectionHeader>
           <Button
             type="button"
             variant="outline"
-            size="xs"
+            size="sm"
             onClick={() =>
               append({
                 mainCode: "",
@@ -207,146 +180,141 @@ export default function InvoiceForm({ onSubmit, isRunning }: InvoiceFormProps) {
               })
             }
           >
-            + Añadir ítem
+            <HugeiconsIcon icon={Add01Icon} size={16} strokeWidth={1.8} />
+            Añadir ítem
           </Button>
         </div>
 
-        <div className="space-y-4">
-          {fields.map((field, index) => (
-            <article key={field.id} className="rounded-xl border border-border/70 bg-background/70 p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-                    Ítem {String(index + 1).padStart(2, "0")}
+        <ol className="divide-y divide-dashed divide-border border-y border-dashed border-border">
+          {fields.map((field, index) => {
+            const e = errors.items?.[index];
+            const id = (name: string) => `item-${index}-${name}`;
+            return (
+              <li key={field.id} className="py-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    Ítem <span className="tabular-nums text-foreground">{String(index + 1).padStart(2, "0")}</span>
                   </p>
-                  <h4 className="text-sm font-semibold text-foreground mt-1">{`Línea de producto ${index + 1}`}</h4>
+                  {fields.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => remove(index)}
+                      aria-label={`Quitar ítem ${index + 1}`}
+                      className="w-[var(--ctl-sm)] px-0 text-muted-foreground"
+                    >
+                      <HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={1.6} />
+                    </Button>
+                  )}
                 </div>
 
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => remove(index)}
-                    className="text-muted-foreground hover:text-destructive"
-                  >
-                    <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.5} />
-                  </Button>
-                )}
-              </div>
+                <div className="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4">
+                  <Field id={id("description")} label="Descripción" error={e?.description?.message} className="col-span-2 md:col-span-4">
+                    <Input size="sm" placeholder="Laptop Lenovo ThinkPad E16" {...a11y(id("description"), e?.description?.message)} {...register(`items.${index}.description`)} />
+                  </Field>
+                  <Field id={id("mainCode")} label="Código principal" error={e?.mainCode?.message}>
+                    <Input size="sm" placeholder="P001" className={mono} {...a11y(id("mainCode"), e?.mainCode?.message)} {...register(`items.${index}.mainCode`)} />
+                  </Field>
+                  <Field id={id("auxiliaryCode")} label="Código auxiliar" error={e?.auxiliaryCode?.message}>
+                    <Input size="sm" placeholder="A001" className={mono} {...a11y(id("auxiliaryCode"), e?.auxiliaryCode?.message)} {...register(`items.${index}.auxiliaryCode`)} />
+                  </Field>
+                  <Field id={id("quantity")} label="Cantidad" error={e?.quantity?.message}>
+                    <Input size="sm" type="number" min={1} step="1" className={mono} {...a11y(id("quantity"), e?.quantity?.message)} {...register(`items.${index}.quantity`, { valueAsNumber: true })} />
+                  </Field>
+                  <Field id={id("price")} label="Precio unitario" error={e?.price?.message}>
+                    <Input size="sm" type="number" min={0.01} step="0.01" className={mono} {...a11y(id("price"), e?.price?.message)} {...register(`items.${index}.price`, { valueAsNumber: true })} />
+                  </Field>
+                  <Field id={id("taxCode")} label="Código de impuesto" tag="codigo" error={e?.taxCode?.message}>
+                    <Input size="sm" placeholder="2" className={mono} {...a11y(id("taxCode"), e?.taxCode?.message)} {...register(`items.${index}.taxCode`)} />
+                  </Field>
+                  <Field id={id("taxPercentageCode")} label="Código de tarifa" tag="codigoPorcentaje" error={e?.taxPercentageCode?.message}>
+                    <Input size="sm" placeholder="4" className={mono} {...a11y(id("taxPercentageCode"), e?.taxPercentageCode?.message)} {...register(`items.${index}.taxPercentageCode`)} />
+                  </Field>
+                  <Field id={id("taxRate")} label="IVA %" error={e?.taxRate?.message}>
+                    <Input size="sm" type="number" min={0} step="0.01" className={mono} {...a11y(id("taxRate"), e?.taxRate?.message)} {...register(`items.${index}.taxRate`, { valueAsNumber: true })} />
+                  </Field>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
-                <Field label="Código principal" error={errors.items?.[index]?.mainCode?.message}>
-                  <Input placeholder="P001" className={fieldInputClass} {...register(`items.${index}.mainCode`)} />
-                </Field>
-
-                <Field label="Código auxiliar" error={errors.items?.[index]?.auxiliaryCode?.message}>
-                  <Input placeholder="A001" className={fieldInputClass} {...register(`items.${index}.auxiliaryCode`)} />
-                </Field>
-
-                <Field label="Descripción" className="md:col-span-2 xl:col-span-1" error={errors.items?.[index]?.description?.message}>
-                  <Input
-                    placeholder="Laptop Lenovo ThinkPad E16"
-                    className={fieldInputClass}
-                    {...register(`items.${index}.description`)}
-                  />
-                </Field>
-
-                <Field label="Cantidad" error={errors.items?.[index]?.quantity?.message}>
-                  <Input
-                    type="number"
-                    min={1}
-                    step="1"
-                    className={fieldInputClass}
-                    {...register(`items.${index}.quantity`, { valueAsNumber: true })}
-                  />
-                </Field>
-
-                <Field label="Precio" error={errors.items?.[index]?.price?.message}>
-                  <Input
-                    type="number"
-                    min={0.01}
-                    step="0.01"
-                    className={fieldInputClass}
-                    {...register(`items.${index}.price`, { valueAsNumber: true })}
-                  />
-                </Field>
-
-                <Field label="taxCode" error={errors.items?.[index]?.taxCode?.message}>
-                  <Input placeholder="2" className={fieldInputClass} {...register(`items.${index}.taxCode`)} />
-                </Field>
-
-                <Field label="taxPct" error={errors.items?.[index]?.taxPercentageCode?.message}>
-                  <Input placeholder="4" className={fieldInputClass} {...register(`items.${index}.taxPercentageCode`)} />
-                </Field>
-
-                <Field label="IVA %" error={errors.items?.[index]?.taxRate?.message}>
-                  <Input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    className={fieldInputClass}
-                    {...register(`items.${index}.taxRate`, { valueAsNumber: true })}
-                  />
-                </Field>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {errors.items?.root && <p className="text-xs text-destructive">{errors.items.root.message}</p>}
+        {errors.items?.root && (
+          <p role="alert" className="mt-3 text-sm text-[var(--v-danger-ink)]">
+            {errors.items.root.message}
+          </p>
+        )}
       </section>
 
-      <Button type="submit" disabled={isRunning} size="lg" className="w-full md:w-auto">
-        {isRunning ? "Procesando..." : "Generar + enviar al SRI"}
-      </Button>
+      <div className="flex flex-wrap items-center gap-4 border-t border-border pt-8">
+        <Button type="submit" size="lg" loading={isRunning} className="min-w-[15rem]">
+          {isRunning ? "Enviando al SRI…" : "Generar y enviar al SRI"}
+        </Button>
+        <p className="text-sm text-muted-foreground">Se envía al ambiente de pruebas; no tiene validez tributaria.</p>
+      </div>
     </form>
   );
 }
 
+const mono = "font-mono tabular-nums";
+
 function Field({
+  id,
   label,
+  tag,
   error,
   className,
   children,
 }: {
+  id: string;
   label: string;
+  /** XML element name in the SRI schema, shown for developers mapping their own data. */
+  tag?: string;
   error?: string;
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <div className={cn("space-y-1.5", className)}>
-      <Label className="text-[11px] text-muted-foreground/80 tracking-[0.22em]">
+    // Label grows to fill the row so inputs line up even when a tag wraps.
+    <div className={cn("flex flex-col gap-2", className)}>
+      <Label htmlFor={id} size="sm" className="flex flex-1 flex-wrap items-end gap-x-2">
         {label}
+        {tag && <span className="font-mono text-[11px] font-normal text-muted-foreground">{tag}</span>}
       </Label>
-      <div className="rounded-md border border-border/70 bg-background px-3 py-2 shadow-sm">
-        {children}
-      </div>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="text-[13px] text-[var(--v-danger-ink)]">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
 
 function SectionHeader({
-  eyebrow,
+  n,
   title,
-  description,
+  className,
+  children,
 }: {
-  eyebrow: string;
+  n: number;
   title: string;
-  description: string;
+  className?: string;
+  children: ReactNode;
 }) {
   return (
-    <div className="space-y-1">
-      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-        {eyebrow}
-      </p>
-      <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-      <p className="text-sm text-muted-foreground max-w-2xl">{description}</p>
+    <div className={cn("mb-6", className)}>
+      <h2 className="flex items-center gap-3 font-heading text-xl font-bold tracking-tight">
+        <span
+          aria-hidden="true"
+          className="flex size-7 shrink-0 items-center justify-center rounded-full border border-foreground font-mono text-xs tabular-nums"
+        >
+          {n}
+        </span>
+        {title}
+      </h2>
+      <p className="mt-2 text-sm text-muted-foreground">{children}</p>
     </div>
   );
 }
-
-const fieldInputClass =
-  "h-10 border-0 bg-transparent px-0 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-0 focus-visible:outline-none";

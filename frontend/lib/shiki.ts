@@ -5,7 +5,8 @@ const LANGS = [
   "php", "groovy", "kotlin",
 ] as const;
 
-const THEME = "catppuccin-mocha";
+// Warm-accented dark theme that sits on the --v-structure code frame.
+const THEME = "vesper";
 
 export async function highlight(code: string, lang: string): Promise<string> {
   const hl = await getSingletonHighlighter({ themes: [THEME], langs: [...LANGS] });

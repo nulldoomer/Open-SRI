@@ -1,4 +1,5 @@
 import { highlight } from "@/lib/shiki";
+import { cn } from "@/lib/utils";
 
 interface CodeBlockProps {
   code: string;
@@ -6,12 +7,20 @@ interface CodeBlockProps {
   className?: string;
 }
 
-export default async function CodeBlock({ code, lang, className = "" }: CodeBlockProps) {
-  const html = await highlight(code, lang);
+export default async function CodeBlock({ code, lang, className }: CodeBlockProps) {
+  let html: string;
+  try {
+    html = await highlight(code, lang);
+  } catch {
+    html = `<pre><code>${code.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</code></pre>`;
+  }
   return (
     <div
-      className={`[&>pre]:p-5 [&>pre]:overflow-x-auto [&>pre]:text-xs [&>pre]:leading-relaxed [&>pre]:rounded-none ${className}`}
-      // highlight() returns Shiki-generated HTML which is safe — no user input is passed unsanitized
+      className={cn(
+        "[&>pre]:!bg-transparent [&>pre]:overflow-x-auto [&>pre]:p-5 [&>pre]:font-mono [&>pre]:text-[13px] [&>pre]:leading-relaxed",
+        className,
+      )}
+      // highlight() returns Shiki-generated HTML; the fallback escapes the code itself
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

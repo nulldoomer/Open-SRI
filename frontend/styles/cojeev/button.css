@@ -1,0 +1,39 @@
+@layer cojeev-states {
+/* The face and the morph layer share the same opaque state paint. Busy keeps its
+   variant identity; disabled is a separate, deliberately quiet state. */
+.v-btn[data-slot] {
+  text-decoration: none;
+  transition: background var(--t-micro) var(--enter), color var(--t-micro), transform var(--t-micro) var(--enter);
+}
+/* Card choices keep Button's interaction contract; callers own their layout. */
+.v-btn[data-slot].-card {
+  height:auto;
+  min-height:44px;
+  padding:12px;
+  border-radius:12px;
+  white-space:normal;
+}
+.v-btn[data-slot].-secondary { background:var(--v-blue); color:var(--v-on-accent); box-shadow:none; }
+.v-btn[data-slot]:not(.-accent):not(.-secondary):not(.-ghost):not(.-outline):not(.-danger):not(:disabled):not([aria-disabled="true"]):hover {
+  background:color-mix(in oklab,var(--primary) 88%,var(--v-canvas));
+}
+.v-btn[data-slot].-secondary:not(:disabled):not([aria-disabled="true"]):hover { background:color-mix(in oklab,var(--v-blue) 90%,var(--ink-fixed)); }
+.v-btn[data-slot].-danger:not(:disabled):not([aria-disabled="true"]):hover { background:color-mix(in oklab,var(--v-danger-fill) 88%,black); }
+:root[data-mode="dark"] .v-btn[data-slot]:not(.-accent):not(.-secondary):not(.-ghost):not(.-outline):not(.-danger):not(:disabled):not([aria-disabled="true"]:not([aria-busy="true"])) { background:var(--v-pink); color:var(--v-on-accent); }
+:root[data-mode="dark"] .v-btn[data-slot]:is(.-ghost,.-outline) { color:var(--v-text); }
+.v-btn[data-slot] .v-icon { width:18px; height:18px; }
+.v-btn[data-slot][aria-busy="true"] { position:relative; cursor:progress; gap:10px; }
+.v-btn__loading[data-slot] { --pulse:20px; display:inline-flex; align-items:center; justify-content:center; flex:none; pointer-events:none; }
+.v-btn[data-slot] [data-slot="button-indicator"] { width:20px; height:20px; }
+.v-btn[data-slot] [data-slot="button-indicator"] svg { width:100%; height:100%; overflow:visible; }
+.v-btn[data-slot] [data-slot="button-indicator"] .seed { fill:currentColor; }
+.v-btn[data-slot] [data-slot="button-indicator"] .core { fill:transparent; }
+/* Native disabled or a consumer's aria-disabled wins over every variant/theme;
+   aria-disabled added only for loading suppresses activation, not readability. */
+:root .v-btn[data-slot]:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])) {
+  background:var(--v-disabled-face); color:var(--v-disabled-ink); box-shadow:inset 0 0 0 1px var(--v-disabled-edge); cursor:not-allowed; transform:none;
+}
+@media(prefers-reduced-motion:reduce) { .v-btn[data-slot] { transition:none; } }
+[data-stable-hit].v-btn { transform:none; }
+
+}

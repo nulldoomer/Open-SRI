@@ -1,65 +1,151 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+"use client";
 
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
+import { Spinner } from "@/components/ui/spinner";
+import { MotionPresence, MotionSurface } from "@/components/ui/presence";
+import { useFlowPress } from "@/lib/cojeev-motion/flow-press";
+import { useMorph } from "@/lib/cojeev-motion/use-morph";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { controlRadiusStyle, type ControlRadius } from "@/lib/cojeev/control-appearance";
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-none border border-transparent bg-clip-padding text-xs font-semibold tracking-widest whitespace-nowrap uppercase transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+  "v-btn [display:inline-flex] items-center justify-center gap-[var(--s-2)] h-[var(--ctl-md)] px-[var(--s-5)] py-0 rounded-[var(--r-pill)] text-[length:var(--fs-control)] font-[number:var(--fw-control)] leading-none whitespace-nowrap bg-[var(--primary)] text-[color:var(--primary-foreground)] motion-safe:active:[transform:translateY(1px)]",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        outline:
-          "border-border bg-transparent hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-input/30",
+        default: "",
+        accent:
+          "-accent bg-[var(--v-pink)] text-[color:var(--v-on-accent)] hover:bg-[var(--v-pink-deep)]",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "-secondary bg-[var(--v-blue)] text-[color:var(--v-on-accent)]",
         ghost:
-          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
-        destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline underline-offset-4 hover:underline",
+          "-ghost bg-transparent text-[color:var(--v-text)] hover:bg-[var(--v-beige)]",
+        outline:
+          "-outline bg-transparent text-[color:var(--v-text)] [box-shadow:inset_0_0_0_1px_var(--v-border)] hover:bg-[var(--v-beige-2)]",
+        danger:
+          "-danger bg-[var(--v-danger-fill)] text-[color:var(--destructive-foreground)]",
+        block: "-block w-full",
       },
       size: {
-        default:
-          "h-10 gap-1.5 px-6 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
-        xs: "h-7 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-9 gap-1 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
-        lg: "h-11 gap-1.5 px-8 has-data-[icon=inline-end]:pr-5 has-data-[icon=inline-start]:pl-5",
-        icon: "size-10",
-        "icon-xs": "size-7 [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-9",
-        "icon-lg": "size-11",
+        default: "",
+        sm: "-sm h-[var(--ctl-sm)] px-[var(--s-4)] text-[13px]",
+        lg: "-lg h-[var(--ctl-lg)] px-[var(--s-6)] text-[length:var(--fs-body)]",
       },
+      shape: { pill: "", card: "-card" },
+      fullWidth: { true: "-block w-full", false: "" },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  }
-)
+    defaultVariants: { variant: "default", size: "default", shape: "pill", fullWidth: false },
+  },
+);
+
+type ButtonProps = Omit<React.ComponentProps<"button">, "ref"> &
+  VariantProps<typeof buttonVariants> & {
+    /** Use one native element (for example a link) as the interactive root. */
+    asChild?: boolean;
+    ref?: React.Ref<HTMLButtonElement | HTMLAnchorElement>;
+    loading?: boolean;
+    loadingIndicator?: React.ReactNode;
+    radius?: ControlRadius;
+  };
 
 function Button({
+  ref: externalRef,
   className,
-  variant = "default",
-  size = "default",
+  variant,
+  size,
+  shape,
+  radius, style,
+  fullWidth,
+  loading,
+  loadingIndicator,
+  children,
   asChild = false,
+  disabled,
+  type = "button",
+  "aria-busy": ariaBusy,
+  "aria-disabled": ariaDisabled,
+  onClick,
+  onClickCapture,
+  onAuxClickCapture,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot.Root : "button"
-
+}: ButtonProps) {
+  const morphRef = useMorph<HTMLButtonElement | HTMLAnchorElement>("buttons", externalRef);
+  const pressRef = useFlowPress(morphRef);
+  const busy = loading ?? (ariaBusy === true || ariaBusy === "true");
+  const blocked = disabled || busy || ariaDisabled === true || ariaDisabled === "true";
+  const Comp = asChild ? Slot : "button";
   return (
     <Comp
+      ref={pressRef}
       data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
+      data-part="root"
+      data-r={shape === "card" ? 12 : undefined}
+      data-control-shape={shape ?? undefined}
+      style={{ ...style, ...controlRadiusStyle(radius) }}
+      data-state={disabled ? "disabled" : busy ? "busy" : "rest"}
+      type={asChild ? undefined : type}
+      disabled={asChild ? undefined : disabled}
+      aria-busy={busy || undefined}
+      aria-disabled={blocked || undefined}
+      onClickCapture={(event) => {
+        // Stop a slotted link before its own router/click handler can activate.
+        if (asChild && blocked) { event.preventDefault(); event.stopPropagation(); return; }
+        onClickCapture?.(event);
+      }}
+      onAuxClickCapture={(event) => {
+        if (asChild && blocked) { event.preventDefault(); event.stopPropagation(); return; }
+        onAuxClickCapture?.(event);
+      }}
+      onClick={(event) => {
+        if (blocked) {
+          event.preventDefault();
+          return;
+        }
+        onClick?.(event);
+      }}
+      className={cn(
+        buttonVariants({ variant, size, shape, fullWidth }),
+        "leading-none",
+        className,
+      )}
       {...props}
-    />
-  )
+      tabIndex={asChild && disabled ? -1 : props.tabIndex}
+    >
+      <MotionPresence>
+        {busy && (
+          <MotionSurface key="loading" asChild preset="scale">
+            <span
+              data-slot="button-loading"
+              className="v-btn__loading"
+              aria-hidden="true"
+            >
+              {loadingIndicator ?? <ButtonIndicator />}
+            </span>
+          </MotionSurface>
+        )}
+      </MotionPresence>
+      {asChild ? <Slottable>{children}</Slottable> : children}
+    </Comp>
+  );
 }
 
-export { Button, buttonVariants }
+function ButtonIndicator({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
+  return (
+    <Spinner
+      data-slot="button-indicator"
+      data-part="indicator"
+      data-label=""
+      aria-hidden="true"
+      className={className}
+      {...props}
+    />
+  );
+}
+
+export { Button, ButtonIndicator, buttonVariants };
+export type { ButtonProps };

@@ -1,0 +1,361 @@
+/* Vriksha tokens. Evidence labels live in research/DESIGN-SPEC.md and TOKENS.md. */
+:root{
+color-scheme:light;
+/* accents [E] I03 */
+--v-pink:#F5B8DB;--v-olive:#9AAB63;--v-blue:#B6CAEB;--v-yellow:#F5D867;
+/* surfaces [M] */
+--v-canvas:#FBF4E6;--v-paper:#FBF4E6;/* @kind color */--v-beige:#EEE7DA;--v-beige-2:#F3ECDF;--v-cream-pill:#F7F5EB;
+--v-ink:#111111;--v-structure:#111111;--on-structure:#FBF4E6;--structure-quiet:rgba(251,244,230,.09);--structure-line:rgba(251,244,230,.16);--structure-text:#E4DDCD;--v-ink-soft:#32302F;--v-on-ink:#FBF4E6;
+/* text [M] */
+--v-text:#0E0B0B;--v-text-2:#5F5B55;--v-text-3:#68645E;--v-skel-face:#DACFB8;--v-skel-sheen:#F4EDDF;--v-skel-edge:#8C8474;--v-disabled-ink:#6A635B;--v-disabled-face:#EDE6D7;--v-disabled-edge:#877F6F;/* 4.9:1 on cream, 4.6:1 on beige panels — informational grey clears AA on both real surfaces */
+/* semantic hues */
+--v-danger:#E1443E;/* [M] I07 I16 — FILL only: dots, borders, destructive button (white on it passes) */
+--v-danger-ink:#A8302B;--v-danger-fill:#C9332D;/* white text on it = 5.2:1 [I] */--v-olive-ink:#5A6631;/* 5.6:1 on cream [I] */--v-accent-ink:#8E4A6B;/* weekend / accent ink, 5.5:1 on beige [I] *//* text-only danger ink: 5.4:1 on --v-danger-soft, 6.0:1 on --v-beige [I] */
+--v-brand:#9C3E6E;/* Cojeev mulberry — focus ring only (decision) */
+--v-border:#D9D2C4;/* hairlines between static surfaces only — 1.22:1 on beige, never a control edge */
+--v-edge:#87806F;/* control edge: 3.2:1 on beige, 3.4:1 on cream — the 3:1 floor for interactive boundaries, softened from #5F5B55 (5.5:1), which drew a hard grey ring around every field and read as an error outline */
+--switch-knob:#FBF4E6;--switch-knob-on:#FBF4E6;
+/* ---- semantic roles: surfaces, selection, status, data ----
+   Deliberate tinted regions so a page is not uniformly beige. Each is a warm wash of an identity hue over
+   cream, keeping ink text at ≥ 4.5:1 (measured: quiet 15.9, work 14.6, automation 14.1, memory 14.3,
+   library 14.4, ai 14.6, alert 13.1). */
+--surface-quiet:#F7F1E2;--surface-work:#EFF2F7;--surface-automation:#F9F2DC;--surface-memory:#F0F2E4;
+--surface-library:#F9EEF3;--surface-ai:#EDF1F6;--surface-alert:#F9EDE9;
+--sel-bg:#F5DCEA;--sel-edge:#C2739B;--sel-ink:#0E0B0B;
+--status-ok-bg:#E9EEDB;--status-ok-ink:#3F5220;--status-warn-bg:#FAF0D2;--status-warn-ink:#6A4E10;
+--status-danger-bg:#F9E2DD;--status-danger-ink:#8C2F24;--status-info-bg:#E4EAF4;--status-info-ink:#2A4468;
+--status-pending-bg:#ECE7DC;--status-pending-ink:#4A453D;/* control edge: 5.48:1 on beige, 5.92:1 on cream — the 3:1 floor for interactive edges *//* [I] */
+--v-scrim:rgba(46,42,36,.46);/* [I] I07 gave a beige veil; a cream dialog on a beige veil measured 1.04:1 and vanished. A warm-ink veil keeps the paper feel and lets the modal stand off the page. */
+--v-disabled-fill:#C7C2B7;/* [M] I18 grey Join pill */
+/* tonal watermarks [M] ≈ accent 88% + black */
+--v-pink-deep:#E09CC1;--v-olive-deep:#808F53;--v-blue-deep:#8BA2C8;--v-yellow-deep:#E8C84D;/* [M] I15 watermarks + hover: the SAME hue ~8–12 % darker, not a heavy mix */
+/* soft tints for tag pills on beige [I] */
+--v-pink-soft:color-mix(in oklab,var(--v-pink) 55%,var(--v-canvas));
+--v-olive-soft:color-mix(in oklab,var(--v-olive) 45%,var(--v-canvas));
+--v-blue-soft:color-mix(in oklab,var(--v-blue) 55%,var(--v-canvas));
+--v-yellow-soft:color-mix(in oklab,var(--v-yellow) 55%,var(--v-canvas));
+--v-danger-soft:color-mix(in oklab,var(--v-danger) 14%,var(--v-canvas));
+/* semantic roles (shadcn-style names) */
+--background:var(--v-canvas);--foreground:var(--v-text);
+--card:var(--v-beige);--card-foreground:var(--v-text);--card-2:var(--v-beige-2);
+--popover:var(--v-canvas);--popover-foreground:var(--v-text);
+--primary:var(--v-ink);--primary-foreground:var(--v-on-ink);
+--secondary:var(--v-beige);--secondary-foreground:var(--v-text);
+--accent:var(--v-pink);--accent-foreground:var(--v-text);
+--muted:var(--v-beige-2);--muted-foreground:var(--v-text-2);
+--border:var(--v-border);--input:var(--v-beige);--ring:var(--v-brand);
+--destructive:var(--v-danger);--destructive-foreground:#fff;
+--chart-1:var(--v-yellow);--chart-2:var(--v-pink);--chart-3:var(--v-olive);--chart-4:var(--v-blue);--chart-5:var(--v-ink);
+--sidebar:var(--v-structure);--sidebar-foreground:var(--on-structure);--sidebar-muted:#8B8474;--sidebar-primary:var(--v-pink);
+/* categories (decision) */
+--cat-work:var(--v-blue);--cat-automations:var(--v-yellow);--cat-memory:var(--v-olive);--cat-library:var(--v-pink);--cat-ai-apps:var(--v-blue);--cat-free-models:var(--v-olive);--cat-settings:var(--v-beige);--cat-needs-you:var(--v-pink);--cat-runs:var(--v-yellow);
+/* status words — always paired with text/icon */
+--status-ok:var(--v-olive);--status-warn:var(--v-yellow);--status-danger:var(--v-danger);--status-info:var(--v-blue);--status-pending:var(--v-ink-soft);--status-off:var(--v-text-3);
+/* type */
+--font-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+--font-text:"DM Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+--font-mono:ui-monospace,"SF Mono",Menlo,monospace;/* terminal only */
+--fs-hero:72px;--fs-display:44px;--fs-section:26px;--fs-title:21px;--fs-lead:17px;--fs-body:15px;--fs-control:14px;--fs-meta:12px;--fs-caps:11px;
+--lh-hero:.95;/* @kind other */
+--lh-display:1.05;/* @kind other */
+--lh-title:1.2;/* @kind other */
+--lh-body:1.45;/* @kind other */
+--lh-control:1.2;/* @kind other */
+--fw-display:500;/* @kind other */
+--fw-title:600;/* @kind other */
+--fw-body:400;/* @kind other */
+--fw-control:500;/* @kind other */
+--fw-value:700;/* @kind other */
+--ls-display:-.015em;/* @kind other */
+--ls-hero:-.03em;/* @kind other */
+--ls-caps:.06em;/* @kind other */
+/* space (4-grid) [I] */
+--s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:20px;--s-6:24px;--s-8:32px;--s-10:40px;--s-12:48px;--s-16:64px;
+/* layout [M] I15 → 1440 */
+--shell-inset:28px;--sidebar-w:212px;--sidebar-w-mini:76px;--sidebar-gap:52px;--rail-w:360px;--rail-gap:40px;--topbar-h:44px;--content-max:1440px;
+--card-pad:24px;--card-gap:16px;--row-pad:12px 16px;--item-h:64px;--content-offset:16px;--agenda-slot:80px;
+/* radius [M/I] */
+--r-xs:4px;--r-sm:8px;--r-md:12px;--r-card-sm:16px;--r-card:20px;--r-panel:24px;--r-sheet:28px;--r-frame:40px;--r-pill:999px;
+/* dimensions [M/O] */
+--disk-sm:32px;
+--disk-md:40px;
+--disk-lg:48px;
+--icon-sm:16px;
+--icon-md:20px;
+--icon-lg:24px;
+--icon-stroke:1.6;/* @kind other */
+--ctl-sm:32px;
+--ctl-md:40px;
+--ctl-lg:48px;
+--utility:44px;
+--utility-overlap:-4px;/* @kind other */
+--dock-h:72px;--dock-action:56px;--dock-shoulder:24px;--assist-close:48px;--hex:24px;--edit-badge:36px;
+--track-h:10px;--track-h-lg:14px;--track-h-sm:6px;--table-row:72px;--table-head:44px;--nav-row:40px;--date-col:44px;
+--hit-min:44px;
+/* borders [I] */
+--bw-hair:1px;
+--bw-featured:1.5px;
+--bw-dash:1px dashed var(--v-text-2);/* @kind other */
+/* elevation — app surfaces are flat; only floating layers get a shadow [I] */
+--shadow-none:none;--shadow-float:0 12px 32px -12px rgba(17,17,17,.18);--shadow-lift:0 1px 0 rgba(17,17,17,.06);
+/* z [I] */
+--z-base:0;/* @kind other */
+--z-sticky:10;/* @kind other */
+--z-dock:20;/* @kind other */
+--z-sheet:30;/* @kind other */
+--z-assist:35;/* @kind other */
+--z-dialog:40;/* @kind other */
+--z-popover:45;/* @kind other */
+--z-toast:50;/* @kind other */
+--z-tooltip:60;/* @kind other */
+/* motion [I] — decision: alive but unobtrusive */
+--t-micro:120ms;/* @kind other */
+--t-element:200ms;/* @kind other */
+--t-max:300ms;/* @kind other */
+--t-draw:600ms;/* @kind other */
+--t-count:700ms;/* @kind other */
+--breath:6s;/* @kind other */
+--enter:cubic-bezier(.2,.8,.2,1);/* @kind other */
+--exit:cubic-bezier(.4,0,1,1);/* @kind other */
+/* ---- component parameters ----
+   Per-instance knobs that components re-point on their own selectors (a hue for an accordion row, the fill a
+   motion body paints, a skeleton's face). Registered here with their defaults so every declaration below is a
+   known parameter, not an unregistered token. */
+--pulse:34px;/* @kind spacing */
+--pulse-c:var(--v-pink);/* @kind color */
+--c:var(--v-beige);/* @kind color */
+--hue:var(--v-pink);/* @kind color */
+--hue-deep:var(--v-pink-deep);/* @kind color */
+--hue-ink:var(--v-text);/* @kind color */
+--wm-m:none;/* @kind other */
+--wm:var(--v-beige-2);/* @kind color */
+--skel:var(--v-skel-face);/* @kind color */
+--sw:var(--v-pink);/* @kind color */
+--dot:var(--v-border);/* @kind color */
+--disk-bg:var(--v-beige);/* @kind color */
+--mfill:transparent;/* @kind color */
+--mstroke:transparent;/* @kind color */
+--glide-bg:#1A1714;/* @kind color */ /* the travelling lozenge is dark in BOTH themes so its cream label always reads */
+--glide-fg:#F6EFE2;/* @kind color */
+--v-on-accent:#111111;/* @kind color */ /* ink on pink / yellow / olive / blue, both modes */
+/* ---- fixed inks [I] — values that the component sheets painted as raw hex and that do NOT follow the mode switch (the visual is unchanged by tokenising them) ---- */
+--ink-fixed:#111111;/* @kind color */ /* structure fills / borders that stay ink in dark mode */
+--cream-fixed:#F6EFE2;/* @kind color */ /* cream label on the ink rail, both modes */
+--mask-ink:#000000;/* @kind color */ /* opaque paint inside mask-image gradients — only its alpha matters */
+--unavail-ink:#6E6A63;/* @kind color */ /* "unavailable" and disabled date-strip ink */
+--alert-ink:#3E3A34;/* @kind color */ /* alert body text and kicker */
+--btn-disabled-ink:#4A453D;/* @kind color */ /* disabled button label */
+--nav-group-ink:#8E8674;/* @kind color */ /* catalog rail group label */
+--muted-foreground-ink:#2E2A24;/* @kind color */ /* muted text on ink-adjacent surfaces (notch, feature media, selected item) */
+--muted-foreground-tinted:#4A443C;/* @kind color */ /* muted text on soft tints and cream cards */
+/* ---- legacy kit values [I] — referenced only by legacy-aliases.css for consumers still on the retired names ---- */
+--danger-deep:#E9A79F;/* @kind color */ /* the danger alert's deep tint */
+--legacy-on-brand:#FDF6F9;/* @kind color */--legacy-accent-5:#E29A6A;/* @kind color */--legacy-success:#5C8C34;/* @kind color */--legacy-warning:#B9831C;/* @kind color */--legacy-info:#3F79B4;/* @kind color */--legacy-danger-fill:#A8402A;/* @kind color */--legacy-success-fill:#3F6B22;/* @kind color */
+--rail-sel:rgba(251,244,230,.1);/* @kind color */
+--rail-hover:rgba(251,244,230,.055);/* @kind color */
+/* ---- the travelling selection: per-character timing [I] — the per-character timing IS the feature; js/flow.js reads these too ---- */
+--t-flow-glide:.24s;/* @kind other */--t-flow-glide-h:.24s;/* @kind other */--t-flow-glide-land:.36s;/* @kind other */
+--t-flow-stretch:.3s;/* @kind other */--t-flow-stretch-p1:.16s;/* @kind other */
+--t-flow-jelly:.5s;/* @kind other */--t-flow-jelly-h:.44s;/* @kind other */--t-flow-jelly-hover:.3s;/* @kind other */--t-flow-jelly-land:.52s;/* @kind other */
+--t-flow-comet:.34s;/* @kind other */--t-flow-comet-h:.3s;/* @kind other */--t-flow-comet-trail:.72s;/* @kind other */--t-flow-comet-trail-h:.6s;/* @kind other */
+--t-flow-drop:.3s;/* @kind other */--t-flow-drop-gather:.14s;/* @kind other */--t-flow-drop-shoot:.18s;/* @kind other */--t-flow-drop-land:.3s;/* @kind other */
+--t-flow-rubber:.36s;/* @kind other */--t-flow-rubber-lead:.2s;/* @kind other */
+--t-flow-pebble:.46s;/* @kind other */--t-flow-pebble-h:.4s;/* @kind other */--t-flow-pebble-land:.5s;/* @kind other */
+--t-flow-ripple:.36s;/* @kind other */--t-flow-ripple-h:.3s;/* @kind other */--t-flow-ripple-ring:.6s;/* @kind other */--t-flow-ripple-delay:.18s;/* @kind other */
+--t-flow-halo:.4s;/* @kind other */--t-flow-halo-h:.34s;/* @kind other */--t-flow-halo-glow:.7s;/* @kind other */
+--t-flow-hover:.22s;/* @kind other */--t-flow-radius:.3s;/* @kind other */--t-flow-radius-sm:.2s;/* @kind other */--t-flow-fade:.18s;/* @kind other */--t-flow-fade-sm:.16s;/* @kind other */
+--t-flow-label:.2s;/* @kind other */--t-flow-label-delay:.1s;/* @kind other */--t-flow-still:60ms;/* @kind other */--t-flow-land-hold:900ms;/* @kind other */
+--t-skel:1.4s;/* @kind other */--t-skel-sheen:2.4s;/* @kind other */--t-pulse:2.1s;/* @kind other */
+--e-flow-glide:cubic-bezier(.2,.8,.2,1);/* @kind other */--e-flow-stretch:cubic-bezier(.3,1.15,.4,1);/* @kind other */--e-flow-stretch-p1:cubic-bezier(.4,0,.2,1);/* @kind other */
+--e-flow-jelly:cubic-bezier(.3,1.3,.45,1);/* @kind other */--e-flow-jelly-hover:cubic-bezier(.3,1.25,.45,1);/* @kind other */--e-flow-comet:cubic-bezier(.2,.8,.2,1);/* @kind other */--e-flow-comet-trail:cubic-bezier(.2,.7,.15,1);/* @kind other */
+--e-flow-drop:cubic-bezier(.3,1.25,.4,1);/* @kind other */--e-flow-drop-gather:cubic-bezier(.4,0,.6,1);/* @kind other */--e-flow-drop-shoot:cubic-bezier(.3,0,.2,1);/* @kind other */
+--e-flow-rubber:cubic-bezier(.3,1.3,.4,1);/* @kind other */--e-flow-rubber-lead:cubic-bezier(.2,.9,.3,1);/* @kind other */--e-flow-pebble:cubic-bezier(.32,1.25,.42,1);/* @kind other */
+--e-flow-ripple:cubic-bezier(.2,.8,.2,1);/* @kind other */--e-flow-halo:cubic-bezier(.3,1.2,.4,1);/* @kind other */--e-flow-settle:cubic-bezier(.2,.7,.2,1);/* @kind other */
+/* ---- ui.js timings [I] ---- */
+--t-tooltip:220ms;/* @kind other */--t-hovercard:300ms;/* @kind other */--t-toast:5000ms;/* @kind other */--t-focus-settle:120ms;/* @kind other */
+}
+/* dark — derived extension, no source evidence */
+:root[data-mode="dark"]{--glide-bg:#0C0B0A;--v-accent-ink:#EDA9C8;--v-skel-face:#4A4238;--v-skel-sheen:#5C5346;--v-skel-edge:#7A7263;--v-disabled-ink:#A79E90;--v-disabled-face:#242019;--v-disabled-edge:#7E7565;--v-danger-ink:#F0A99C;--v-structure:#0C0B0A;--on-structure:#F6EFE2;--structure-quiet:rgba(246,239,226,.08);--structure-line:rgba(246,239,226,.14);--structure-text:#DED6C6;
+/* dark semantic surfaces: the same identity hues as warm washes over the dark canvas, so a tinted region
+   keeps its meaning and its text contrast instead of staying light while the ink flips (measured 11–14:1) */
+--surface-quiet:#201D19;--surface-work:#1B1F26;--surface-automation:#241F14;--surface-memory:#1D2118;
+--surface-library:#241A1F;--surface-ai:#1A1F26;--surface-alert:#251A17;
+--sel-bg:#3A2430;--sel-edge:#C2739B;--sel-ink:#F6EFE2;
+--status-ok-bg:#1E2617;--status-ok-ink:#C3D69B;--status-warn-bg:#2A2312;--status-warn-ink:#E8CE86;
+--status-danger-bg:#2C1A16;--status-danger-ink:#F0AFA3;--status-info-bg:#182130;--status-info-ink:#AEC5E6;
+--status-pending-bg:#242019;--status-pending-ink:#CFC7B8;
+--switch-knob:#F6EFE2;--switch-knob-on:#171512;color-scheme:dark;
+--v-canvas:#171512;--v-beige:#221F1B;--v-beige-2:#2A2621;--v-cream-pill:#2F2B25;--v-ink:#FBF4E6;--v-ink-soft:#E4DCCB;--v-on-ink:#111111;
+--v-text:#F6EFE2;--v-text-2:#B5AC9E;--v-text-3:#6E675E;--v-border:#3A352E;--v-scrim:rgba(0,0,0,.62);--v-disabled-fill:#3A352E;
+--sidebar:var(--v-structure);--shadow-float:0 12px 32px -12px rgba(0,0,0,.6)}
+@media (prefers-reduced-motion:reduce){:root{
+--t-micro:0ms;/* @kind other */
+--t-element:0ms;/* @kind other */
+--t-max:0ms;/* @kind other */
+--t-draw:0ms;/* @kind other */
+--t-count:0ms;/* @kind other */
+}}
+
+/* Review appearance defaults — keep first paint consistent with AppearanceProvider. */
+:root{
+--v-canvas:#F8F6F1;
+--v-paper:#FFFFFF;
+--v-beige:#EEE9E1;
+--v-beige-2:#f3efe8;
+--v-cream-pill:#FFFFFF;
+--v-text:#26282d;
+--v-text-2:#464951;
+--v-text-3:#52565e;
+--v-ink:#26282d;
+--v-ink-soft:#464951;
+--v-on-ink:#F8F6F1;
+--v-border:#b4b0ab;
+--v-edge:#706e6d;
+--v-on-accent:#14171B;
+--v-brand:#845c73;
+--v-accent-ink:#704f63;
+--v-olive-ink:#525d3d;
+--v-disabled-face:#EEE9E1;
+--v-disabled-ink:#52565e;
+--v-disabled-edge:#706e6d;
+--v-disabled-fill:#EEE9E1;
+--btn-disabled-ink:#52565e;
+--unavail-ink:#52565e;
+--alert-ink:#464951;
+--nav-group-ink:#52565e;
+--v-skel-face:#EEE9E1;
+--v-skel-sheen:#FFFFFF;
+--v-skel-edge:#b4b0ab;
+--sel-bg:#fbe9f3;
+--sel-ink:#26282d;
+--sel-edge:#a87491;
+--switch-knob:#FFFFFF;
+--switch-knob-on:#14171B;
+--v-structure:#14171B;
+--on-structure:#F9FAFC;
+--structure-text:#E2E6ED;
+--structure-quiet:#242931;
+--structure-line:#565D68;
+--sidebar-muted:#B4BDCA;
+--surface-quiet:#FFFFFF;
+--surface-work:#f1f6fc;
+--surface-automation:#fdf9ec;
+--surface-memory:#f4f6ed;
+--surface-library:#fdf3f8;
+--surface-ai:#f1f6fc;
+--surface-alert:#fcf0ee;
+--v-danger:#D7473C;
+--v-danger-fill:#B92D28;
+--v-danger-ink:#b2433b;
+--v-danger-soft:#fae7e6;
+--v-scrim:rgba(19,24,32,.46);
+--glide-bg:#14171B;
+--glide-fg:#F9FAFC;
+--card:var(--v-paper);
+--popover:var(--v-paper);
+--accent-foreground:var(--v-on-accent);
+--destructive:var(--v-danger-fill);
+--v-pink:#F0A4CC;
+--v-pink-deep:#d693b7;
+--v-pink-soft:#fbe9f3;
+--v-olive:#A8BC75;
+--v-olive-deep:#96a86a;
+--v-olive-soft:#eaefde;
+--v-blue:#95BAE8;
+--v-blue-deep:#86a6cf;
+--v-blue-soft:#e6eef9;
+--v-yellow:#F1D369;
+--v-yellow-deep:#d6bc60;
+--v-yellow-soft:#fcf4db;
+--status-ok-bg:#f4f6ed;
+--status-ok-ink:#555f3f;
+--status-warn-bg:#fdf9ec;
+--status-warn-ink:#695d33;
+--status-danger-bg:#fae7e6;
+--status-danger-ink:#96342d;
+--status-info-bg:#f1f6fc;
+--status-info-ink:#4b5d74;
+--status-pending-bg:#e7e7e8;
+--status-pending-ink:#464951;
+}
+:root[data-mode="dark"]{
+--v-canvas:#15171A;
+--v-paper:#20242A;
+--v-beige:#292F37;
+--v-beige-2:#20242a;
+--v-cream-pill:#20242A;
+--v-text:#f3f4f4;
+--v-text-2:#bdc1c5;
+--v-text-3:#a9aeb4;
+--v-ink:#f3f4f4;
+--v-ink-soft:#bdc1c5;
+--v-on-ink:#15171A;
+--v-border:#4e5359;
+--v-edge:#8c9094;
+--v-on-accent:#14171B;
+--v-brand:#F0A4CC;
+--v-accent-ink:#F0A4CC;
+--v-olive-ink:#A8BC75;
+--v-disabled-face:#292F37;
+--v-disabled-ink:#a9aeb4;
+--v-disabled-edge:#8c9094;
+--v-disabled-fill:#292F37;
+--btn-disabled-ink:#a9aeb4;
+--unavail-ink:#a9aeb4;
+--alert-ink:#bdc1c5;
+--nav-group-ink:#a9aeb4;
+--v-skel-face:#292F37;
+--v-skel-sheen:#20242A;
+--v-skel-edge:#4e5359;
+--sel-bg:#433a46;
+--sel-ink:#f3f4f4;
+--sel-edge:#F0A4CC;
+--switch-knob:#20242A;
+--switch-knob-on:#14171B;
+--v-structure:#14171B;
+--on-structure:#F9FAFC;
+--structure-text:#E2E6ED;
+--structure-quiet:#242931;
+--structure-line:#565D68;
+--sidebar-muted:#B4BDCA;
+--surface-quiet:#20242A;
+--surface-work:#2e3641;
+--surface-automation:#393932;
+--surface-memory:#303633;
+--surface-library:#39333d;
+--surface-ai:#2e3641;
+--surface-alert:#383034;
+--v-danger:#D7473C;
+--v-danger-fill:#B92D28;
+--v-danger-ink:#e3786f;
+--v-danger-soft:#36282c;
+--v-scrim:rgba(0,0,0,.66);
+--glide-bg:#14171B;
+--glide-fg:#F9FAFC;
+--card:var(--v-paper);
+--popover:var(--v-paper);
+--accent-foreground:var(--v-on-accent);
+--destructive:var(--v-danger-fill);
+--v-pink:#F0A4CC;
+--v-pink-deep:#d693b7;
+--v-pink-soft:#3f3742;
+--v-olive:#A8BC75;
+--v-olive-deep:#96a86a;
+--v-olive-soft:#343b35;
+--v-blue:#95BAE8;
+--v-blue-deep:#86a6cf;
+--v-blue-soft:#323b47;
+--v-yellow:#F1D369;
+--v-yellow-deep:#d6bc60;
+--v-yellow-soft:#3f3e33;
+--status-ok-bg:#303633;
+--status-ok-ink:#adc07c;
+--status-warn-bg:#393932;
+--status-warn-ink:#F1D369;
+--status-danger-bg:#36282c;
+--status-danger-ink:#e99891;
+--status-info-bg:#2e3641;
+--status-info-ink:#97bce9;
+--status-pending-bg:#33373d;
+--status-pending-ink:#bdc1c5;
+}

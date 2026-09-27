@@ -1,0 +1,20 @@
+@layer cojeev-states {
+/* Orthogonal authored class modifiers remain composable with CVA axes. */
+.v-stat[data-slot].-ul{padding-bottom:8px;border-bottom:2px solid var(--wm,var(--v-text))}
+.v-label[data-slot].-sm{font-size:13px}
+
+/* Authored contextual and pseudo-element rules, scoped to component-owned roots. */
+.v-stats[data-slot]+.v-bars{margin-top:22px}
+.v-stats[data-slot]+.v-line{margin-top:22px}
+.v-stat[data-slot] span{white-space:normal}
+.v-stat[data-slot] b{font-size:var(--fs-body);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.v-stat[data-slot] b .u{font-weight:400;margin-left:3px}
+.v-stat[data-slot] span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground)}
+.v-stat[data-slot] b{font-size:16px}
+.v-stat[data-slot].-ul.-dashed{border-bottom-style:dashed}
+@media (max-width:640px){.v-stats[data-slot]{gap:var(--s-4)}}
+.v-label[data-slot]{box-shadow:none;border:0}
+.v-stat[data-slot]{box-shadow:none;border:0}
+.v-stats[data-slot]{box-shadow:none;border:0}
+
+}

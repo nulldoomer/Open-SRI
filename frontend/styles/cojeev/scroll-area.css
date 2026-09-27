@@ -1,0 +1,186 @@
+@layer cojeev-states {
+/* Native overflow keeps its own scroll semantics while sharing the app's slim,
+   theme-aware fallback. Managed controls below replace only the visible thumb. */
+html[data-scrollbar-policy="cojeev"] {
+  --cojeev-scrollbar-size: 4px;
+  --cojeev-scrollbar-color: var(--v-text-2);
+}
+:where(html[data-scrollbar-policy="cojeev"],html[data-scrollbar-policy="cojeev"] *) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cojeev-scrollbar-color,var(--v-text-2)) transparent;
+}
+:where(html[data-scrollbar-policy="cojeev"],html[data-scrollbar-policy="cojeev"] *)::-webkit-scrollbar {
+  width: var(--cojeev-scrollbar-size,6px);
+  height: var(--cojeev-scrollbar-size,6px);
+}
+:where(html[data-scrollbar-policy="cojeev"],html[data-scrollbar-policy="cojeev"] *)::-webkit-scrollbar-track { background:transparent; }
+:where(html[data-scrollbar-policy="cojeev"],html[data-scrollbar-policy="cojeev"] *)::-webkit-scrollbar-thumb {
+  border-radius:999px;
+  background:var(--cojeev-scrollbar-color,var(--v-text-2));
+}
+:where(html[data-scrollbar-policy="cojeev"],html[data-scrollbar-policy="cojeev"] *)::-webkit-scrollbar-thumb:hover {
+  background:color-mix(in oklab,var(--cojeev-scrollbar-color,var(--v-text-2)) 76%,var(--v-brand));
+}
+
+/* The Radix viewport owns scroll. The thumb's SVG is decorative geometry only. */
+[data-slot="scroll-area"].v-scroll {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-height: var(--h, 240px);
+  padding: 6px 6px 6px 18px;
+  border-radius: var(--r-card-sm, 20px);
+  background: var(--v-canvas);
+  color: var(--v-text);
+  box-shadow: inset 0 0 0 1px var(--v-border);
+}
+[data-slot="scroll-area"].-ink { background: var(--v-ink); color: var(--v-on-ink); }
+[data-slot="scroll-area"].-plain { min-width:0; max-width:100%; padding:0; background:transparent; color:inherit; box-shadow:none; border-radius:inherit; }
+/* Leave room for control paint so decorative SVG overhang cannot invent a
+   tiny scroll range (and an almost full-height thumb) when content fits. */
+[data-slot="scroll-area"].-plain > [data-slot="scroll-area-viewport"] { height:auto; max-height:var(--h,320px); padding:8px 24px 12px 8px; }
+[data-slot="scroll-area"].-plain > [data-slot="scroll-area-viewport"] > div { table-layout:fixed; width:100%; }
+.v-list-scroll { --h:min(320px,60dvh); }
+[data-slot="scroll-area-viewport"] {
+  width: 100%;
+  height: 100%;
+  max-height: calc(var(--h, 240px) - 12px);
+  border-radius: inherit;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding-right: 24px;
+}
+[data-slot="scroll-area-viewport"]::-webkit-scrollbar { display:none; width:0; height:0; }
+[data-slot="scroll-area-viewport"]:focus-visible {
+  outline: 2px solid var(--v-brand);
+  outline-offset: -3px;
+}
+[data-slot="scroll-area-viewport"] > div > :is(p,.v-body) {
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid color-mix(in oklab,var(--v-border) 70%,transparent);
+  font-size: var(--fs-body, 14px);
+  line-height: 1.6;
+}
+[data-slot="scroll-area-viewport"] > div > :is(p,.v-body):last-child { border-bottom: 0; }
+[data-slot="scroll-area"].-ink [data-slot="scroll-area-viewport"] > div > :is(p,.v-body) {
+  border-bottom-color: color-mix(in oklab,var(--v-on-ink) 14%,transparent);
+}
+[data-slot="scroll-area-scrollbar"] {
+  display: flex;
+  --scrollbar-size: 6px;
+  padding: 0 calc((24px - var(--scrollbar-size)) / 2);
+  touch-action: none;
+  user-select: none;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color 160ms ease;
+  z-index: 2;
+}
+[data-slot="scroll-area-scrollbar"][data-orientation="vertical"] { width: 24px; }
+[data-slot="scroll-area-scrollbar"][data-orientation="horizontal"] { height: 24px; padding: calc((24px - var(--scrollbar-size)) / 2) 0; flex-direction: column; }
+[data-slot="scroll-area-scrollbar"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc((24px - var(--scrollbar-size)) / 2);
+  border-radius: inherit;
+  pointer-events: none;
+}
+[data-slot="scroll-area-scrollbar"][data-orientation="horizontal"]::before {
+  inset: calc((24px - var(--scrollbar-size)) / 2) 0;
+}
+[data-slot="scroll-area-scrollbar"]:hover::before,
+[data-slot="scroll-area-scrollbar"][data-dragging="true"]::before {
+  background: color-mix(in oklab,var(--scrollbar-color,var(--v-pink)) 24%,transparent);
+}
+[data-slot="scroll-area-thumb"] {
+  position: relative;
+  flex: 1;
+  /* Match Radix's 18px geometry floor; a larger CSS minimum breaks its travel. */
+  min-height: 18px;
+  background: transparent;
+  color: var(--scrollbar-color,var(--v-text-2));
+}
+[data-slot="scroll-area-thumb"]::before { content: ""; position: absolute; inset: -4px; }
+[data-slot="scroll-area-scrollbar"][data-orientation="horizontal"] [data-slot="scroll-area-thumb"] { min-width: 18px; min-height: 0; }
+.v-scroll__contour { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; fill: currentColor; }
+[data-slot="scroll-area-scrollbar"]:hover [data-slot="scroll-area-thumb"],
+[data-slot="scroll-area-scrollbar"][data-scrolling="true"] [data-slot="scroll-area-thumb"] { color: var(--scrollbar-color,var(--v-pink-deep)); }
+[data-slot="scroll-area-scrollbar"][data-dragging="true"] [data-slot="scroll-area-thumb"] { color: var(--scrollbar-color,var(--v-pink)); }
+[data-slot="scroll-area"].-ink [data-slot="scroll-area-thumb"] { color: var(--scrollbar-color,color-mix(in oklab,var(--v-on-ink) 65%,transparent)); }
+[data-slot="scroll-area-scrollbar"][data-scrollbar-variant="rounded"] [data-slot="scroll-area-thumb"]::after,
+[data-slot="scroll-area-scrollbar"][data-scrollbar-variant="minimal"] [data-slot="scroll-area-thumb"]::after { content:""; position:absolute; inset:0; border-radius:999px; background:currentColor; }
+[data-slot="scroll-area-scrollbar"][data-scrollbar-variant="minimal"] [data-slot="scroll-area-thumb"]::after { opacity:.72; }
+[data-slot="scroll-area-scrollbar"][data-scrollbar-variant="minimal"] [data-slot="scroll-area-thumb"]::after { border-radius:0; }
+:root[data-mode="dark"] [data-slot="scroll-area"].-ink { background: var(--v-canvas); color: var(--v-text); }
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="scroll-area-scrollbar"] { transition: none; }
+  [data-slot="scroll-area-viewport"] { scroll-behavior: auto; }
+}
+[data-slot="scroll-area-scrollbar"][data-motion="off"] { transition: none; }
+
+/* Document scrolling stays native; the mounted attribute exists only while the overlay
+   owns the paint, and the pending attribute only inside the head bootstrap's bounded
+   window. The effect that writes "mounted" cannot run before hydration, so the pending
+   marker is what keeps the native bar from painting and then being swapped. Neither
+   attribute exists without scripting, and the bootstrap drops the pending one after its
+   timeout, so a bundle that never arrives leaves the native scrollbar in place. */
+html[data-page-scrollbar="mounted"],
+html[data-page-scrollbar-pending],
+html[data-page-scrollbar="mounted"] body,
+html[data-page-scrollbar-pending] body { scrollbar-width: none; }
+html[data-page-scrollbar="mounted"]::-webkit-scrollbar,
+html[data-page-scrollbar-pending]::-webkit-scrollbar,
+html[data-page-scrollbar="mounted"] body::-webkit-scrollbar,
+html[data-page-scrollbar-pending] body::-webkit-scrollbar { width: 0; height: 0; }
+.v-page-scrollbar {
+  position: fixed;
+  right: 2px;
+  top: var(--page-scrollbar-top,80px);
+  bottom: 16px;
+  width: 24px;
+  border-radius: 999px;
+  z-index: 50;
+  touch-action: none;
+  user-select: none;
+  --scrollbar-size: 6px;
+  color: var(--scrollbar-color,var(--v-text-2));
+  background: transparent;
+  transition: background-color 160ms ease;
+}
+.v-page-scrollbar[data-overflow="false"] { visibility: hidden; pointer-events: none; }
+.v-page-scrollbar:hover,
+.v-page-scrollbar[data-scrolling="true"] { color: var(--scrollbar-color,var(--v-pink-deep)); }
+.v-page-scrollbar[data-dragging="true"] { color: var(--scrollbar-color,var(--v-pink)); }
+.v-page-scrollbar:focus-visible { outline: 2px solid var(--v-brand); outline-offset: -1px; }
+[data-slot="page-scrollbar-thumb"] { position: absolute; left:calc((24px - var(--scrollbar-size)) / 2); right:calc((24px - var(--scrollbar-size)) / 2); top:0; min-height: 0; }
+[data-slot="page-scrollbar-thumb"] svg { display: block; width: 100%; height: 100%; fill: currentColor; pointer-events: none; }
+.v-page-scrollbar[data-scrollbar-variant="rounded"] [data-slot="page-scrollbar-thumb"]::after,
+.v-page-scrollbar[data-scrollbar-variant="minimal"] [data-slot="page-scrollbar-thumb"]::after { content:""; position:absolute; inset:0; border-radius:999px; background:currentColor; }
+.v-page-scrollbar[data-scrollbar-variant="minimal"] [data-slot="page-scrollbar-thumb"]::after { opacity:.72; }
+.v-page-scrollbar[data-scrollbar-variant="minimal"] [data-slot="page-scrollbar-thumb"]::after { border-radius:0; }
+.v-page-scrollbar[data-motion="off"] { transition: none; }
+@media (pointer: coarse) { .v-page-scrollbar { right: 0; width: 24px; } }
+@media (prefers-reduced-motion: reduce) { .v-page-scrollbar { transition: none; } }
+
+/* A fixed-size grip stays readable even when the proportional thumb is long. */
+.v-scroll__grip { position:absolute; left:50%; top:50%; translate:-50% -50%; display:flex; flex-direction:column; gap:3px; color:var(--v-canvas); pointer-events:none; }
+.v-scroll__grip i { display:block; width:min(3px,var(--scrollbar-size,6px)); height:min(3px,var(--scrollbar-size,6px)); border-radius:50%; background:currentColor; }
+[data-orientation="horizontal"] .v-scroll__grip { flex-direction:row; }
+[data-dragging="true"] .v-scroll__grip { color:var(--ink-fixed); }
+.v-page-scrollbar::before { content:""; position:absolute; top:4px; bottom:4px; left:50%; width:1px; background:var(--v-border); pointer-events:none; }
+[data-slot="page-scrollbar-thumb"]::before { content:""; position:absolute; inset:0 -3px; }
+
+.v-page-scrollbar[data-slot="element-scrollbar"] { position:absolute; top:4px; bottom:18px; inset-inline-end:1px; z-index:2; }
+.v-page-scrollbar[data-slot="element-scrollbar"]::before { display:none; }
+:root [data-element-scrollbar="mounted"] { scrollbar-width:none; }
+[data-element-scrollbar="mounted"]::-webkit-scrollbar { width:0; height:0; }
+:root [data-element-scrollbar="horizontal"] { scrollbar-width:auto; }
+[data-slot="element-scrollbar"][data-native-fallback] { visibility:hidden; pointer-events:none; }
+@media(forced-colors:active) {
+  :root [data-element-scrollbar="mounted"] { scrollbar-width:auto; }
+  [data-element-scrollbar="mounted"]::-webkit-scrollbar { width:auto; height:auto; }
+  [data-slot="element-scrollbar"] { display:none; }
+}
+
+}

@@ -1,0 +1,28 @@
+@layer cojeev-states {
+:root .v-btn.v-theme-toggle[data-slot][data-label] {
+  --mfill:var(--v-paper); --mstroke:var(--v-border);
+  gap:8px; height:44px; width:112px; min-width:112px; padding:0 14px; border-radius:999px;
+  background:var(--mfill); color:var(--v-text); box-shadow:inset 0 0 0 1px var(--v-border);
+}
+:root .v-btn.v-theme-toggle[data-slot][data-label]:is(:hover,:focus-visible) { --mfill:var(--v-beige); --mstroke:var(--v-text-2); }
+:root .v-btn.v-theme-toggle[data-slot][data-label]:has(>svg.v-morph) { background:transparent; box-shadow:none; }
+[data-slot="theme-toggle-icon"] { flex:none; overflow:visible; }
+.v-theme-toggle__label { color:inherit; font:500 13px/1 var(--font-text); }
+:root .v-btn.v-theme-toggle[data-slot][data-label="hidden"] { min-width:44px; width:44px; padding:0; }
+:root .v-btn.v-theme-toggle[data-slot][data-label]:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])) { --mfill:var(--v-disabled-face); --mstroke:var(--v-disabled-edge); color:var(--v-disabled-ink); }
+@media (max-width:640px) {
+  :root .v-btn.v-theme-toggle[data-slot][data-responsive="true"] { min-width:44px; width:44px; padding:0; }
+  .v-theme-toggle[data-responsive="true"] .v-theme-toggle__label { display:none; }
+}
+
+/* The destination DOM is clipped; Motion owns the changing organic contour. */
+:root[data-theme-reveal]::view-transition { pointer-events:none; }
+:root[data-theme-reveal]::view-transition-group(root) { animation:none; background-image:var(--v-theme-glyph,none); background-position:var(--v-theme-glyph-position,0 0); background-size:var(--v-theme-glyph-size,0 0); background-repeat:no-repeat; }
+:root[data-theme-reveal]::view-transition-image-pair(root) { isolation:isolate; }
+:root[data-theme-reveal]::view-transition-old(root),
+:root[data-theme-reveal]::view-transition-new(root) { mix-blend-mode:normal; opacity:1; mask-image:var(--v-theme-glyph-mask,none); mask-size:100% 100%; }
+:root[data-theme-reveal]::view-transition-old(root) { animation:none; z-index:1; }
+:root[data-theme-reveal]::view-transition-new(root) { animation:v-theme-retain 8s linear; clip-path:var(--v-theme-clip); z-index:2; }
+@keyframes v-theme-retain { from { opacity:1; } to { opacity:1; } }
+
+}

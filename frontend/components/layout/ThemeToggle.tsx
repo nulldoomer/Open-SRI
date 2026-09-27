@@ -1,42 +1,40 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Sun01Icon, Moon01Icon } from "@hugeicons/core-free-icons";
+import { useSyncExternalStore } from "react";
+import { ThemeToggle as Toggle, applyTheme, type ThemeMode } from "@/components/ui/theme-toggle";
 
 /*
-  ========= ThemeToggle component =========
-  - Provides a button to toggle between light and dark themes
-  - Uses next-themes for theme management
-  - Displays appropriate icon based on current theme
-  - Handles SSR hydration with mounted state
+  ========= ThemeToggle =========
+  - The inline script in app/layout.tsx sets <html data-mode> before paint.
+  - This reads that attribute, so the icon always matches the page.
+  - applyTheme() runs the Cojeev reveal; localStorage keeps the choice.
 */
-export default function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributeFilter: ["data-mode"] });
+  return () => observer.disconnect();
+}
 
-  /* eslint-disable react-hooks/set-state-in-effect */
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
+const readMode = (): ThemeMode =>
+  document.documentElement.dataset.mode === "dark" ? "dark" : "light";
+
+export default function ThemeToggle() {
+  const mode = useSyncExternalStore(subscribe, readMode, () => "light" as const);
 
   return (
-    <button
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label="Toggle theme"
-      className="text-muted-foreground hover:text-foreground transition-colors p-1.5 rounded-sm border border-border hover:border-foreground/30"
-    >
-      {mounted ? (
-        <HugeiconsIcon
-          icon={resolvedTheme === "dark" ? Sun01Icon : Moon01Icon}
-          size={16}
-          strokeWidth={1.5}
-        />
-      ) : (
-        <span className="w-4 h-4 block" />
-      )}
-    </button>
+    <Toggle
+      mode={mode}
+      showLabel={false}
+      aria-label="Modo oscuro"
+      title={mode === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+      onModeChange={(next) => {
+        applyTheme(next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch {
+          // Private windows can block storage; the mode still applies for this visit.
+        }
+      }}
+    />
   );
 }

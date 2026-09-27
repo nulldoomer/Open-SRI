@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored from the 000h (Cojeev) registry; kept as shipped so `shadcn add` updates apply cleanly.
+    "lib/cojeev/**",
+    "lib/cojeev-motion/**",
   ]),
 ]);
 

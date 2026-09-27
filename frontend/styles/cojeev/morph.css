@@ -1,0 +1,13 @@
+@layer cojeev-morph {
+[data-slot].v-morph-host { isolation: isolate; }
+[data-slot].v-morph-rel { position: relative; }
+[data-slot].v-morph-host > svg.v-morph { max-width: none; max-height: none; }
+[data-slot].v-morph-host > svg.v-morph, [data-slot].v-morph-host > svg.v-morph * { pointer-events: none; }
+[data-slot].v-morph-host > svg.v-morph > [data-morph-body]:not([data-morph-colors]) { fill: var(--mfill, transparent); }
+[data-slot].v-morph-host > svg.v-morph > [data-morph-body][stroke] { stroke: var(--mstroke, transparent); }
+[data-slot].v-morph-host[data-morph="stroke"] > svg.v-morph > [data-morph-body] { fill: none; }
+[data-slot].v-morph-host > svg.v-morph > [data-morph-echo] { fill: none; }
+[data-slot].v-morph-live[data-morph="stroke"], [data-slot].v-morph-live[data-morph="both"] { border-color: transparent; box-shadow: none; }
+[data-slot=badge].v-badge.-dashed.v-morph-live, [data-slot=badge].v-badge.-test.v-morph-live { border-color: transparent; }
+
+}

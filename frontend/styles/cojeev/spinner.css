@@ -1,0 +1,142 @@
+@layer cojeev-states {
+/* Motion owns the indicator's contour, rotation, and pulse. */
+.v-pulse[data-slot] {
+  flex-shrink: 0;
+}
+.v-pulse[data-slot] svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.v-pulse[data-slot] .seed {
+  fill: var(--pulse-c, var(--v-pink));
+}
+.v-pulse[data-slot] .core {
+  fill: var(--v-on-accent);
+}
+.v-pulse[data-slot]:has([data-slot="spinner-label"]) {
+  margin-bottom: 28px;
+}
+.v-pulse__label[data-slot] {
+  width: max-content;
+  max-width: min(32ch, 70vw);
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+.v-pulse__orbit {
+  fill: none;
+  stroke: var(--v-border);
+  stroke-width: 1.5;
+}
+.v-pulse__hub {
+  fill: var(--v-text);
+}
+.v-pulse__mark--0 {
+  fill: var(--pulse-c, var(--v-pink));
+}
+.v-pulse__mark--1 {
+  fill: var(--v-blue);
+}
+.v-pulse__mark--2 {
+  fill: var(--v-olive);
+}
+.v-loader-example {
+  min-width: 0;
+  width: 100%;
+  display: grid;
+  gap: 20px;
+}
+.v-loader-example__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  column-gap: 28px;
+  row-gap: 20px;
+  padding: 28px;
+  border: 1px solid var(--v-border);
+  border-radius: 28px 28px 8px 28px;
+  background: var(--v-paper);
+}
+.v-loader-example__index {
+  grid-column: 1/-1;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--v-text-2);
+}
+.v-loader-example__drawing {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  min-height: 120px;
+  position: relative;
+}
+.v-loader-example__drawing:before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 45% 55% 52% 48%;
+  background: color-mix(in srgb, var(--v-pink) 12%, transparent);
+}
+.v-loader-example[data-appearance="orbit"] .v-loader-example__drawing:before {
+  background: color-mix(in srgb, var(--v-blue) 12%, transparent);
+  border-radius: 50%;
+}
+.v-loader-example[data-appearance="relay"] .v-loader-example__drawing:before {
+  background: color-mix(in srgb, var(--v-olive) 12%, transparent);
+  border-radius: 24px 8px 24px 8px;
+}
+.v-loader-example__copy {
+  align-self: center;
+  min-width: 0;
+}
+.v-loader-example__copy h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.v-loader-example__copy p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--v-text-2);
+  line-height: 1.65;
+  max-width: 45ch;
+}
+.v-loader-example__status {
+  grid-column: 1/-1;
+  border-top: 1px solid var(--v-border);
+  padding-top: 14px;
+  font-size: 12px;
+  color: var(--v-text-2);
+}
+.v-loader-example__done[data-slot] {
+  --is: 36px;
+  color: var(--v-text);
+}
+.v-loader-example > .v-loading-example__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.v-loader-example > .v-loading-example__actions > [data-slot="button"] {
+  width: auto;
+  min-height: 44px;
+}
+@media (max-width: 600px) {
+  .v-loader-example__stage {
+    grid-template-columns: 1fr;
+    padding: 22px;
+    gap: 20px;
+  }
+  .v-loader-example__drawing {
+    justify-self: start;
+  }
+}
+
+}

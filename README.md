@@ -136,14 +136,35 @@ System.out.println("Estado:          " + result.authorizationResponse().status()
 
 ## Playground (web)
 
-Una UI interactiva donde puedes construir una factura desde el navegador, ver cada paso del pipeline
-animado en tiempo real, inspeccionar el XML generado (firmado y sin firmar) y ver la respuesta del SRI —
+Una UI interactiva donde puedes construir una factura desde el navegador, enviarla al entorno de pruebas
+del SRI con el SDK real y revisar el pipeline, las trazas de la ejecución y la respuesta del SRI —
 sin instalar nada.
 
-**Frontend:** Next.js 14 · Tailwind CSS · Shadcn/UI · Vercel  
+**Frontend:** Next.js 16 · Tailwind CSS · Shadcn/UI · Vercel  
 **Backend:** Spring Boot 4 · Spring WebFlux · Spring Security · Micrometer/OpenTelemetry · Railway
 
-> El Playground está en desarrollo activo. La integración con Redis y la conexión frontend–backend están en progreso.
+---
+
+## Arquitectura
+
+La carpeta [`docs/diagrams/`](docs/diagrams/README.md) tiene diagramas interactivos del proyecto, generados con
+[archify](https://github.com/tt-a1i/archify). Cada diagrama es un HTML autocontenido con tema claro/oscuro,
+zoom, vistas guiadas y exportación a PNG/SVG. GitHub muestra el código fuente de los `.html`, así que
+clona el repo y ábrelos en tu navegador.
+
+| Sección | Diagrama | Qué muestra |
+|---|---|---|
+| General | [Vista general del sistema](docs/diagrams/01-vista-general.html) | Navegador → Next.js → playground-service → SDK → SRI, más Redis y el release a Maven Central |
+| General | [Ejecución de una sesión del playground](docs/diagrams/02-flujo-playground.html) | Secuencia completa: POST, Redis, SDK, SOAP y stream SSE |
+| SDK | [Arquitectura hexagonal](docs/diagrams/03-sdk-arquitectura.html) | Builders y cliente → `OPENSRIApplication` → 4 puertos y sus adapters |
+| SDK | [Pipeline de envío](docs/diagrams/04-sdk-pipeline.html) | Documento → clave de acceso → XML → firma XAdES-BES → `RecepcionComprobantes` |
+| Playground | [Arquitectura interna](docs/diagrams/05-playground-arquitectura.html) | Controller, casos de uso, ejecutor del SDK, SSE, Redis y rate limit |
+| Playground | [Ciclo de vida de una sesión](docs/diagrams/06-playground-sesion.html) | PENDING → RUNNING → COMPLETED / FAILED y expiración por TTL |
+| Frontend | [Arquitectura Next.js](docs/diagrams/07-frontend-arquitectura.html) | Páginas, docs MDX, playground y los route handlers que hacen de proxy |
+| Frontend | [Flujo de `usePlaygroundSession`](docs/diagrams/08-frontend-hook-playground.html) | POST, EventSource, actualización del pipeline y manejo de fallas |
+
+Cada `.html` se genera a partir del `.json` que está a su lado. Edita el JSON y regenera el diagrama con archify
+(los pasos están en [`docs/diagrams/README.md`](docs/diagrams/README.md)).
 
 ---
 
@@ -153,7 +174,8 @@ sin instalar nada.
 Open-SRI/
 ├── sdk/sri-sdk-java/        # SDK Java — publicado en Maven Central
 ├── playground-service/      # Backend Spring Boot (WebFlux, Security, OTel)
-└── frontend/                # Frontend Next.js 14
+├── frontend/                # Frontend Next.js 16
+└── docs/diagrams/           # Diagramas de arquitectura (archify)
 ```
 
 ---

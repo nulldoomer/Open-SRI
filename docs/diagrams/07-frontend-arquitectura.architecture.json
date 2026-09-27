@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Frontend Next.js · Arquitectura",
+    "quality_profile": "showcase",
+    "views": [
+      {"id": "content", "label": "Sitio y docs", "focus": ["browser", "pages", "docs", "shiki"], "note": "Páginas estáticas y docs MDX con código resaltado en el servidor."},
+      {"id": "playground", "label": "Playground", "focus": ["browser", "playground", "hook", "apiPost", "apiSse", "backend"], "note": "El hook habla solo con /api/*; los route handlers reenvían al backend."}
+    ]
+  },
+  "components": [
+    {"id": "browser", "type": "external", "label": "Navegador", "sublabel": "usuario", "pos": [30, 300], "size": [120, 60]},
+    {"id": "pages", "type": "frontend", "label": "Páginas", "sublabel": "/ · /sdk · /about", "pos": [240, 90], "size": [150, 60]},
+    {"id": "docs", "type": "frontend", "label": "Docs MDX", "sublabel": "/doc/* · LanguageProvider", "pos": [240, 250], "size": [160, 60]},
+    {"id": "shiki", "type": "backend", "label": "Shiki", "sublabel": "lib/shiki.ts · RSC", "pos": [480, 250], "size": [140, 60]},
+    {"id": "playground", "type": "frontend", "label": "/playground", "sublabel": "InvoiceForm · zod", "pos": [240, 440], "size": [150, 60]},
+    {"id": "hook", "type": "frontend", "label": "usePlaygroundSession", "sublabel": "fetch + EventSource", "pos": [480, 440], "size": [170, 60]},
+    {"id": "apiPost", "type": "backend", "label": "POST /api/sessions", "sublabel": "route handler", "pos": [720, 360], "size": [170, 60]},
+    {"id": "apiSse", "type": "backend", "label": "GET …/[id]/events", "sublabel": "route handler · SSE", "pos": [720, 520], "size": [170, 60]},
+    {"id": "backend", "type": "external", "label": "playground-service", "sublabel": "Railway", "pos": [1010, 440], "size": [150, 60]}
+  ],
+  "boundaries": [
+    {"kind": "region", "label": "frontend/ · Next.js 16 App Router", "wraps": ["pages", "docs", "shiki", "playground", "hook", "apiPost", "apiSse"], "pad": 20}
+  ],
+  "connections": [
+    {"id": "b-pages", "from": "browser", "to": "pages"},
+    {"id": "b-docs", "from": "browser", "to": "docs"},
+    {"id": "b-play", "from": "browser", "to": "playground", "variant": "emphasis"},
+    {"id": "d-shiki", "from": "docs", "to": "shiki", "label": "highlight()"},
+    {"id": "p-hook", "from": "playground", "to": "hook", "label": "runSession()", "variant": "emphasis"},
+    {"id": "h-post", "from": "hook", "to": "apiPost", "label": "fetch", "variant": "emphasis"},
+    {"id": "h-sse", "from": "hook", "to": "apiSse", "label": "EventSource", "variant": "dashed"},
+    {"id": "post-be", "from": "apiPost", "to": "backend", "label": "POST /sessions", "variant": "emphasis"},
+    {"id": "sse-be", "from": "apiSse", "to": "backend", "label": "stream SSE", "variant": "dashed"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Docs", "items": ["MDX + remark-gfm; pestañas Java / C# / Go", "Código resaltado en el servidor con Shiki"]},
+    {"dot": "emerald", "title": "Playground", "items": ["react-hook-form + zod validan la factura", "Paneles cargados con next/dynamic (ssr: false)"]},
+    {"dot": "amber", "title": "Proxy /api", "items": ["PLAYGROUND_BACKEND_URL vive solo en el servidor", "Fallo de red → 503; respuesta no JSON → 502"]}
+  ]
+}

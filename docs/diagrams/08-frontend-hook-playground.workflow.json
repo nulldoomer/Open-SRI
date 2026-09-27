@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Frontend · Flujo de usePlaygroundSession",
+    "quality_profile": "showcase",
+    "views": [
+      {"id": "happy", "label": "Camino feliz", "focus": ["submit", "reset", "post", "es", "msg", "done", "result"], "note": "Del submit del formulario a la respuesta del SRI en pantalla."},
+      {"id": "live", "label": "Actualización en vivo", "focus": ["msg", "live", "done"], "note": "Cada snapshot SSE agrega solo los logs nuevos y avanza el pipeline."},
+      {"id": "errors", "label": "Fallas", "focus": ["post", "es", "fail"], "note": "Un POST fallido o un error del stream terminan la sesión como FAILED."}
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "React (cliente)"
+        },
+        "backend": {
+          "label": "llamada HTTP"
+        },
+        "messagebus": {
+          "label": "stream SSE"
+        },
+        "security": {
+          "label": "falla"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {"id": "ui", "label": "Componentes"},
+    {"id": "hook", "label": "usePlaygroundSession"},
+    {"id": "errors", "label": "Fallas", "variant": "exception"}
+  ],
+  "mainPath": ["submit", "reset", "post", "es", "msg", "done", "result"],
+  "nodes": [
+    {"id": "submit", "lane": "ui", "col": 0, "type": "frontend", "label": "InvoiceForm", "sublabel": "zod válido → onSubmit", "width": 128},
+    {"id": "live", "lane": "ui", "col": 4, "type": "frontend", "label": "Pipeline + Trazas", "sublabel": "PipelineViewer · TraceLog", "width": 128},
+    {"id": "result", "lane": "ui", "col": 5, "type": "frontend", "label": "SriResponse", "sublabel": "estado + mensajes", "width": 128},
+    {"id": "reset", "lane": "hook", "col": 1, "type": "frontend", "label": "runSession()", "sublabel": "reset + timer 100 ms", "width": 128},
+    {"id": "post", "lane": "hook", "col": 2, "type": "backend", "label": "POST /api/sessions", "sublabel": "espera { id }", "width": 128},
+    {"id": "es", "lane": "hook", "col": 3, "type": "messagebus", "label": "EventSource", "sublabel": "…/{id}/events", "width": 128},
+    {"id": "msg", "lane": "hook", "col": 4, "type": "frontend", "label": "onmessage", "sublabel": "solo logs nuevos", "width": 128},
+    {"id": "done", "lane": "hook", "col": 5, "type": "frontend", "label": "¿Terminal?", "sublabel": "COMPLETED | FAILED", "width": 128},
+    {"id": "fail", "lane": "errors", "col": 3, "type": "security", "label": "status FAILED", "sublabel": "setError + cerrar", "width": 128}
+  ],
+  "edges": [
+    {"id": "e-submit", "from": "submit", "to": "reset", "label": "onSubmit", "variant": "emphasis"},
+    {"id": "e-post", "from": "reset", "to": "post", "variant": "emphasis"},
+    {"id": "e-id", "from": "post", "to": "es", "label": "{ id }", "variant": "emphasis"},
+    {"id": "e-evt", "from": "es", "to": "msg", "label": "evento", "variant": "emphasis"},
+    {"id": "e-done", "from": "msg", "to": "done", "variant": "emphasis"},
+    {"id": "e-result", "from": "done", "to": "result", "label": "sí", "variant": "emphasis"},
+    {"id": "e-loop", "from": "done", "to": "msg", "label": "no", "variant": "dashed", "role": "return"},
+    {"id": "e-live", "from": "msg", "to": "live", "label": "pasos + trazas", "variant": "dashed", "role": "async"},
+    {"id": "e-postfail", "from": "post", "to": "fail", "label": "!ok / sin id", "variant": "security", "role": "error"},
+    {"id": "e-esfail", "from": "es", "to": "fail", "label": "onerror", "variant": "security", "role": "error"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Estado del hook", "items": ["traces, pipelineSteps, sriResponse, elapsedMs", "seenLogCount evita repetir logs entre snapshots"]},
+    {"dot": "amber", "title": "Pipeline por texto", "items": ["getPipelineMatch busca palabras clave en cada log", "Pasos sin log propio se marcan ok al final"]},
+    {"dot": "rose", "title": "Fallas", "items": ["POST fallido o error del SSE → FAILED", "Se cierra el EventSource y se detiene el timer"]}
+  ]
+}

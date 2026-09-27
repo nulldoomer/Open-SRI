@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "playground-service · Arquitectura interna",
+    "quality_profile": "showcase",
+    "views": [
+      {"id": "edge", "label": "Borde HTTP", "focus": ["front", "security", "controller"], "note": "CORS, cabeceras y rate limit antes de llegar al controller."},
+      {"id": "run", "label": "Ejecutar sesión", "focus": ["controller", "runUC", "sdkExec", "sdk", "repo", "sse"], "note": "RunSessionUseCase persiste, publica y ejecuta el SDK."},
+      {"id": "stream", "label": "Stream de eventos", "focus": ["controller", "getUC", "repo", "sse", "redis"], "note": "GetSessionUseCase lee Redis y luego se suscribe al sink SSE."}
+    ]
+  },
+  "components": [
+    {"id": "front", "type": "frontend", "label": "Next.js proxy", "sublabel": "/api/sessions", "pos": [20, 320], "size": [120, 60]},
+    {"id": "security", "type": "security", "label": "Spring Security", "sublabel": "CORS + rate limit", "pos": [220, 320], "size": [130, 60]},
+    {"id": "controller", "type": "backend", "label": "PlaygroundController", "sublabel": "/sessions", "pos": [390, 320], "size": [150, 60]},
+    {"id": "runUC", "type": "backend", "label": "RunSessionUseCase", "sublabel": "+ SessionExecution", "pos": [610, 190], "size": [170, 60]},
+    {"id": "sse", "type": "messagebus", "label": "SseSessionEventPublisher", "sublabel": "Sinks.many() por id", "pos": [610, 320], "size": [170, 60]},
+    {"id": "getUC", "type": "backend", "label": "GetSessionUseCase", "sublabel": "get · streamEvents", "pos": [610, 450], "size": [170, 60]},
+    {"id": "sdkExec", "type": "backend", "label": "JavaSdkExecutor", "sublabel": "test-firma.p12", "tag": "SdkExecutor", "pos": [860, 190], "size": [160, 60]},
+    {"id": "sdk", "type": "backend", "label": "SDK opensri", "sublabel": "SOAP → SRI celcer", "tag": "1.2.4", "pos": [880, 60], "size": [120, 60]},
+    {"id": "repo", "type": "database", "label": "RedisSessionRepository", "sublabel": "hash · TTL 1h", "tag": "SessionRepository", "pos": [860, 320], "size": [160, 60]},
+    {"id": "redis", "type": "database", "label": "Redis", "sublabel": "session:{id}", "brand": "redis", "pos": [1110, 320], "size": [120, 60]}
+  ],
+  "boundaries": [
+    {"kind": "region", "label": "playground-service · Spring Boot 4 · WebFlux", "wraps": ["security", "controller", "runUC", "sse", "getUC", "sdkExec", "sdk", "repo"], "pad": 20}
+  ],
+  "connections": [
+    {"id": "c-front", "from": "front", "to": "security", "label": "HTTP · SSE", "variant": "emphasis"},
+    {"id": "c-sec", "from": "security", "to": "controller", "variant": "emphasis"},
+    {"id": "c-run", "from": "controller", "to": "runUC", "label": "POST", "variant": "emphasis"},
+    {"id": "c-get", "from": "controller", "to": "getUC", "label": "GET events"},
+    {"id": "c-exec", "from": "runUC", "to": "sdkExec", "label": "execute", "variant": "emphasis"},
+    {"id": "c-sdk", "from": "sdkExec", "to": "sdk", "label": "sendInvoice", "variant": "emphasis"},
+    {"id": "c-save", "from": "runUC", "to": "repo", "label": "save"},
+    {"id": "c-emit", "from": "runUC", "to": "sse", "label": "emit", "variant": "dashed", "labelDy": 24},
+    {"id": "c-sub", "from": "getUC", "to": "sse", "label": "subscribe", "variant": "dashed"},
+    {"id": "c-find", "from": "getUC", "to": "repo", "label": "findById"},
+    {"id": "c-redis", "from": "repo", "to": "redis", "label": "HSET · HGETALL"}
+  ],
+  "cards": [
+    {"dot": "rose", "title": "API pública sin usuarios", "items": ["Solo /sessions/** y /actuator; el resto denyAll", "Token bucket por IP: 10 req/min, luego 429"]},
+    {"dot": "emerald", "title": "Puertos", "items": ["SdkExecutor, SessionRepository, SessionEventPublisher", "SdkLanguage ya prevé C#, Go y Python"]},
+    {"dot": "slate", "title": "Observabilidad", "items": ["Actuator + Prometheus", "Trazas Micrometer exportadas por OTLP"]}
+  ]
+}

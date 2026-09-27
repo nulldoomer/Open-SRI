@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SDK opensri · Arquitectura hexagonal",
+    "quality_profile": "showcase",
+    "views": [
+      {"id": "public-api", "label": "API pública", "focus": ["dev", "docBuilders", "clientBuilder", "client"], "note": "Lo único que toca el desarrollador: builders por pasos y el cliente."},
+      {"id": "ports", "label": "Puertos y adapters", "focus": ["app", "accessKey", "serializer", "signer", "gateway"], "note": "La capa application orquesta cuatro puertos; infrastructure los implementa."},
+      {"id": "sri-edge", "label": "Frontera SRI", "focus": ["gateway", "sri"], "note": "Solo el gateway SOAP sale de la JVM."}
+    ]
+  },
+  "components": [
+    {"id": "dev", "type": "external", "label": "Tu aplicación", "sublabel": "código Java 21", "pos": [30, 300], "size": [130, 60]},
+    {"id": "docBuilders", "type": "frontend", "label": "InvoiceBuilder", "sublabel": "+ 5 builders por pasos", "pos": [210, 190], "size": [130, 60]},
+    {"id": "clientBuilder", "type": "frontend", "label": "OpenSRIClientBuilder", "sublabel": "env · .p12 · perfil", "pos": [210, 410], "size": [150, 60]},
+    {"id": "client", "type": "frontend", "label": "OpenSRIClient", "sublabel": "fachada pública", "pos": [410, 300], "size": [130, 60]},
+    {"id": "app", "type": "backend", "label": "OPENSRIApplication", "sublabel": "SendDocument · CheckAuth", "pos": [590, 300], "size": [150, 60]},
+    {"id": "accessKey", "type": "backend", "label": "SRIAccessKeyGenerator", "sublabel": "49 dígitos · módulo 11", "tag": "AccessKeyGenerator", "pos": [880, 80], "size": [160, 60]},
+    {"id": "serializer", "type": "backend", "label": "XmlSerializers JAXB", "sublabel": "6 comprobantes · XSD", "tag": "XmlSerializer", "pos": [880, 230], "size": [160, 60]},
+    {"id": "signer", "type": "security", "label": "XAdEsSigner", "sublabel": "XAdES-BES · RSA-SHA256", "tag": "DocumentSigner", "pos": [880, 380], "size": [160, 60]},
+    {"id": "gateway", "type": "backend", "label": "SRISOAPGateway", "sublabel": "java.net.http", "tag": "SRIGateway", "pos": [880, 530], "size": [160, 60]},
+    {"id": "sri", "type": "external", "label": "SRI Ecuador", "sublabel": "Recepción + Autorización", "pos": [1100, 530], "size": [150, 60]}
+  ],
+  "boundaries": [
+    {"kind": "region", "label": "api", "wraps": ["docBuilders", "clientBuilder", "client"], "pad": 16},
+    {"kind": "region", "label": "infrastructure", "wraps": ["accessKey", "serializer", "signer", "gateway"], "pad": 16}
+  ],
+  "connections": [
+    {"id": "dev-docs", "from": "dev", "to": "docBuilders", "label": "construye", "variant": "emphasis"},
+    {"id": "dev-client", "from": "dev", "to": "clientBuilder", "label": "configura"},
+    {"id": "docs-client", "from": "docBuilders", "to": "client", "label": "Invoice", "variant": "emphasis"},
+    {"id": "cb-client", "from": "clientBuilder", "to": "client", "label": "build()"},
+    {"id": "client-app", "from": "client", "to": "app", "label": "send()", "variant": "emphasis"},
+    {"id": "app-key", "from": "app", "to": "accessKey", "label": "1 · clave", "labelSegment": 2},
+    {"id": "app-ser", "from": "app", "to": "serializer", "label": "2 · XML", "labelSegment": 2},
+    {"id": "app-sign", "from": "app", "to": "signer", "label": "3 · firma", "variant": "security", "labelSegment": 2},
+    {"id": "app-gw", "from": "app", "to": "gateway", "label": "4 · envío", "variant": "emphasis", "labelSegment": 2},
+    {"id": "gw-sri", "from": "gateway", "to": "sri", "label": "SOAP", "variant": "emphasis"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Builders por pasos", "items": ["Cada paso devuelve la siguiente interfaz", "Factura, notas, liquidación, guía y retención"]},
+    {"dot": "emerald", "title": "Puertos y adapters", "items": ["application define 4 interfaces", "Las factories las cablean dentro del cliente"]},
+    {"dot": "rose", "title": "Material sensible", "items": ["El .p12 se procesa solo en memoria", "La clave de acceso nunca se reparsea del XML"]}
+  ]
+}

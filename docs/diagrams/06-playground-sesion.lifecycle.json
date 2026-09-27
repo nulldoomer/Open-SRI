@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "playground-service · Ciclo de vida de una sesión",
+    "quality_profile": "showcase",
+    "viewBox": [1030, 630]
+  },
+  "lanes": [
+    {"id": "main", "label": "SessionStatus"},
+    {"id": "errors", "label": "Falla"},
+    {"id": "terminal", "label": "Redis TTL"}
+  ],
+  "states": [
+    {"id": "pending", "type": "start", "label": "PENDING", "sublabel": "pending() · UUID", "lane": "main", "col": 0, "step": "01", "tag": "POST"},
+    {"id": "running", "type": "active", "label": "RUNNING", "sublabel": "start() · startedAt", "lane": "main", "col": 1, "step": "02", "tag": "SDK"},
+    {"id": "check", "type": "decision", "label": "¿success?", "sublabel": "SdkExecutionResult", "lane": "main", "col": 2, "step": "03", "tag": "resultado"},
+    {"id": "completed", "type": "success", "label": "COMPLETED", "sublabel": "responsePayload", "lane": "main", "col": 3, "step": "04", "tag": "final"},
+    {"id": "failed", "type": "failure", "label": "FAILED", "sublabel": "errorMessage + logs", "lane": "errors", "col": 0, "tag": "final"},
+    {"id": "expired", "type": "neutral", "label": "Expirada", "sublabel": "hash borrado", "lane": "terminal", "col": 1, "tag": "TTL 1h"}
+  ],
+  "transitions": [
+    {"id": "t-fail", "from": "check", "to": "failed", "label": "success=false", "variant": "security", "route": "drop"},
+    {"id": "t-crash", "from": "running", "to": "failed", "label": "excepción", "variant": "security", "fromSide": "bottom", "toSide": "left"},
+    {"id": "t-ttl", "from": "completed", "to": "expired", "label": "1 h sin escribir", "variant": "dashed", "route": "straight", "labelAt": [556, 310]},
+    {"id": "t-ttl2", "from": "failed", "to": "expired", "variant": "dashed", "fromSide": "bottom", "toSide": "left"}
+  ],
+  "cards": [
+    {"dot": "emerald", "title": "Cada cambio de estado", "items": ["Se guarda en Redis (HSET + EXPIRE 1h)", "Y se emite al sink SSE de la sesión"]},
+    {"dot": "rose", "title": "Sin reintentos", "items": ["FAILED es terminal: error del SDK o excepción", "El mensaje de error viaja en errorMessage"]}
+  ]
+}

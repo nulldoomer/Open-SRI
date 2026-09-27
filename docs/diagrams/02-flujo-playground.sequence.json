@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Open-SRI · Ejecución de una sesión del playground",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [1070, 680]
+  },
+  "participants": [
+    {"id": "front", "type": "frontend", "label": "Frontend", "sublabel": "hook + proxy /api", "brand": "next-js"},
+    {"id": "api", "type": "backend", "label": "playground-service", "sublabel": "RunSessionUseCase"},
+    {"id": "redis", "type": "database", "label": "Redis", "sublabel": "session:{id}", "brand": "redis"},
+    {"id": "sdk", "type": "backend", "label": "SDK opensri", "sublabel": "OpenSRIClient"},
+    {"id": "sri", "type": "external", "label": "SRI", "sublabel": "celcer · pruebas"}
+  ],
+  "segments": [
+    {"from": 150, "to": 224, "label": "Crear sesión"},
+    {"from": 238, "to": 438, "label": "Ejecutar SDK"},
+    {"from": 452, "to": 604, "label": "Respuesta y SSE"}
+  ],
+  "messages": [
+    {"id": "m-post", "from": "front", "to": "api", "y": 164, "label": "POST /sessions", "variant": "emphasis", "note": "vía /api/sessions"},
+    {"id": "m-pending", "from": "api", "to": "redis", "y": 204, "label": "HSET PENDING→RUNNING", "variant": "default"},
+    {"id": "m-send", "from": "api", "to": "sdk", "y": 258, "label": "sendInvoice(invoice)", "variant": "emphasis", "note": "clave + XML + XAdES"},
+    {"id": "m-soap", "from": "sdk", "to": "sri", "y": 298, "label": "SOAP validarComprobante", "variant": "emphasis"},
+    {"id": "m-receipt", "from": "sri", "to": "sdk", "y": 338, "label": "RECIBIDA / DEVUELTA", "variant": "return"},
+    {"id": "m-result", "from": "sdk", "to": "api", "y": 378, "label": "SendDocumentResult", "variant": "return"},
+    {"id": "m-final", "from": "api", "to": "redis", "y": 418, "label": "HSET COMPLETED|FAILED", "variant": "default"},
+    {"id": "m-202", "from": "api", "to": "front", "y": 472, "label": "202 { id }", "variant": "return"},
+    {"id": "m-sse", "from": "front", "to": "api", "y": 512, "label": "GET /sessions/{id}/events", "variant": "dashed", "note": "EventSource"},
+    {"id": "m-read", "from": "api", "to": "redis", "y": 552, "label": "HGETALL", "variant": "default"},
+    {"id": "m-snap", "from": "api", "to": "front", "y": 592, "label": "SSE: snapshot final", "variant": "return"}
+  ],
+  "activations": [
+    {"participant": "api", "from": 158, "to": 478, "type": "backend"},
+    {"participant": "sdk", "from": 252, "to": 384, "type": "backend"},
+    {"participant": "sri", "from": 292, "to": 344, "type": "external"},
+    {"participant": "api", "from": 506, "to": 598, "type": "backend"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Proxy en Next.js", "items": ["/api/sessions oculta PLAYGROUND_BACKEND_URL", "El body SSE se reenvía sin transformar"]},
+    {"dot": "amber", "title": "Lo que dice el código hoy", "items": ["El 202 sale después de que el SRI responde", "El SSE entrega el snapshot final desde Redis"]},
+    {"dot": "emerald", "title": "Estado de la sesión", "items": ["Hash session:{id} con TTL de 1 hora", "El navegador cierra el stream en COMPLETED o FAILED"]}
+  ]
+}

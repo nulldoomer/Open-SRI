@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Open-SRI · Vista general del sistema",
+    "quality_profile": "showcase",
+    "views": [
+      {"id": "playground-path", "label": "Playground en vivo", "focus": ["browser", "next", "api", "redis", "sdk", "sri"], "note": "Una factura viaja del navegador al SRI y el estado vuelve por SSE."},
+      {"id": "sdk-distribution", "label": "Distribución del SDK", "focus": ["gha", "maven", "sdk", "dev"], "note": "Un tag v* publica el SDK en Maven Central; devs y playground lo consumen."}
+    ]
+  },
+  "components": [
+    {"id": "browser", "type": "external", "label": "Navegador", "sublabel": "usuario del playground", "pos": [40, 300], "size": [130, 60]},
+    {"id": "next", "type": "frontend", "label": "Frontend Next.js", "sublabel": "páginas + API routes", "tag": "Vercel", "brand": "next-js", "pos": [260, 300], "size": [130, 60]},
+    {"id": "api", "type": "backend", "label": "playground-service", "sublabel": "WebFlux + rate limit", "tag": "Railway", "brand": "spring", "pos": [472, 300], "size": [146, 60]},
+    {"id": "sdk", "type": "backend", "label": "SDK opensri", "sublabel": "librería Java 21", "tag": "1.2.4", "pos": [700, 300], "size": [130, 60]},
+    {"id": "sri", "type": "external", "label": "SRI Ecuador", "sublabel": "SOAP celcer (pruebas)", "pos": [920, 300], "size": [130, 60]},
+    {"id": "redis", "type": "database", "label": "Redis", "sublabel": "sesiones", "brand": "redis", "pos": [480, 90], "size": [130, 60]},
+    {"id": "gha", "type": "cloud", "label": "GitHub Actions", "sublabel": "release.yml", "brand": "github-actions", "pos": [480, 460], "size": [130, 60]},
+    {"id": "maven", "type": "cloud", "label": "Maven Central", "sublabel": "io.github.nulldoomer", "pos": [700, 460], "size": [130, 60]},
+    {"id": "dev", "type": "external", "label": "Devs externos", "sublabel": "Gradle / Maven", "pos": [920, 460], "size": [130, 60]}
+  ],
+  "boundaries": [
+    {"kind": "region", "label": "Railway · contenedor JRE 21", "wraps": ["api", "sdk"], "pad": 20}
+  ],
+  "connections": [
+    {"id": "browser-next", "from": "browser", "to": "next", "label": "HTTPS", "variant": "emphasis"},
+    {"id": "next-api", "from": "next", "to": "api", "label": "POST · SSE", "variant": "emphasis"},
+    {"id": "api-sdk", "from": "api", "to": "sdk", "label": "sendInvoice", "variant": "emphasis"},
+    {"id": "sdk-sri", "from": "sdk", "to": "sri", "label": "SOAP", "variant": "emphasis"},
+    {"id": "api-redis", "from": "api", "to": "redis", "label": "hash TTL 1h", "labelDy": -50},
+    {"id": "gha-maven", "from": "gha", "to": "maven", "label": "publish", "variant": "dashed"},
+    {"id": "maven-sdk", "from": "maven", "to": "sdk", "label": "dependencia", "variant": "dashed"},
+    {"id": "dev-maven", "from": "dev", "to": "maven", "variant": "dashed"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Camino del playground", "items": ["Next.js hace de proxy hacia PLAYGROUND_BACKEND_URL", "El backend guarda la sesión en Redis y emite SSE"]},
+    {"dot": "rose", "title": "Frontera con el SRI", "items": ["Solo el entorno PRUEBAS (celcer.sri.gob.ec)", "Firma con un .p12 de prueba empaquetado en el servicio"]},
+    {"dot": "amber", "title": "Release del SDK", "items": ["Un tag v* dispara build, firma y publicación", "El playground consume opensri:1.2.4 como cualquier dev"]}
+  ]
+}

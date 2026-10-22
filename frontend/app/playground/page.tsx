@@ -2,6 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import Mark from "@/components/layout/Mark";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { usePlaygroundSession } from "@/hooks/usePlaygroundSession";
 import type { InvoicePayload, PipelineStep, PlaygroundSessionRequest } from "@/types/playground";
@@ -26,7 +28,46 @@ const PLAYGROUND_DEFAULTS = {
   sdkVersion: "1.2.4",
 };
 
+// Cambia a true cuando el servicio vuelva a estar disponible.
+const PLAYGROUND_AVAILABLE = false;
+
 export default function Playground() {
+  return PLAYGROUND_AVAILABLE ? <PlaygroundSession /> : <PlaygroundUnavailable />;
+}
+
+function PlaygroundUnavailable() {
+  return (
+    <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-8 lg:py-16">
+      <header className="border-b border-border pb-8">
+        <h1 className="font-heading text-[clamp(2.5rem,5vw,3.75rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.015em] [font-stretch:80%]">
+          Playground
+        </h1>
+      </header>
+
+      <section aria-labelledby="playground-status" className="py-12 sm:py-16">
+        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--status-danger-ink)]">
+          <Mark />
+          Estado del servicio
+        </div>
+        <h2 id="playground-status" className="mt-5 max-w-2xl font-heading text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+          Servicio no disponible actualmente
+        </h2>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          El playground está fuera de servicio por el momento. No es posible ejecutar sesiones de prueba desde esta
+          página.
+        </p>
+        <Link
+          href="/doc"
+          className="mt-8 inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+        >
+          Ver la documentación
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+function PlaygroundSession() {
   const [activeTab, setActiveTab] = useState("pipeline");
   const resultsRef = useRef<HTMLElement>(null);
   const {

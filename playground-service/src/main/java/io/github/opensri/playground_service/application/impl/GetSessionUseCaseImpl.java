@@ -35,7 +35,11 @@ public class GetSessionUseCaseImpl implements GetSessionUseCase {
         .switchIfEmpty(Mono.error(new SessionNotFoundException(id)))
         .flatMapMany(
             initial ->
-                Flux.concat(
-                    Mono.just(initial), eventPublisher.subscribe(id).map(SessionResponse::from)));
+                Flux.concat(Mono.just(initial),
+                        eventPublisher
+                                .subscribe(id)
+                                .map(SessionResponse::from)
+                )
+        );
   }
 }

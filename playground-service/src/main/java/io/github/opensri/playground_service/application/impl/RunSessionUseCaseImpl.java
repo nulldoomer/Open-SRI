@@ -56,6 +56,8 @@ public class RunSessionUseCaseImpl implements RunSessionUseCase {
 
   private Mono<PlaygroundSession> persistAndPublish(PlaygroundSession session) {
 
-    return sessionRepository.save(session).then(eventPublisher.emit(session)).thenReturn(session);
+    return sessionRepository.save(session)
+            .then(eventPublisher.emit(session))
+            .thenReturn(session);
   }
 }

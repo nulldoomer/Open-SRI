@@ -24,13 +24,26 @@ class SessionExecutionService {
   Mono<PlaygroundSession> execute(PlaygroundSession runningSession, RunSessionRequest request) {
 
     long start = System.currentTimeMillis();
-    SdkExecutionRequest sdkRequest =
-        new SdkExecutionRequest(request.invoicePayload(), request.language(), request.sdkVersion());
+    SdkExecutionRequest sdkRequest = new SdkExecutionRequest(
+                request.invoicePayload(),
+                request.language(),
+                request.sdkVersion()
+        );
 
     return sdkExecutor
         .execute(sdkRequest)
-        .map(result -> runningSession.complete(result, elapsed(start), toLogs(result.logs())))
-        .onErrorResume(error -> Mono.just(runningSession.fail(error.getMessage(), elapsed(start))));
+        .map(result -> runningSession.complete
+                (
+                        result, elapsed(start),
+                        toLogs(result.logs())
+                )
+        )
+        .onErrorResume(error -> Mono.just(
+                runningSession.fail(
+                        error.getMessage(),
+                        elapsed(start))
+                )
+        );
   }
 
   private long elapsed(long start) {
@@ -41,6 +54,8 @@ class SessionExecutionService {
 
     if (rawLogs == null) return List.of();
 
-    return rawLogs.stream().map(message -> new SessionLog(Instant.now(), message)).toList();
+    return rawLogs.stream()
+            .map(message -> new SessionLog(Instant.now(), message))
+            .toList();
   }
 }
